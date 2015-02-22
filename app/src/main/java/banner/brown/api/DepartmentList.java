@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * Created by kappi on 2/22/15.
+ * Hard Coded Department List
  */
 public class DepartmentList {
 
