@@ -12,6 +12,11 @@ import android.view.ViewGroup;
 import android.os.Build;
 import android.widget.TextView;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+
+import org.json.JSONObject;
+
 import banner.brown.api.BannerAPI;
 import banner.brown.models.Course;
 import banner.brown.ui.R;
@@ -32,6 +37,18 @@ public class CourseDetail extends ActionBarActivity {
                     .commit();
         }
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        BannerAPI.testVolleyCall(new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                JSONObject x = response;
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyError x = error;
+            }
+        });
     }
 
 
