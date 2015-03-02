@@ -1,5 +1,6 @@
 package banner.brown.ui;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.app.Activity;
 import android.support.v7.app.ActionBar;
@@ -190,6 +191,7 @@ public class NavigationDrawerFragment extends Fragment {
 
     private void selectItem(int position) {
         mCurrentSelectedPosition = position;
+        testDeptList(position);
         if (mDrawerListView != null) {
             mDrawerListView.setItemChecked(position, true);
         }
@@ -198,6 +200,14 @@ public class NavigationDrawerFragment extends Fragment {
         }
         if (mCallbacks != null) {
             mCallbacks.onNavigationDrawerItemSelected(position);
+        }
+    }
+
+    private void testDeptList(int position) {
+        if (position == 0){
+            Intent myIntent = new Intent(getActivity(), DepartmentsActivity.class);
+            //myIntent.putExtra("key", value); //Optional parameters
+            getActivity().startActivity(myIntent);
         }
     }
 
