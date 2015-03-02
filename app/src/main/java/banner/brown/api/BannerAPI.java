@@ -7,7 +7,16 @@ import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONObject;
 
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 import banner.brown.BannerApplication;
 import banner.brown.models.Course;
@@ -30,4 +39,13 @@ public class BannerAPI {
         JsonObjectRequest request = new JsonObjectRequest("http://api.ipify.org/?format=json", null,  responseListener, errorListener);
         BannerApplication.getInstance().addToRequestQueue(request);
     }
+
+    public static void getCoursesByDept(String term, String dept, Response.Listener responseListener, Response.ErrorListener errorListener) {
+        //add departments when this works
+        JsonObjectRequest request = new JsonObjectRequest(
+                HOST + "/dprd/banner/mobile/courses?term=" + term, null,  responseListener, errorListener);
+        BannerApplication.getInstance().addToRequestQueue(request);
+    }
+
+
 }
