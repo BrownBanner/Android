@@ -160,7 +160,7 @@ public class DepartmentList {
 
             "Sociology",
 
-            "Sweedish",
+            "Swedish",
 
             "Theatre Arts and Performance Studies",
 
