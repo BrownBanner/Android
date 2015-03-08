@@ -44,23 +44,23 @@ public class DepartmentsActivity extends ActionBarActivity {
         final CourseCubListAdapter adapter = new CourseCubListAdapter(this,
                 R.layout.general_list_view_row, departmentData);
 
-        mainListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String dept = departmentData.get(position).abbrev;
-                BannerAPI.getCoursesByDept("201420", dept, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        JSONObject x = response;
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        VolleyError x = error;
-                    }
-                });
-            }
-        });
+//        mainListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                String dept = departmentData.get(position).abbrev;
+//                BannerAPI.getCoursesByDept("201420", dept, new Response.Listener<JSONObject>() {
+//                    @Override
+//                    public void onResponse(JSONObject response) {
+//                        JSONObject x = response;
+//                    }
+//                }, new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        VolleyError x = error;
+//                    }
+//                });
+//            }
+//        });
 
 
         // Set the ArrayAdapter as the ListView's adapter.
