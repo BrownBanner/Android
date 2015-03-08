@@ -38,7 +38,7 @@ public class CourseDetail extends ActionBarActivity {
         }
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        BannerAPI.getCoursesByDept("201420", "Test Dept", new Response.Listener<JSONObject>() {
+        BannerAPI.getCoursesByDept("201420", "HIST", 0, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 JSONObject x = response;

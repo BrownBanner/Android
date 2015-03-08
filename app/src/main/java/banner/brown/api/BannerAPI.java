@@ -40,10 +40,13 @@ public class BannerAPI {
         BannerApplication.getInstance().addToRequestQueue(request);
     }
 
-    public static void getCoursesByDept(String term, String dept, Response.Listener responseListener, Response.ErrorListener errorListener) {
-        //add departments when this works
-        JsonObjectRequest request = new JsonObjectRequest(
-                HOST + "/dprd/banner/mobile/courses?term=" + term, null,  responseListener, errorListener);
+    public static void getCoursesByDept(String term, String dept, int page,
+                                        Response.Listener responseListener, Response.ErrorListener errorListener) {
+        String urlRequest = HOST + "/dprd/banner/mobile/courses?term=" + term + "&dept=" + dept;
+        if (page > 0) {
+            urlRequest += "&page=" + page;
+        }
+        JsonObjectRequest request = new JsonObjectRequest(urlRequest, null,  responseListener, errorListener);
         BannerApplication.getInstance().addToRequestQueue(request);
     }
 
