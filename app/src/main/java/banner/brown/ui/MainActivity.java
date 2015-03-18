@@ -14,6 +14,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 
+import com.alamkanak.weekview.WeekView;
+import com.alamkanak.weekview.WeekViewEvent;
+
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -22,6 +28,7 @@ public class MainActivity extends ActionBarActivity
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
     private NavigationDrawerFragment mNavigationDrawerFragment;
+    private WeekView mWeekView;
 
 //    /**
 //     * Used to store the last screen title. For use in {@link #restoreActionBar()}.
@@ -41,6 +48,15 @@ public class MainActivity extends ActionBarActivity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
+        mWeekView = (WeekView)findViewById(R.id.weekView);
+        mWeekView.setMonthChangeListener(new WeekView.MonthChangeListener() {
+            @Override
+            public List<WeekViewEvent> onMonthChange(int newYear, int newMonth) {
+                return new ArrayList<WeekViewEvent>();
+            }
+        });
+
     }
 
     @Override

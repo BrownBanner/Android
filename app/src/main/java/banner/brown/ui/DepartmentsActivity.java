@@ -48,7 +48,7 @@ public class DepartmentsActivity extends ActionBarActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String dept = departmentData.get(position).abbrev;
-                BannerAPI.getCoursesByDept("201420", dept, new Response.Listener<JSONObject>() {
+                BannerAPI.getCoursesByDept("201420", dept,0, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         JSONObject x = response;
@@ -60,7 +60,7 @@ public class DepartmentsActivity extends ActionBarActivity {
                     }
                 });
             }
-        });
+                });
 
 
         // Set the ArrayAdapter as the ListView's adapter.
