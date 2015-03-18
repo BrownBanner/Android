@@ -26,9 +26,11 @@ import banner.brown.models.Course;
  */
 public class BannerAPI {
 
-    private static String DEV = "https://ords-dev.brown.edu";
+    private static String DEV = "https://ords-dev.brown.edu/dprd/banner/mobile";
 
-    public static String HOST = DEV;
+    private static String TEST = "https://blooming-bastion-7117.herokuapp.com";
+
+    public static String HOST = TEST;
 
     public static Course getCourse(String CRN) {
         return new Course("Test Course", 2014, 1, "Test Description", "123", "DEPT");
@@ -42,7 +44,8 @@ public class BannerAPI {
 
     public static void getCoursesByDept(String term, String dept, int page,
                                         Response.Listener responseListener, Response.ErrorListener errorListener) {
-        String urlRequest = HOST + "/dprd/banner/mobile/courses?term=" + term + "&dept=" + dept;
+        String urlRequest = HOST + "/courses?term=" + term +"&dept=" + dept;
+
         if (page > 0) {
             urlRequest += "&page=" + page;
         }
