@@ -53,5 +53,13 @@ public class BannerAPI {
         BannerApplication.getInstance().addToRequestQueue(request);
     }
 
+    public static void getCourseByCRN(String term, String CRN,
+                                        Response.Listener responseListener, Response.ErrorListener errorListener) {
+        String urlRequest = HOST + "/courses?term=" + term +"&crn=" + CRN;
+
+        JsonObjectRequest request = new JsonObjectRequest(urlRequest, null,  responseListener, errorListener);
+        BannerApplication.getInstance().addToRequestQueue(request);
+    }
+
 
 }

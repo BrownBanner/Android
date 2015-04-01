@@ -1,5 +1,6 @@
 package banner.brown.models;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -13,9 +14,18 @@ public class Course {
     private String mDescription;
     private String mCRN;
     private String mDepartment;
+    private String mSubjectCode;
 
 
     public Course (JSONObject json) {
+        try {
+            mTitle = json.getString("title");
+            mDepartment = json.getString("dept");
+            mCRN = json.getString("crn");
+            mSubjectCode = json.getString("subjectc");
+        } catch(JSONException e) {
+
+        }
 
     }
 
@@ -40,6 +50,13 @@ public class Course {
         return mDepartment;
     }
 
+    public String getCRN() {
+        return mCRN;
+    }
+
+    public String getSubjectCode() {
+        return mSubjectCode;
+    }
 
 
 

@@ -15,6 +15,8 @@ import android.widget.TextView;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import banner.brown.api.BannerAPI;
@@ -24,24 +26,44 @@ import banner.brown.ui.R;
 public class CourseDetail extends ActionBarActivity {
 
     public static String CRN_EXTRA = "crn_extra";
+    public static String COURSE_NAME_EXTRA = "course_name_extra";
+
+    private String CRN = "";
+
+    private Course mCourse;
+
+    private TextView mTitleText;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_course_detail);
-        if (savedInstanceState == null) {
-            CourseDetailFragment fragment = new CourseDetailFragment();
-            fragment.setArguments(getIntent().getExtras());
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, fragment)
-                    .commit();
-        }
+        setContentView(R.layout.fragment_course_detail);
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        BannerAPI.getCoursesByDept("201420", "HIST", 0, new Response.Listener<JSONObject>() {
+        Bundle b = getIntent().getExtras();
+        CRN = b.getString(CRN_EXTRA);
+        String title = b.getString(COURSE_NAME_EXTRA);
+
+        getSupportActionBar().setTitle(title);
+
+        mTitleText = (TextView) findViewById(R.id.title_text);
+
+        BannerAPI.getCourseByCRN("201420", CRN, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                JSONObject x = response;
+                try {
+                    JSONArray courseList = response.getJSONArray("items");
+                    if (courseList.length() > 0) {
+                        mCourse = new Course(courseList.getJSONObject(0));
+                    }
+                } catch (JSONException e) {
+
+                }
+
+                mTitleText.setText(mCourse.getTitle());
+
             }
         }, new Response.ErrorListener() {
             @Override
@@ -71,27 +93,5 @@ public class CourseDetail extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class CourseDetailFragment extends Fragment {
 
-        TextView mTitleText;
-        Course mCourse;
-
-        public CourseDetailFragment() {
-
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_course_detail, container, false);
-            mTitleText = (TextView) rootView.findViewById(R.id.title_text);
-            String crn = getArguments().getString(CRN_EXTRA);
-            mCourse = BannerAPI.getCourse(crn);
-            mTitleText.setText(mCourse.getTitle());
-            return rootView;
-        }
-    }
 }

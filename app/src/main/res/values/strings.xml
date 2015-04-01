@@ -12,6 +12,7 @@
     <string name="title_activity_course_detail">CourseDetail</string>
     <string name="hello_world">Hello world!</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_Departments">DepartmentsActivity</string>
+    <string name="title_activity_Departments">Departments</string>
+    <string name="title_activity_course_list">CourseListActivity</string>
 
 </resources>
