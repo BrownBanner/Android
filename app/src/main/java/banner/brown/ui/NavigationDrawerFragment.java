@@ -76,8 +76,6 @@ public class NavigationDrawerFragment extends Fragment {
             mFromSavedInstanceState = true;
         }
 
-        // Select either the default item (0) or the last selected item.
-        //selectItem(mCurrentSelectedPosition);
     }
 
     @Override
@@ -191,7 +189,15 @@ public class NavigationDrawerFragment extends Fragment {
 
     private void selectItem(int position) {
         mCurrentSelectedPosition = position;
-        testDeptList(position);
+        if (position == 0){
+            Intent myIntent = new Intent(getActivity(), DepartmentsActivity.class);
+            //myIntent.putExtra("key", value); //Optional parameters
+            getActivity().startActivity(myIntent);
+        } else if (position == 1) {
+            Intent myIntent = new Intent(getActivity(), LoginActivity.class);
+
+            getActivity().startActivity(myIntent);
+        }
         if (mDrawerListView != null) {
             mDrawerListView.setItemChecked(position, true);
         }
@@ -203,13 +209,6 @@ public class NavigationDrawerFragment extends Fragment {
         }
     }
 
-    private void testDeptList(int position) {
-        if (position == 0){
-            Intent myIntent = new Intent(getActivity(), DepartmentsActivity.class);
-            //myIntent.putExtra("key", value); //Optional parameters
-            getActivity().startActivity(myIntent);
-        }
-    }
 
     @Override
     public void onAttach(Activity activity) {

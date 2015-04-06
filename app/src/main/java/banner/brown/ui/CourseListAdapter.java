@@ -57,7 +57,7 @@ public class CourseListAdapter extends ArrayAdapter<Course>{
 
             Course item = data.get(position);
             holder.title.setText(item.getTitle());
-            holder.abbrev.setText(item.getDepartment());
+            holder.abbrev.setText(item.getSubjectCode());
 
             return row;
         }

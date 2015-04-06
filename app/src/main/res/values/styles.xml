@@ -1,8 +1,76 @@
 <resources>
 
-    <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+    <!-- Customize your theme here. -->
+        <item name="colorPrimary"> @color/bannerBrown</item>
+        <item name="colorPrimaryDark"> @color/bannerRed</item>
+        <!--<item name="colorAccent">@color/accentColor</item>-->
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:colorBackground">@android:color/white</item>
+    </style>
+
+
+    <!--
+        These are all the recommended typography attributes in the material design guideline:
+        http://www.google.com/design/spec/style/typography.html#typography-standard-styles
+    -->
+
+    <style name="BannerDisplay4">
+        <item name="android:textColor">@color/textGray</item>
+        <item name="android:textSize">112sp</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+    <style name="BannerDisplay3">
+        <item name="android:textColor">@color/textGray</item>
+        <item name="android:textSize">56sp</item>
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+    <style name="BannerDisplay2">
+        <item name="android:textColor">@color/textGray</item>
+        <item name="android:textSize">45sp</item>
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+    <style name="BannerDisplay1">
+        <item name="android:textColor">@color/textGray</item>
+        <item name="android:textSize">34sp</item>
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+    <style name="BannerHeadline">
+        <item name="android:textColor">@color/textBlack</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+    <style name="BannerTitle">
+        <item name="android:textColor">@color/textBlack</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+    <style name="BannerSubhead">
+        <item name="android:textColor">@color/textBlack</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+    <style name="BannerBody2">
+        <item name="android:textColor">@color/textBlack</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+    <style name="BannerBody1">
+        <item name="android:textColor">@color/textBlack</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+    <style name="BannerCaption">
+        <item name="android:textColor">@color/textGray</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">"sans-serif</item>
+    </style>
+    <style name="BannerButton">
+        <item name="android:textColor">@color/textBlack</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">"sans-serif-medium</item>
+        <item name="android:textAllCaps">true</item>
     </style>
 
 </resources>

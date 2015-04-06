@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Material design guideline for line color-->
+    <color name="lightLineColor">#E0E0E0</color>
+    <color name="categoryColor">#DEAAAB</color>
+    <color name="tagColor">#93ABDD</color>
+    <color name="merchantColor">#5485B0</color>
+
+    <color name="transparent">#00000000</color>
+    <color name="transparentTint">#4D000000</color>
+    <color name="halfTransparent">#80000000</color>
+
+    <color name="bannerBrown">#2C1713</color>
+    <color name="bannerRed">#B00000</color>
+
+    <color name="textMediumGray">#69696e</color>
+    <color name="textGray">#757575</color>
+    <color name="textBlack">#212121</color>
+</resources>
