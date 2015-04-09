@@ -1,11 +1,284 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="banner.brown.ui.CourseDetail$PlaceholderFragment">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:id="@+id/title_text"/>
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/courseDetailBackground"
+    android:orientation="vertical">
+    <RelativeLayout
+        style="@style/BannerDetailSection">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/title_text"
+            style="@style/BannerHeadline"
+            android:layout_alignParentTop="true"
+            android:gravity="center_horizontal"
+            android:text="Course Name"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
 
-</RelativeLayout>
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/schedule"
+            style="@style/BannerSubhead"
+            android:text = "Schedule"
+            android:layout_below="@id/title_text"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="7dp"
+            android:layout_marginBottom="10dp"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:orientation = "vertical"
+        style="@style/BannerDetailSection"
+        >
+        <RelativeLayout
+            style="@style/BannerDetailSubSection">
+            <TextView
+                style="@style/BannerDetailDescriptor"
+                android:layout_alignParentTop="true"
+                android:text="Prerequisites"
+                android:id="@+id/detail_prereq_text"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/detail_prereq_text"
+                android:id="@+id/detail_prereq"
+                android:text="No prereqs"
+                style="@style/BannerSubhead"/>
+        </RelativeLayout>
+        <RelativeLayout
+            style="@style/BannerDetailSubSectionClickable"
+            android:id="@+id/add_to_cart_button">
+            <include layout="@layout/light_line"
+                android:layout_height="1dp"
+                android:layout_width="match_parent"
+                android:layout_alignParentTop="true"
+                android:layout_marginBottom="16dp"
+                android:id="@+id/seats_line"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/seats_available"
+                android:textColor="@android:color/holo_red_dark"
+                android:text="10"
+                style="@style/BannerSubhead"
+                android:layout_centerVertical="true"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/seats_total"
+                android:text=" / 999"
+                style="@style/BannerSubhead"
+                android:layout_toRightOf="@id/seats_available"
+                android:layout_centerVertical="true"
+                />
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="seats available"
+                style="@style/BannerCaption"
+                android:layout_toRightOf="@id/seats_total"
+                android:layout_marginLeft="5dp"
+                android:layout_centerVertical="true"
+                />
+            <ImageView
+                android:id="@+id/seats_chevron"
+                style="@style/BannerDetailChevron"
+                android:layout_below="@id/seats_line"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="Add to Cart"
+                style="@style/BannerSubhead"
+                android:layout_toLeftOf="@id/seats_chevron"
+                android:layout_marginRight="5dp"
+                android:textColor="@color/buttonBlue"/>
+
+
+        </RelativeLayout>
+    </LinearLayout>
+    <LinearLayout
+        style="@style/BannerDetailSection"
+        android:orientation="vertical">
+        <RelativeLayout
+            style="@style/BannerDetailSubSection">
+            <TextView
+                style="@style/BannerDetailDescriptor"
+                android:layout_alignParentTop="true"
+                android:text="Instructor"
+                android:id="@+id/detail_instructor_text"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/detail_instructor_text"
+                android:id="@+id/detail_instructor_teaching"
+                android:text="Andy Chen"
+                style="@style/BannerSubhead"/>
+        </RelativeLayout>
+        <RelativeLayout
+            style="@style/BannerDetailSubSection">
+            <include layout="@layout/light_line"
+                android:layout_height="1dp"
+                android:layout_width="match_parent"
+                android:layout_alignParentTop="true"/>
+            <TextView
+                style="@style/BannerDetailDescriptor"
+                android:layout_alignParentTop="true"
+                android:text="Meeting Location"
+                android:id="@+id/detail_location_text"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/detail_location_text"
+                android:id="@+id/detail_location_taught"
+                android:text="Smitty B"
+                style="@style/BannerSubhead"/>
+        </RelativeLayout>
+        <RelativeLayout
+            style="@style/BannerDetailSubSection">
+            <include layout="@layout/light_line"
+                android:layout_height="1dp"
+                android:layout_width="match_parent"
+                android:layout_alignParentTop="true"/>
+            <TextView
+                style="@style/BannerDetailDescriptor"
+                android:layout_alignParentTop="true"
+                android:text="Description"
+                android:id="@+id/detail_description_text"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/detail_description_text"
+                android:id="@+id/detail_description_course"
+                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas quis sodales mauris, at porttitor ligula. Nullam mattis mi dolor, non auctor est malesuada eget. Fusce pharetra ac eros nec feugiat. Maecenas eu eros nulla. Etiam et nisi nunc. Pellentesque sed tempor augue. Cras et dolor elit."
+                style="@style/BannerSubhead"
+                android:paddingRight="@dimen/detail_horizontal_padding_descriptor"/>
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/BannerDetailSection"
+        android:orientation="vertical">
+        <RelativeLayout
+            style="@style/BannerDetailSubSection">
+            <TextView
+                style="@style/BannerDetailDescriptor"
+                android:layout_alignParentTop="true"
+                android:text="CRN"
+                android:id="@+id/detail_CRN_text"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/detail_CRN_text"
+                android:id="@+id/detail_CRN"
+                android:text="123456"
+                style="@style/BannerSubhead"/>
+        </RelativeLayout>
+        <RelativeLayout
+            style="@style/BannerDetailSubSection">
+            <include layout="@layout/light_line"
+                android:layout_height="1dp"
+                android:layout_width="match_parent"
+                android:layout_alignParentTop="true"/>
+
+            <TextView
+                style="@style/BannerDetailDescriptor"
+                android:text="Exam Information"
+                android:id="@+id/detail_exam_text"
+                android:layout_alignParentTop="true"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/detail_exam_text"
+                android:id="@+id/detail_exam"
+                android:text="Some bulshit about examt imes and shit"
+                style="@style/BannerSubhead"
+                android:paddingRight="@dimen/detail_horizontal_padding_descriptor"/>
+        </RelativeLayout>
+    </LinearLayout>
+
+        <LinearLayout
+            style="@style/BannerDetailSection"
+            android:orientation="vertical">
+        <RelativeLayout
+            style="@style/BannerDetailSubSectionClickable"
+            android:id="@+id/book_list_button">
+            <include layout="@layout/light_line"
+                android:layout_height="1dp"
+                android:layout_width="match_parent"
+                android:layout_alignParentTop="true"
+                android:layout_marginBottom="16dp"
+                android:id="@+id/books_line"/>
+            <ImageView
+                android:id="@+id/books_chevron"
+                style="@style/BannerDetailChevron"
+                android:layout_below="@id/books_line"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Click for Book List"
+                style="@style/BannerSubhead"
+                android:textColor="@color/buttonBlue"
+                android:layout_centerVertical="true"/>
+        </RelativeLayout>
+        <RelativeLayout
+            style="@style/BannerDetailSubSectionClickable"
+            android:id="@+id/critical_review_button">
+            <include layout="@layout/light_line"
+                android:layout_height="1dp"
+                android:layout_width="match_parent"
+                android:layout_alignParentTop="true"
+                android:layout_marginBottom="16dp"
+                android:id="@+id/critical_review_line"/>
+            <ImageView
+                android:id="@+id/critical_review_chevron"
+                style="@style/BannerDetailChevron"
+                android:layout_below="@id/critical_review_line"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Click for Critical Review"
+                style="@style/BannerSubhead"
+                android:textColor="@color/buttonBlue"
+                android:layout_centerVertical="true"/>
+        </RelativeLayout>
+        <RelativeLayout
+            style="@style/BannerDetailSubSectionClickable"
+            android:id="@+id/course_preview_button">
+            <include layout="@layout/light_line"
+                android:layout_height="1dp"
+                android:layout_width="match_parent"
+                android:layout_alignParentTop="true"
+                android:layout_marginBottom="16dp"
+                android:id="@+id/course_preview_line"/>
+            <ImageView
+                android:id="@+id/course_preview_chevron"
+                style="@style/BannerDetailChevron"
+                android:layout_below="@id/course_preview_line"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Click for Course Preview"
+                style="@style/BannerSubhead"
+                android:textColor="@color/buttonBlue"
+                android:layout_centerVertical="true"/>
+
+
+        </RelativeLayout>
+    </LinearLayout>
+    </LinearLayout>
+</ScrollView>

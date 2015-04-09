@@ -10,7 +10,43 @@
         <item name="android:colorBackground">@android:color/white</item>
     </style>
 
+    <style name="BannerDetailSection" >
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@android:color/white</item>
+        <item name="android:layout_marginBottom">@dimen/detail_vertical_margin</item>
+        <item name="android:elevation">1dp</item>
+    </style>
 
+    <style name="BannerDetailDescriptor" parent="BannerCaption">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:layout_marginBottom">3dp</item>
+        <item name="android:paddingTop">@dimen/detail_vertical_padding_descriptor</item>
+
+    </style>
+
+    <style name="BannerDetailSubSection">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingBottom">@dimen/detail_vertical_padding_descriptor</item>
+        <item name="android:paddingLeft">@dimen/detail_horizontal_padding_descriptor</item>
+    </style>
+
+    <style name="BannerDetailSubSectionClickable" parent="BannerDetailSubSection">
+        <item name="android:clickable">true</item>
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+    </style>
+
+    <style name="BannerDetailChevron" >
+        <item name="android:layout_width">24dp</item>
+        <item name="android:layout_height">24dp</item>
+        <item name="android:src">@drawable/ic_chevron_right_grey600_24dp</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_centerInParent">true</item>
+        <item name="android:layout_marginRight">16dp</item>
+    </style>
     <!--
         These are all the recommended typography attributes in the material design guideline:
         http://www.google.com/design/spec/style/typography.html#typography-standard-styles
