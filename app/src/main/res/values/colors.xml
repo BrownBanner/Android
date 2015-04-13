@@ -6,6 +6,7 @@
     <color name="tagColor">#93ABDD</color>
     <color name="merchantColor">#5485B0</color>
     <color name="courseDetailBackground">#F6F8FA</color>
+    <color name="bannerHeaderBackground">#DCE7F4</color>
     <color name="buttonBlue">#0079FF</color>
 
     <color name="transparent">#00000000</color>

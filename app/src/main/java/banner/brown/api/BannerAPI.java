@@ -42,6 +42,12 @@ public class BannerAPI {
         BannerApplication.getInstance().addToRequestQueue(request);
     }
 
+    public static void getCoursesByDept(String dept, int page,
+                                         Response.Listener responseListener, Response.ErrorListener errorListener) {
+        String semester = BannerApplication.getInstance().curSelectedSemester.getSemesterCode();
+        getCoursesByDept(semester, dept, page, responseListener, errorListener);
+    }
+
     public static void getCoursesByDept(String term, String dept, int page,
                                         Response.Listener responseListener, Response.ErrorListener errorListener) {
         String urlRequest = HOST + "/courses?term=" + term +"&dept=" + dept;
@@ -51,6 +57,13 @@ public class BannerAPI {
         }
         JsonObjectRequest request = new JsonObjectRequest(urlRequest, null,  responseListener, errorListener);
         BannerApplication.getInstance().addToRequestQueue(request);
+    }
+
+    public static void getCourseByCRN( String CRN,
+                                      Response.Listener responseListener, Response.ErrorListener errorListener) {
+        String semester = BannerApplication.getInstance().curSelectedSemester.getSemesterCode();
+
+        getCourseByCRN(semester, CRN, responseListener, errorListener);
     }
 
     public static void getCourseByCRN(String term, String CRN,

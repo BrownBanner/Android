@@ -1,5 +1,36 @@
-<ListView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:choiceMode="singleChoice"
-    android:divider="@android:color/transparent" android:dividerHeight="0dp"
-    android:background="#cccc" tools:context=".NavigationDrawerFragment" />
+    android:layout_height="match_parent"
+    android:background="@android:color/white" tools:context=".NavigationDrawerFragment"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        style="@style/BannerDrawerSection"
+        android:layout_height="56dp"
+        android:background="@color/bannerHeaderBackground"
+        android:paddingLeft="9dp"
+        android:paddingRight="16dp"
+        >
+        <Spinner
+            android:id="@+id/semester_spinner"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:gravity="center_vertical"
+            android:paddingLeft="0dp"
+            />
+     </LinearLayout>
+    <include layout="@layout/light_line" android:paddingTop="8dp" android:paddingBottom="8dp"></include>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:id="@+id/department_drawer"
+        style="@style/BannerDrawerSection">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/BannerBody2"
+            android:gravity="center_vertical"
+            android:text="Departments"/>
+    </LinearLayout>
+</LinearLayout>
