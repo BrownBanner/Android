@@ -23,6 +23,7 @@ import com.alamkanak.weekview.WeekViewEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import banner.brown.models.Course;
 
 
 public class MainActivity extends ActionBarActivity
@@ -55,8 +56,8 @@ public class MainActivity extends ActionBarActivity
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
         // TESTING EVENTS
-        testCourses = new ArrayList<WeekViewEvent>();
-        testCourses.add(new WeekViewEvent(0,"CSCI 0150",2,5, 0, 2, 6, 30));
+        Course testCourse = new Course("Please Work", 2015, 2, "Yay me", "testID", "KAPPI","MWF 0900-1020");
+        testCourses = testCourse.getWeekViewEvent();
 
         mWeekView = (WeekView)findViewById(R.id.weekView);
         mWeekView.setOnEventClickListener(this);
@@ -118,7 +119,7 @@ public class MainActivity extends ActionBarActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.course_detail) {
-            testCourses.add(new WeekViewEvent(0,"Second Event",2,2, 0, 2, 3, 30));
+            testCourses.add(new WeekViewEvent("another test","Second Event",2,2, 0, 2, 3, 30));
             testCourses.get(1).setColor(Color.RED);
             mWeekView.notifyDatasetChanged();
         }
@@ -128,7 +129,7 @@ public class MainActivity extends ActionBarActivity
 
     @Override
     public void onEventClick(WeekViewEvent event, RectF eventRect) {
-        Toast.makeText(MainActivity.this, "Clicked " + event.getName(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(MainActivity.this, "Clicked " + event.getId(), Toast.LENGTH_SHORT).show();
     }
 
     @Override

@@ -7,7 +7,7 @@ import java.util.Calendar;
  * Website: http://april-shower.com
  */
 public class WeekViewEvent {
-    private long mId;
+    private String mId;
     private Calendar mStartTime;
     private Calendar mEndTime;
     private String mName;
@@ -28,7 +28,7 @@ public class WeekViewEvent {
      * @param endHour Hour (in 24-hour format) when the event ends.
      * @param endMinute Minute when the event ends.
      */
-    public WeekViewEvent(long id, String name, int startDay, int startHour, int startMinute, int endDay, int endHour, int endMinute) {
+    public WeekViewEvent(String id, String name, int startDay, int startHour, int startMinute, int endDay, int endHour, int endMinute) {
         this.mId = id;
 
         this.mStartTime = Calendar.getInstance();
@@ -60,7 +60,7 @@ public class WeekViewEvent {
      * @param startTime The time when the event starts.
      * @param endTime The time when the event ends.
      */
-    public WeekViewEvent(long id, String name, Calendar startTime, Calendar endTime) {
+    public WeekViewEvent(String id, String name, Calendar startTime, Calendar endTime) {
         this.mId = id;
         this.mName = name;
         this.mStartTime = startTime;
@@ -100,11 +100,11 @@ public class WeekViewEvent {
         this.mColor = color;
     }
 
-    public long getId() {
+    public String getId() {
         return mId;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.mId = id;
     }
 }

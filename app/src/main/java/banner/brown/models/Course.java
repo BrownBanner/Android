@@ -1,5 +1,7 @@
 package banner.brown.models;
 
+import android.graphics.Color;
+
 import com.alamkanak.weekview.WeekViewEvent;
 
 import org.json.JSONException;
@@ -54,13 +56,14 @@ public class Course {
 
     }
 
-    public Course(String title, int year, int semester, String description, String CRN, String department) {
+    public Course(String title, int year, int semester, String description, String CRN, String department, String meettime) {
         mTitle = title;
         mYear = year;
         mSemester = semester;
         mDescription = description;
         mCRN = CRN;
         mDepartment = department;
+        mMeetingTime = meettime;
     }
 
     public String getTitle() {
@@ -77,20 +80,56 @@ public class Course {
 
     public ArrayList<WeekViewEvent> getWeekViewEvent(){
 
+        //Format: TR 0900-1020
+
+        String meetingTimeString = this.getMeetingTime();
+        String[] split = meetingTimeString.split("\\s+");
+
+        char[] days = split[0].toCharArray();
+        String time = split[1];
+
         ArrayList<WeekViewEvent> toRet = new ArrayList<WeekViewEvent>();
 
-        Calendar startTime = Calendar.getInstance();
-        startTime.set(Calendar.HOUR_OF_DAY, 3);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, 1);
-        startTime.set(Calendar.YEAR, 2015);
-        Calendar endTime = (Calendar) startTime.clone();
-        endTime.add(Calendar.HOUR, 1);
-        //endTime.set(Calendar.MONTH, newMonth-1);
-        WeekViewEvent event = new WeekViewEvent(1, "hi", startTime, endTime);
-        //event.setColor(getResources().getColor(R.color.event_color_01));
+        for (int i = 0; i < days.length;i++){
 
-        toRet.add(event);
+            int OFFSET = 8;
+
+            int day = 0;
+
+            switch (days[i]){
+                case 'M': day = 2;
+                    break;
+                case 'T': day = 3;
+                    break;
+                case 'W': day = 4;
+                    break;
+                case 'R': day = 5;
+                    break;
+                case 'F': day = 6;
+                    break;
+            }
+
+            Calendar startTime = Calendar.getInstance();
+            String[] times = time.split("-");
+
+            startTime.set(Calendar.DAY_OF_MONTH, day);
+
+            startTime.set(Calendar.HOUR_OF_DAY, Integer.parseInt(times[0].substring(0,2)) - OFFSET);
+            startTime.set(Calendar.MINUTE, Integer.parseInt(times[0].substring(2,4)));
+
+            startTime.set(Calendar.MONTH, 1);
+            startTime.set(Calendar.YEAR, 2015);
+
+            Calendar endTime = (Calendar) startTime.clone();
+
+            endTime.set(Calendar.HOUR_OF_DAY, Integer.parseInt(times[1].substring(0,2)) - OFFSET);
+            endTime.set(Calendar.MINUTE, Integer.parseInt(times[1].substring(2,4)));
+            endTime.set(Calendar.MONTH, 1);
+            WeekViewEvent event = new WeekViewEvent(getCRN(), getTitle(), startTime, endTime);
+            event.setColor(getColor());
+
+            toRet.add(event);
+        }
 
         return toRet;
     }
@@ -139,4 +178,7 @@ public class Course {
 
     public String getPrereq() {return mPrereq;}
 
+    public int getColor() {
+        return Color.RED;
+    }
 }
