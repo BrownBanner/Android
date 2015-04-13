@@ -2,6 +2,8 @@ package banner.brown.ui;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.RectF;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -13,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
+import android.widget.Toast;
 
 import com.alamkanak.weekview.WeekView;
 import com.alamkanak.weekview.WeekViewEvent;
@@ -21,15 +24,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+
 public class MainActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks, WeekView.MonthChangeListener,
+        WeekView.EventClickListener, WeekView.EventLongPressListener {
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private WeekView mWeekView;
-
+    private ArrayList<WeekViewEvent> testCourses;
 //    /**
 //     * Used to store the last screen title. For use in {@link #restoreActionBar()}.
 //     */
@@ -49,13 +54,14 @@ public class MainActivity extends ActionBarActivity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
+        // TESTING EVENTS
+        testCourses = new ArrayList<WeekViewEvent>();
+        testCourses.add(new WeekViewEvent(0,"CSCI 0150",2,5, 0, 2, 6, 30));
+
         mWeekView = (WeekView)findViewById(R.id.weekView);
-        mWeekView.setMonthChangeListener(new WeekView.MonthChangeListener() {
-            @Override
-            public List<WeekViewEvent> onMonthChange(int newYear, int newMonth) {
-                return new ArrayList<WeekViewEvent>();
-            }
-        });
+        mWeekView.setOnEventClickListener(this);
+        mWeekView.setEventLongPressListener(this);
+        mWeekView.setMonthChangeListener(this);
 
     }
 
@@ -112,13 +118,32 @@ public class MainActivity extends ActionBarActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.course_detail) {
-            Intent intent = new Intent(this, CourseDetail.class);
-            intent.putExtra(CourseDetail.CRN_EXTRA, "123");
-            startActivity(intent);
-            return true;
+            testCourses.add(new WeekViewEvent(0,"Second Event",2,2, 0, 2, 3, 30));
+            testCourses.get(1).setColor(Color.RED);
+            mWeekView.notifyDatasetChanged();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onEventClick(WeekViewEvent event, RectF eventRect) {
+        Toast.makeText(MainActivity.this, "Clicked " + event.getName(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onEventLongPress(WeekViewEvent event, RectF eventRect) {
+        Toast.makeText(MainActivity.this, "Long pressed event: " + event.getName(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public List<WeekViewEvent> onMonthChange(int newYear, int newMonth) {
+        // give a list of events to display
+
+        if (newMonth == 1) {
+            return testCourses;
+        }
+        return new ArrayList<WeekViewEvent>();
     }
 
 //    /**
