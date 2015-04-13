@@ -1,8 +1,11 @@
 package banner.brown.models;
 
+<<<<<<< HEAD
 import com.alamkanak.weekview.WeekViewEvent;
 
+=======
 import org.json.JSONException;
+>>>>>>> b638e94d015a68af790cb91f5028d117d031493c
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -75,6 +78,7 @@ public class Course {
         return mDepartment;
     }
 
+<<<<<<< HEAD
     public ArrayList<WeekViewEvent> getWeekViewEvent(){
 
         ArrayList<WeekViewEvent> toRet = new ArrayList<WeekViewEvent>();
@@ -95,6 +99,7 @@ public class Course {
         return toRet;
     }
 
+=======
     public String getCRN() {
         return mCRN;
     }
@@ -114,6 +119,7 @@ public class Course {
     public int getSeatsAvailable() {
         return mSeatsAvailable;
     }
+>>>>>>> b638e94d015a68af790cb91f5028d117d031493c
 
     public int getSeatsTotal() {
         return mSeatsTotal;

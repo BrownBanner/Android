@@ -1,0 +1,715 @@
+/* $Id$
+ //  $Rev$
+ //  $Date$
+ //  $Author$
+ //  $URL$
+ //   This IS NOT a mobile first approach.
+ //  IE hacks are inline.
+ */
+
+/************** RESET **************/
+body, ul, ol, dl, li, p, div, header, footer, section, h1, h2, h3, h4, h5, h6, dialog, nav, section {
+    margin: 0;
+    padding: 0;
+}
+/* html5 elements */
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+/************** COMMON CLASSES **************/
+.ghost {
+    display: none;
+}
+/***************  Image Classes ***************/
+a img {
+    border: 0;
+}
+img.left {
+    margin: 0 20px 10px 0px;
+    float: left;
+}
+img.right {
+    margin: 0 0 10px 20px;
+    float: right;
+}
+
+/***************  Fonts and Headers  ***************/
+p, div.p, ul, ol, dl {
+    line-height: 1.5em;
+    margin-bottom: 18px;
+    font-size: 12px;
+}
+#header h1 {
+    display: block;
+    position: relative;
+    height: 85px;
+    padding: .125em 0 0 0;
+    margin-top: -16px;
+    width: 366px;
+}
+#header h1 a span {
+    background: transparent url("../images/brown-university-logo-with-woodmark.png") 0 0 no-repeat;
+    display: block;
+    text-indent: -999em;
+    height: 85px;
+    width: 363px;
+    position: absolute;
+    top: 5px;
+    left: 0px;
+    z-index: 2;
+}
+
+h2 {
+    font-size: 26px;
+    margin: 22px 0 15px 0px;
+    background-size: 80%;
+    text-indent: -9999px;
+    background-repeat: no-repeat;
+    min-width: 60%;
+    width: 90%;
+    max-width: 462px;
+    height: 34px;
+}
+h2.authentication {
+    background-image:url("../images/header-authentication-required.png");
+}
+h2.forgot {
+    background-image:url("../images/header-forgot-your-password.png");
+}
+h2.reset {
+    background-image:url("../images/header-reset-your-password.png");
+}
+h2.success{
+    background-image:url("../images/header-success.png");
+}
+h2.almost {
+    background-image:url("../images/header-almost.png");
+}
+h2.logout {
+    background-image:url("../images/header-logout-complete.png");
+}
+h4 {
+    margin-bottom: 1em;
+}
+/*************** Lists ***************/
+ul.bullets {
+    list-style-type: disc;
+    margin: 0 0 15px 30px;
+}
+ul.bullets li {
+    font-family: Georgia, "Times New Roman", Times, serif;
+    margin: 0 0 5px 0;
+}
+/************** Links **************/
+div.main-content a:link { color: #c00404; text-decoration: underline; }
+div.main-content a:visited { color: #b78080; text-decoration: underline; color: #966; }
+div.main-content a:hover { color: #300; text-decoration: none; }
+div.main-content a:active { color: #e00; text-decoration: underline; }
+
+/*************** Buttons ***************/
+a.button {
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 12px;
+    display: inline-block;
+    background-color: #c30f00;
+    border: 1px solid #750d0d;
+    color: #FFF !important;
+    text-decoration: none;
+    font-family: "Lucida Sans Unicode", "Lucida Grande", Garuda, sans-serif;
+    text-transform: uppercase;
+    margin: 0 0 15px 0;
+}
+a.button:hover {
+    background-color: #750d0d;
+}
+a.small-button, .small-button {
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 9px;
+    display: inline-block;
+    background-color: #27210e;
+    color: #FFF;
+    text-decoration: none;
+    font-family: "Lucida Sans Unicode", "Lucida Grande", Garuda, sans-serif;
+    margin: 0 0 15px 0;
+    border: 1px solid #181409;
+}
+a.small-button:hover, .small-button:hover {
+    background-color: #181409;
+}
+a.large-button, .large-button {
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 16px;
+    display: inline-block;
+    font-family: Vitesse, 'Vitesse SSm 7r', 'Vitesse SSm A', 'Vitesse SSm B';
+    font-weight: bold;
+    background-color: #989283;
+    border: 1px solid #635c4c;
+    color: #FFF;
+    text-decoration: none;
+    margin: 0 0 15px 0;
+}
+a.large-button:hover, .large-button:hover {
+    background-color: #635c4c;
+}
+a.large-button:hover, .large-button:hover {
+    background-color: #635c4c;
+}
+/************** LAYOUT **************/
+body {
+    background-color: #3a1e1a;
+    font-family: "Lucida Sans Unicode", "Lucida Grande", Garuda, sans-serif;
+    min-width: 320px;
+    /* This prevents mobile Safari from freely adjusting font-size */**
+    font-size: 1rem;
+    line-height: 1.5rem;
+    -webkit-text-size-adjust: 100%;
+}
+
+.marginator {
+    max-width: 940px;
+    margin: 0 auto;
+    width: 96%;
+}
+
+
+#brown-brand {
+    display: block;
+    clear: left;
+    position: relative;
+    background-color: #3a1e1a;
+    border-top: .25em solid #c00404;
+    height: 4em;
+}
+
+#header {
+    background-color: #FFF;
+    display: block;
+    padding-top: 1em;
+    position: relative;
+}
+#brown-brand {
+    background-color: #3a1e1a;
+    border-top: 4px solid #c00404;
+}
+
+img.header-image {
+    margin: 22px 0 20px 0px;
+}
+.error {
+    background-color: #edd;
+    border: 1px solid #900;
+    padding: 1%;
+    margin-bottom: 12px;
+    width: 98%;
+}
+.error p {
+    color: #900;
+    font-weight: bold;
+    margin-bottom: 0;
+}
+div.main-content {
+    padding: .5em 1% 1em 1%;
+    background-color: #FFF;
+    width: 98%;
+    color: #2f2a20;
+
+}
+.sp-name {
+    display: block;
+    font-weight: bold;
+}
+fieldset {
+    border: 1px solid #ABA698;
+    background-color: #F9F8F3;
+    padding: 1% 2%;
+    margin-bottom: 1.5em;
+    width: 96%;
+}
+legend {
+    font-size: 12px;
+    font-weight: bold;
+}
+button {
+    margin: .5em 1em .5em .6em;
+    font-size: 12px;
+    padding: 4px 7px;
+    background-color: #989283;
+    color: #FFF;
+    border: 1px solid #20201e;
+    -moz-border-radius:3px;
+    -webkit-border-radius: 3px;
+    border-radius:3px;
+    font-weight: bold;
+    letter-spacing: 0.09em;
+    float: left;
+}
+button:hover {
+    background-color: #c00404;
+    color: #FFF;
+}
+label {
+    padding: .1em 0.4em;
+    border: 2px solid #F9F8F3;
+    margin-bottom: .1em;
+    -webkit-transition: all 0.3s ease-out;
+    transition: all 0.3s ease-out;
+}
+label, button, label span {
+    display: block;
+}
+.form-widget input {
+    font-size: 13px;
+}
+span input {
+    padding: 4px;
+    width: 76%;
+}
+.form-label {
+    font-size: 12px;
+    font-weight: bold;
+}
+span#forgot-password {
+    padding: 3px 0 0 0;
+    display: inline-block;
+}
+span#forgot-password a {
+    font-size: 11px;
+}
+p.form-help {
+    font-size: 10px;
+    color: #666;
+    margin: 0 .6em;
+    clear: both;
+}
+.form-error-msg {
+    font-size: 11px;
+    line-height: 14px;
+    font-weight: bold;
+    color: #900;
+}
+label .form-required {
+    display: inline;
+    color: #900;
+}
+label.form-error {
+    border: 1px solid #900;
+    background-color: #ffe;
+}
+label.form-error input {
+    background-color: #edd;
+    color: #900;
+}
+.form-error a:link, .form-error a:visited {
+    text-decoration: underline;
+}
+.reminder {
+    font-weight: bold;
+}
+
+#auth-form {
+    width: 64%;
+    margin: -.5em 4.5% 0 0;
+    float: left;
+    padding: 0px;
+}
+#reset-form {
+    width: 64%;
+    margin: -.5em 4.5% 0 0;
+    float: left;
+    padding: 0px;
+}
+aside {
+    border: 1px solid #ABA698;
+    background-color: #F9F8F3;
+    padding: 2%;
+    margin: .2em 0;
+    float: left;
+    text-align: center;
+}
+aside#domain-info {
+    width: 27%;
+}
+aside#tips {
+    width: 27%;
+
+}
+
+/** IE Hack **/
+* html aside, .ie8 aside {
+    margin-top: 1em;
+}
+aside img {
+    max-width: 90%;
+}
+
+#shib-error ul, #shib-error li {
+    margin-left: 1em;
+}
+#shib-error li {
+    padding-left: .5em;
+}
+#sp-logo img {
+    max-width: 150px;
+    max-height: 150px;
+}
+#navlist {
+    list-style: none;
+    padding: 0;
+    margin: 15px 0 15px 0;
+    clear: both;
+}
+#navlist li {
+    display: inline;
+    padding: 0;
+    margin: 0;
+}
+#navlist li:before { content: "| "; }
+#navlist li:first-child:before { content: ""; }
+
+/*IE workaround*/
+/*All IE browsers*/
+* html #navlist li {
+    border-left: 1px solid black;
+    padding: 0 0.4em 0 0.4em;
+    margin: 0 0.4em 0 -0.4em;
+}
+
+/*Win IE browsers - hide from Mac IE\*/
+* html #navlist { height: 1%; }
+
+* html #navlist li {
+    display: block;
+    float: left;
+}
+
+/*End hide*/
+/*Mac IE 5*/
+* html #navlist li:first-child { border-left: 0; }
+
+#shib-promo {
+    padding: 15px 0 0 0;
+}
+#shib-promo p {
+    padding: 14px 0 0 0;
+}
+#footer {
+    display: block;
+    clear: both;
+    background-color: #3a1e1a;
+    border-top: 4px solid #C00404;
+    line-height: 1.375em;
+    position: relative;
+    padding: 1em 0.5em;
+    overflow: hidden;
+    color: #FFF;
+}
+#footer ul {
+    font-size: 12px; /* override default ul */
+    line-height: inherit; /* override default ul */
+    margin: 0; /* override default ul */
+    padding: 0;
+}
+#footer li {
+    margin: 0; /* override default li */
+    padding: 0;
+    line-height: 1.875em;
+    list-style: none;
+}
+#footer .col {
+    width: 15%;
+    margin: 0 2% 0 0;
+    padding-left: 0%;
+    border: 1px dotted #FFF;
+    border-width: 0 0 0 1px;
+    float: left;
+}
+#footer #brown-university {
+    width: 50%;
+    color: #FFF;
+    border: 0;
+    position: relative;
+    z-index: 2;
+}
+#brown-university h4, #footer h5 {
+    font-size: .75em;
+    font-style: normal;
+    text-transform: uppercase;
+    margin-bottom: .375em;
+    margin-top: .125em;
+    height: 15px;
+}
+#footer #brown-university h4 {
+    text-indent: -999em;
+    background: transparent url("../images/brown-university-type-footer.png") -1px 0 no-repeat;
+    height: 15px;
+    width: 203px;
+    margin-bottom: .5em;
+    color: #FFF;
+}
+#footer #brown-university p, #footer #brown-university p span {
+    color: #FFF;
+}
+#footer a:link, #footer a:visited {
+    color: #ffcc00;
+    text-decoration: none;
+}
+#footer a:hover {
+    color: #FFF;
+    text-decoration: none;
+}
+/**********************************************************************/
+/*********************************** RESPONSIVE STYLES ***********************************/
+/**********************************************************************/
+/** Medium Screen Styles **/
+@media screen and (min-width: 481px) and (max-width: 728px)  {
+
+    #auth-form, #reset-form  {
+        width: 100%;
+        margin: -.5em 0 0 0;
+        display: block;
+        padding: 0 0 0 0;
+    }
+    aside, aside#domain-info, aside#tips {
+        border: 1px solid #ABA698;
+        background-color: #F9F8F3;
+        padding: 3.5%;
+        margin-bottom: 1.5em;
+        width: 93%;
+        display: block;
+        clear: left;
+    }
+}
+
+/* handheld - small screen - landscape and portrait  */
+@media screen
+and (min-width: 1px) and (max-width: 480px) {
+    #header {
+        width: 100% !important;
+        padding-left:0%;
+        padding-right: 0%;
+    }
+    #brown-brand {
+        margin-left: 0em;
+    }
+    #brown-brand, .main-content, #footer {
+        padding-left: 1%;
+        padding-right: 1%;
+    }
+    #brown-brand {
+        height: 2.2em;
+        border-top: none;
+        border-bottom: 4px solid #c00404;
+    }
+    #header h1 {
+        display: block;
+        position: relative;
+        height: 43px;
+        padding: .125em 0 0;
+        margin-top: -16px;
+        width:200px;
+        overflow: hidden;
+    }
+    #header h1 a  {
+        display: inline-block;
+        background-image:url(../images/brown-logo-small.png);
+        width: 25px;
+        height: 43px;
+    }
+    #header h1 a img {
+        display: none;
+    }
+    #header h1 a span {
+        display: none;
+    }
+    h2 {
+        margin: 15px 0 5px 0px;
+        background-size: 90%;
+    }
+    h2.authentication {
+        width: 80%;
+        max-width: 460px;
+        height: 24px;
+    }
+    h2.forgot {
+        width: 80%;
+        max-width: 460px;
+        height: 24px;
+    }
+    #auth-form, #reset-form  {
+        width: 98%;
+        margin: -.5em 0 0 0;
+        display: block;
+    }
+    aside, aside#domain-info, aside#tips  {
+        border: 1px solid #ABA698;
+        background-color: #F9F8F3;
+        padding: 3.5%;
+        margin-bottom: 1.5em;
+        width: 92%;
+        display: block;
+        clear: left;
+    }
+    #navlist li#newUsers  {
+        display: block;
+        margin-top: 15px;
+    }
+    #navlist li#newUsers:before {
+        content: "";
+    }
+    #footer #brown-university {
+        width: 100%;
+    }
+    span input {
+        padding: 4px;
+        width: 96%;
+    }
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 2) {
+    #header h1 a span {
+        background: transparent url("../images/brown-university-logo-with-woodmark@2x.png") 0 0 no-repeat;
+        height: 85px;
+        width: 363px;
+        background-size: 363px 85px;
+    }
+    #footer #brown-university h4 {
+        background: transparent url("../images/brown-university-type-footer@2x.png") -1px 0 no-repeat;
+        height: 15px;
+        width: 203px;
+        background-size: 203px 15px;
+    }
+}
+
+@media screen
+and (min-width: 1px) and (max-width: 480px)
+and (-webkit-min-device-pixel-ratio: 2) {
+    #header h1 a  {
+        background-image:url("../images/brown-logo-small@2x.png");
+        width: 25px;
+        height: 43px;
+        background-size: 25px 43px;
+    }
+}
+
+/*
+
+ Customization for Mobile begins here
+
+ */
+
+body {
+    background-color: #FFF;
+}
+
+#header {
+    width: 100% !important;
+    padding-left:0%;
+    padding-right: 0%;
+    margin-top: 20%;
+    background-color: #3a1e1a;
+}
+#brown-brand {
+    margin-left: 0em;
+}
+#brown-brand, .main-content, #footer {
+    padding-left: 1%;
+    padding-right: 1%;
+}
+#brown-brand {
+    height: 2.2em;
+    border-top: none;
+    border-bottom: 4px solid #c00404;
+}
+#header h1 {
+    display: block;
+    position: relative;
+    height: 43px;
+    padding: .125em 0 0;
+    margin-top: -16px;
+    width:200px;
+    overflow: hidden;
+}
+#header h1 a  {
+    display: inline-block;
+    background-image:url(../images/brown-logo-small.png);
+    width: 25px;
+    height: 43px;
+}
+#header h1 a img {
+    display: none;
+}
+#header h1 a span {
+    display: none;
+}
+h2 {
+    margin: 15px 0 5px 0px;
+    background-size: 90%;
+}
+h2.authentication {
+    width: 50%;
+    max-width: 460px;
+    height: 24px;
+    padding-bottom: 10px;
+}
+h2.forgot {
+    width: 80%;
+    max-width: 460px;
+    height: 24px;
+}
+#auth-form, #reset-form  {
+    width: 50%;
+    margin: -.5em 0 0 0;
+    display: block;
+}
+aside, aside#domain-info, aside#tips  {
+    border: 1px solid #ABA698;
+    background-color: #F9F8F3;
+    padding: 3.5%;
+    margin-bottom: 1.5em;
+    width: 92%;
+    display: block;
+    clear: left;
+}
+#navlist li#newUsers  {
+    display: block;
+    margin-top: 15px;
+}
+#navlist li#newUsers:before {
+    content: "";
+}
+#footer #brown-university {
+    width: 100%;
+}
+span input {
+    padding: 4px;
+    width: 96%;
+}
+
+span#forgot-password {
+    display: none;
+}
+
+aside#domain-info {
+    display: none;
+}
+
+#navlist {
+    display: none;
+}
+
+#shib-promo {
+    display: none;
+}
+
+#footer {
+    display: none;
+}
