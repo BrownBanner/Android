@@ -264,7 +264,9 @@ public class WeekView extends View {
     private void init() {
         // Get the date today.
         mToday = Calendar.getInstance();
-        mToday.setTime(new Date(System.currentTimeMillis()+(24*60*60*1000)));
+        mToday.set(Calendar.YEAR,2015);
+        mToday.set(Calendar.MONTH,1);
+        mToday.set(Calendar.DAY_OF_MONTH,2);
         mToday.set(Calendar.HOUR_OF_DAY, 0);
         mToday.set(Calendar.MINUTE, 0);
         mToday.set(Calendar.SECOND, 0);
@@ -296,7 +298,7 @@ public class WeekView extends View {
 
         // Prepare header background paint.
         mHeaderBackgroundPaint = new Paint();
-        mHeaderBackgroundPaint.setColor(mHeaderRowBackgroundColor);
+        mHeaderBackgroundPaint.setColor(Color.RED);
 
         // Prepare day background color paint.
         mDayBackgroundPaint = new Paint();
@@ -379,6 +381,7 @@ public class WeekView extends View {
 
     private void drawHeaderRowAndEvents(Canvas canvas) {
         // Calculate the available width for each day.
+
         mHeaderColumnWidth = mTimeTextWidth + mHeaderColumnPadding *2;
         mWidthPerDay = getWidth() - mHeaderColumnWidth - mColumnGap * (mNumberOfVisibleDays - 1);
         mWidthPerDay = mWidthPerDay/mNumberOfVisibleDays;
@@ -442,7 +445,9 @@ public class WeekView extends View {
             mLastVisibleDay = (Calendar) day.clone();
             day.add(Calendar.DATE, dayNumber - 1);
             mLastVisibleDay.add(Calendar.DATE, dayNumber - 2);
-            boolean sameDay = isSameDay(day, mToday);
+            Calendar currentDay = Calendar.getInstance();
+
+            boolean sameDay = isSameWeekDay(day, currentDay);
 
             // Get more events if necessary. We want to store the events 3 months beforehand. Get
             // events only when it is the first iteration of the loop.
@@ -454,7 +459,7 @@ public class WeekView extends View {
             // Draw background color for each day.
             float start =  (startPixel < mHeaderColumnWidth ? mHeaderColumnWidth : startPixel);
             if (mWidthPerDay + startPixel - start> 0)
-                canvas.drawRect(start, mHeaderTextHeight + mHeaderRowPadding * 2 + mTimeTextHeight/2 + mHeaderMarginBottom, startPixel + mWidthPerDay, getHeight(), sameDay ? mTodayBackgroundPaint : mDayBackgroundPaint);
+                canvas.drawRect(start, mHeaderTextHeight + mHeaderRowPadding * 2 + mTimeTextHeight/2 + mHeaderMarginBottom, startPixel + mWidthPerDay, getHeight(),sameDay ? mTodayBackgroundPaint : mDayBackgroundPaint);
 
             // Prepare the separator lines for hours.
             int i = 0;
@@ -473,6 +478,7 @@ public class WeekView extends View {
             canvas.drawLines(hourLines, mHourSeparatorPaint);
 
             // Draw the events.
+
             drawEvents(day, startPixel, canvas);
 
             // In the next iteration, start from the next day.
@@ -488,7 +494,7 @@ public class WeekView extends View {
             // Check if the day is today.
             day = (Calendar) mToday.clone();
             day.add(Calendar.DATE, dayNumber - 1);
-            boolean sameDay = isSameDay(day, mToday);
+            boolean sameDay = isSameWeekDay(day, Calendar.getInstance());
 
             // Draw the day labels.
             String dayLabel = getDateTimeInterpreter().interpretDate(day);
@@ -498,6 +504,10 @@ public class WeekView extends View {
             startPixel += mWidthPerDay + mColumnGap;
         }
 
+    }
+
+    private boolean isSameWeekDay(Calendar day, Calendar currentDay) {
+        return (day.get(Calendar.DAY_OF_WEEK)== currentDay.get(Calendar.DAY_OF_WEEK));
     }
 
     /**
@@ -538,6 +548,9 @@ public class WeekView extends View {
      * @param canvas The canvas to draw upon.
      */
     private void drawEvents(Calendar date, float startFromPixel, Canvas canvas) {
+
+
+
         if (mEventRects != null && mEventRects.size() > 0) {
             for (int i = 0; i < mEventRects.size(); i++) {
                 if (isSameDay(mEventRects.get(i).event.getStartTime(), date)) {
@@ -695,28 +708,28 @@ public class WeekView extends View {
         }
 
         // Get events of this month.
-        if (mFetchedMonths[1] < 1 || mFetchedMonths[1] != day.get(Calendar.MONTH)+1 || mRefreshEvents) {
-            if (!containsValue(lastFetchedMonth, day.get(Calendar.MONTH)+1) && !isInEditMode()) {
-                List<WeekViewEvent> events = mMonthChangeListener.onMonthChange(day.get(Calendar.YEAR), day.get(Calendar.MONTH) + 1);
-                sortEvents(events);
-                for (WeekViewEvent event : events) {
-                    cacheEvent(event);
-                }
-            }
-            mFetchedMonths[1] = day.get(Calendar.MONTH)+1;
-        }
+//        if (mFetchedMonths[1] < 1 || mFetchedMonths[1] != day.get(Calendar.MONTH)+1 || mRefreshEvents) {
+//            if (!containsValue(lastFetchedMonth, day.get(Calendar.MONTH)+1) && !isInEditMode()) {
+//                List<WeekViewEvent> events = mMonthChangeListener.onMonthChange(day.get(Calendar.YEAR), day.get(Calendar.MONTH) + 1);
+//                sortEvents(events);
+//                for (WeekViewEvent event : events) {
+//                    cacheEvent(event);
+//                }
+//            }
+//            mFetchedMonths[1] = day.get(Calendar.MONTH)+1;
+//        }
 
         // Get events of next month.
-        if (mFetchedMonths[2] < 1 || mFetchedMonths[2] != nextMonth || mRefreshEvents) {
-            if (!containsValue(lastFetchedMonth, nextMonth) && !isInEditMode()) {
-                List<WeekViewEvent> events = mMonthChangeListener.onMonthChange(nextMonth == 1 ? day.get(Calendar.YEAR) + 1 : day.get(Calendar.YEAR), nextMonth);
-                sortEvents(events);
-                for (WeekViewEvent event : events) {
-                    cacheEvent(event);
-                }
-            }
-            mFetchedMonths[2] = nextMonth;
-        }
+//        if (mFetchedMonths[2] < 1 || mFetchedMonths[2] != nextMonth || mRefreshEvents) {
+//            if (!containsValue(lastFetchedMonth, nextMonth) && !isInEditMode()) {
+//                List<WeekViewEvent> events = mMonthChangeListener.onMonthChange(nextMonth == 1 ? day.get(Calendar.YEAR) + 1 : day.get(Calendar.YEAR), nextMonth);
+//                sortEvents(events);
+//                for (WeekViewEvent event : events) {
+//                    cacheEvent(event);
+//                }
+//            }
+//            mFetchedMonths[2] = nextMonth;
+//        }
 
         // Prepare to calculate positions of each events.
         ArrayList<EventRect> tempEvents = new ArrayList<EventRect>(mEventRects);

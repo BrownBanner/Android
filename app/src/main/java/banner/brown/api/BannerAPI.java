@@ -33,7 +33,7 @@ public class BannerAPI {
     public static String HOST = TEST;
 
     public static Course getCourse(String CRN) {
-        return new Course("Test Course", 2014, 1, "Test Description", "123", "DEPT");
+        return new Course("Test Course", 2014, 1, "Test Description", "123", "DEPT","TR 0900-1020");
     }
 
     public static void testVolleyCall(Response.Listener responseListener,
