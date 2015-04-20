@@ -30,7 +30,7 @@ public class BannerAPI {
 
     private static String TEST = "https://blooming-bastion-7117.herokuapp.com";
 
-    public static String HOST = TEST;
+    public static String HOST = DEV;
 
     public static Course getCourse(String CRN) {
         return new Course("Test Course", 2014, 1, "Test Description", "123", "DEPT","TR 0900-1020");
