@@ -1,5 +1,7 @@
 package banner.brown.api;
 
+import android.webkit.CookieManager;
+
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -20,13 +22,14 @@ import javax.net.ssl.X509TrustManager;
 
 import banner.brown.BannerApplication;
 import banner.brown.models.Course;
+import banner.brown.ui.LoginActivity;
 
 /**
  * Created by Andy on 2/16/15.
  */
 public class BannerAPI {
 
-    private static String DEV = "https://ords-dev.brown.edu/dprd/banner/mobile";
+    private static String DEV = "https://ords-qa.services.brown.edu:8443/pprd/banner/mobile";
 
     private static String TEST = "https://blooming-bastion-7117.herokuapp.com";
 
@@ -72,6 +75,23 @@ public class BannerAPI {
 
         JsonObjectRequest request = new JsonObjectRequest(urlRequest, null,  responseListener, errorListener);
         BannerApplication.getInstance().addToRequestQueue(request);
+    }
+
+    public static void getCurrentCourses(Response.Listener responseListener,
+                                         Response.ErrorListener errorListener) {
+        String semester = BannerApplication.getInstance().curSelectedSemester.getSemesterCode();
+
+        if (BannerApplication.curCookie.isEmpty()) {
+        } else {
+            String urlRequest = HOST + "/cartbyid?term=" + semester + "&in_id=" + BannerApplication.curCookie;
+            JsonObjectRequest request = new JsonObjectRequest(urlRequest, null,  responseListener, errorListener);
+            BannerApplication.getInstance().addToRequestQueue(request);
+
+        }
+
+//        String cookies = CookieManager.getInstance().getCookie(LoginActivity.curLoginAPI);
+
+//        String urlRequest = HOST + "/cartbyid?term=" + semester + "&in_id=" + 100445912"
     }
 
 

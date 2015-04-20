@@ -11,6 +11,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 
+import banner.brown.BannerApplication;
 import banner.brown.ui.R;
 
 public class LoginActivity extends ActionBarActivity {
@@ -19,8 +20,8 @@ public class LoginActivity extends ActionBarActivity {
     public static String PPROD_MAIN_PAGE = "https://selfservice-qas.brown.edu/ssPPRD/twbkwbis.P_GenMenu?name=bmenu.P_MainMnu";
 
 
-    private String curLoginAPI = PPROD_LOGIN;
-    private String curLoginMain = PPROD_MAIN_PAGE;
+    public static String curLoginAPI = PPROD_LOGIN;
+    public static String curLoginMain = PPROD_MAIN_PAGE;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +36,8 @@ public class LoginActivity extends ActionBarActivity {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 if (url.equals(curLoginMain)) {
+                    String cookie = getIDMSESSID();
+                    BannerApplication.curCookie = cookie;
                     finish();
                     return true;
                 }
@@ -43,14 +46,7 @@ public class LoginActivity extends ActionBarActivity {
             }
         });
 
-        String cookie = CookieManager.getInstance().getCookie("https://bannersso.cis-qas.brown.edu/SSB_PPRD");
-        CookieManager.getInstance().removeAllCookies(new ValueCallback<Boolean>() {
-            @Override
-            public void onReceiveValue(Boolean value) {
 
-            }
-        });
-//        CookieManager.getInstance().setCookie("https://bannersso.cis-qas.brown.edu/SSB_PPRD", cookie);
     }
 
 
@@ -61,6 +57,21 @@ public class LoginActivity extends ActionBarActivity {
         return true;
     }
 
+    public String getIDMSESSID() {
+
+        String cookieValue = "";
+
+        CookieManager cookieManager = CookieManager.getInstance();
+        String cookies = cookieManager.getCookie(curLoginAPI);
+        String[] temp=cookies.split(";");
+        for (String ar1 : temp ){
+            if(ar1.contains("IDMSESSID")){
+                String[] temp1=ar1.split("=");
+                cookieValue = temp1[1];
+            }
+        }
+        return cookieValue;
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
