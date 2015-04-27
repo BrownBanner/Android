@@ -51,7 +51,7 @@ public class BannerAPI {
         getCoursesByDept(semester, dept, page, responseListener, errorListener);
     }
 
-    public static void getCoursesByDept(String term, String dept, int page,
+    private static void getCoursesByDept(String term, String dept, int page,
                                         Response.Listener responseListener, Response.ErrorListener errorListener) {
         String urlRequest = HOST + "/courses?term=" + term +"&dept=" + dept;
 
@@ -69,7 +69,7 @@ public class BannerAPI {
         getCourseByCRN(semester, CRN, responseListener, errorListener);
     }
 
-    public static void getCourseByCRN(String term, String CRN,
+    private static void getCourseByCRN(String term, String CRN,
                                         Response.Listener responseListener, Response.ErrorListener errorListener) {
         String urlRequest = HOST + "/courses?term=" + term +"&crn=" + CRN;
 

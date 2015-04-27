@@ -211,18 +211,19 @@ public class MainActivity extends BannerBaseLogoutTimerActivity
                         Course currentCourse = null;
                         try {
                             currentCourse = new Course(response.getJSONArray("items").getJSONObject(0));
+                            if (!mCurrentCart.hasClass(currentCourse.getCRN())){
+                                currentCourse.setColor(getNewColor());
+                                tempCart.addClass(currentCourse);
+                                mWeekView.notifyDatasetChanged();
+                            }
+                            else {
+                                tempCart.addClass(mCurrentCart.getCourse(currentCourse.getCRN()));
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
 
-                        if (!mCurrentCart.hasClass(currentCourse.getCRN())){
-                            currentCourse.setColor(getNewColor());
-                            tempCart.addClass(currentCourse);
-                            mWeekView.notifyDatasetChanged();
-                        }
-                        else {
-                            tempCart.addClass(mCurrentCart.getCourse(currentCourse.getCRN()));
-                        }
+
                     }
                 }, new Response.ErrorListener() {
                     @Override
