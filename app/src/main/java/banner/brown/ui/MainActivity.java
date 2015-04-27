@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import banner.brown.BannerApplication;
 import banner.brown.api.BannerAPI;
 import banner.brown.models.Cart;
 import banner.brown.models.Course;
@@ -35,7 +36,7 @@ public class MainActivity extends BannerBaseLogoutTimerActivity
 
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private WeekView mWeekView;
-    private Cart mCurrentCart;
+
     private ArrayList<Integer> mEventColors;
     private int currColIndex = 0;
 
@@ -52,12 +53,14 @@ public class MainActivity extends BannerBaseLogoutTimerActivity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
-        mCurrentCart = new Cart();
-
         mWeekView = (WeekView)findViewById(R.id.weekView);
         mWeekView.setOnEventClickListener(this);
         mWeekView.setEventLongPressListener(this);
         mWeekView.setMonthChangeListener(this);
+
+        if (BannerApplication.mCurrentCart != null){
+            BannerApplication.mCurrentCart = new Cart();
+        }
 
         setUpColors();
 
@@ -193,7 +196,7 @@ public class MainActivity extends BannerBaseLogoutTimerActivity
     public List<WeekViewEvent> onMonthChange(int newYear, int newMonth) {
 
         if (newMonth == 1) {
-            return mCurrentCart.getEventsOfCourses();
+            return BannerApplication.mCurrentCart.getEventsOfCourses();
         }
         return new ArrayList<>();
     }
@@ -211,19 +214,20 @@ public class MainActivity extends BannerBaseLogoutTimerActivity
                         Course currentCourse = null;
                         try {
                             currentCourse = new Course(response.getJSONArray("items").getJSONObject(0));
-                            if (!mCurrentCart.hasClass(currentCourse.getCRN())){
+
+
+                            if (!BannerApplication.mCurrentCart.hasClass(currentCourse.getCRN())){
                                 currentCourse.setColor(getNewColor());
                                 tempCart.addClass(currentCourse);
                                 mWeekView.notifyDatasetChanged();
                             }
                             else {
-                                tempCart.addClass(mCurrentCart.getCourse(currentCourse.getCRN()));
+
+                                tempCart.addClass(BannerApplication.mCurrentCart.getCourse(currentCourse.getCRN()));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
-
                     }
                 }, new Response.ErrorListener() {
                     @Override
@@ -236,7 +240,7 @@ public class MainActivity extends BannerBaseLogoutTimerActivity
         } catch (JSONException e) {
 
         }
-        mCurrentCart = tempCart;
+        BannerApplication.mCurrentCart = tempCart;
         mWeekView.notifyDatasetChanged();
     }
 
