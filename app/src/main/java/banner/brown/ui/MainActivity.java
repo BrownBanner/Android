@@ -28,7 +28,7 @@ import banner.brown.models.Cart;
 import banner.brown.models.Course;
 
 
-public class MainActivity extends ActionBarActivity
+public class MainActivity extends BannerBaseLogoutTimerActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks, WeekView.MonthChangeListener,
         WeekView.EventClickListener, WeekView.EventLongPressListener {
 

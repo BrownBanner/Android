@@ -14,7 +14,7 @@ import android.webkit.WebViewClient;
 
 import banner.brown.ui.R;
 
-public class BannerWebActivity extends ActionBarActivity {
+public class BannerWebActivity extends BannerBaseLogoutTimerActivity {
 
     public static String WEB_URL_EXTRA = "WEB_URL_EXTRA";
 

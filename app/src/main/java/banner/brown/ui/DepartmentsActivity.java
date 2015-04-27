@@ -24,7 +24,7 @@ import banner.brown.models.listHeader;
 /**
  * Created by kappi on 2/23/15.
  */
-public class DepartmentsActivity extends ActionBarActivity {
+public class DepartmentsActivity extends BannerBaseLogoutTimerActivity {
 
     private ListView mainListView ;
     private ArrayList<listHeader> departmentData;
