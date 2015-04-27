@@ -19,6 +19,7 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import banner.brown.models.Cart;
 import banner.brown.models.Semester;
 import banner.brown.ui.BannerBaseLogoutTimerActivity;
 import banner.brown.ui.DepartmentsActivity;
@@ -44,6 +45,8 @@ public class BannerApplication extends Application {
     public static String SHARED_PREF_TIME_LAST_ACTIVE = "banner.brown.prefs.time.last.active";
 
     public static String SHARED_PREF_COOKIE = "banner.brown.prefs.cookie";
+
+    public static Cart mCurrentCart;
 
 
     public static String curCookie = "";
