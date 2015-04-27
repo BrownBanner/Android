@@ -34,11 +34,16 @@
         </activity>
         <activity
             android:name=".LoginActivity"
+            android:launchMode="singleTask"
             android:label="@string/title_activity_login" >
         </activity>
         <activity
             android:name=".BannerWebActivity"
             android:label="Web" >
+        </activity>
+        <activity
+            android:name=".BannerBaseLogoutTimerActivity"
+            android:label="@string/title_activity_banner_base_logout_timer" >
         </activity>
     </application>
 

@@ -20,6 +20,7 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
 import banner.brown.models.Semester;
+import banner.brown.ui.BannerBaseLogoutTimerActivity;
 import banner.brown.ui.DepartmentsActivity;
 import banner.brown.ui.LoginActivity;
 
@@ -40,6 +41,11 @@ public class BannerApplication extends Application {
 
     public static String SHARED_PREF_SEMESTER = "banner.brown.prefs.semester";
 
+    public static String SHARED_PREF_TIME_LAST_ACTIVE = "banner.brown.prefs.time.last.active";
+
+    public static String SHARED_PREF_COOKIE = "banner.brown.prefs.cookie";
+
+
     public static String curCookie = "";
 
     @Override
@@ -57,6 +63,8 @@ public class BannerApplication extends Application {
             curSelectedSemester = new Semester(prefSemester);
         }
 
+        curCookie = prefs.getString(SHARED_PREF_COOKIE,"");
+
 
     }
 
@@ -65,6 +73,44 @@ public class BannerApplication extends Application {
      */
     public static synchronized BannerApplication getInstance() {
         return sInstance;
+    }
+
+    public static void removeUserCookie() {
+        curCookie = "";
+        SharedPreferences prefs = getInstance().getSharedPreferences(SHARED_PREF_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.remove(BannerApplication.SHARED_PREF_TIME_LAST_ACTIVE);
+        editor.remove(SHARED_PREF_COOKIE);
+        editor.commit();
+    }
+
+    public static void updateUserCookie(String cookie) {
+        curCookie = cookie;
+        SharedPreferences prefs = getInstance().getSharedPreferences(SHARED_PREF_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(SHARED_PREF_COOKIE,cookie);
+        editor.commit();
+        updateLastActive();
+    }
+
+    public static boolean getShouldLogOut(){
+        long curTime = System.currentTimeMillis();
+        SharedPreferences prefs = getInstance().getSharedPreferences(SHARED_PREF_NAME, MODE_PRIVATE);
+        if (!prefs.contains(SHARED_PREF_TIME_LAST_ACTIVE)) {
+            return false;
+        }
+        long lastTime = prefs.getLong(SHARED_PREF_TIME_LAST_ACTIVE, 0);
+        if (curTime - lastTime > BannerBaseLogoutTimerActivity.startTime) {
+            return true;
+        }
+        return false;
+    }
+
+    public static void updateLastActive() {
+        SharedPreferences prefs = getInstance().getSharedPreferences(SHARED_PREF_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putLong(BannerApplication.SHARED_PREF_TIME_LAST_ACTIVE, System.currentTimeMillis());
+        editor.commit();
     }
 
     /**

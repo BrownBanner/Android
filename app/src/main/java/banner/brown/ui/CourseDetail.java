@@ -26,7 +26,7 @@ import banner.brown.api.BannerAPI;
 import banner.brown.models.Course;
 import banner.brown.ui.R;
 
-public class CourseDetail extends ActionBarActivity {
+public class CourseDetail extends BannerBaseLogoutTimerActivity {
 
     public static String CRN_EXTRA = "crn_extra";
     public static String COURSE_NAME_EXTRA = "course_name_extra";

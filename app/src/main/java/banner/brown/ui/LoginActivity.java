@@ -1,5 +1,6 @@
 package banner.brown.ui;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -28,7 +29,11 @@ public class LoginActivity extends ActionBarActivity {
 
         WebView webview = new WebView(this);
         CookieManager.getInstance().setAcceptCookie(true);
-
+        if(android.os.Build.VERSION.SDK_INT >= 21){
+            CookieManager.getInstance().removeAllCookies(null);
+        }else{
+            CookieManager.getInstance().removeAllCookie();
+        }
         setContentView(webview);
         webview.loadUrl(curLoginAPI);
         webview.getSettings().setJavaScriptEnabled(true);
@@ -37,7 +42,9 @@ public class LoginActivity extends ActionBarActivity {
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 if (url.equals(curLoginMain)) {
                     String cookie = getIDMSESSID();
-                    BannerApplication.curCookie = cookie;
+                    BannerApplication.updateUserCookie(cookie);
+                    Intent toStart = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(toStart);
                     finish();
                     return true;
                 }

@@ -23,7 +23,7 @@ import banner.brown.models.Course;
 import banner.brown.models.listHeader;
 import banner.brown.ui.R;
 
-public class CourseListActivity extends ActionBarActivity implements AdapterView.OnItemClickListener{
+public class CourseListActivity extends BannerBaseLogoutTimerActivity implements AdapterView.OnItemClickListener{
 
     public static String DEPT_ABBREV_EXTRA = "dept_extra";
     public static String DEPT_FULL_EXTRA = "dept_full";
