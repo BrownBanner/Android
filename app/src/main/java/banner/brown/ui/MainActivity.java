@@ -199,7 +199,7 @@ public class MainActivity extends ActionBarActivity
     }
 
     private void processClasses(JSONArray classes) {
-        mCurrentCart = new Cart();
+        final Cart tempCart = new Cart();
         try {
             for (int i = 0; i < classes.length(); i++) {
                 JSONObject course = classes.getJSONObject(i);
@@ -208,12 +208,20 @@ public class MainActivity extends ActionBarActivity
                     @Override
                     public void onResponse(JSONObject response) {
 
-                        Course currentCourse = new Course(response);
+                        Course currentCourse = null;
+                        try {
+                            currentCourse = new Course(response.getJSONArray("items").getJSONObject(0));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
 
                         if (!mCurrentCart.hasClass(currentCourse.getCRN())){
                             currentCourse.setColor(getNewColor());
-                            mCurrentCart.addClass(currentCourse);
+                            tempCart.addClass(currentCourse);
                             mWeekView.notifyDatasetChanged();
+                        }
+                        else {
+                            tempCart.addClass(mCurrentCart.getCourse(currentCourse.getCRN()));
                         }
                     }
                 }, new Response.ErrorListener() {
@@ -227,7 +235,7 @@ public class MainActivity extends ActionBarActivity
         } catch (JSONException e) {
 
         }
-
+        mCurrentCart = tempCart;
         mWeekView.notifyDatasetChanged();
     }
 

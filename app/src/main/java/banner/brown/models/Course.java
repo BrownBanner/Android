@@ -86,8 +86,8 @@ public class Course {
         String meetingTimeString = this.getMeetingTime();
         String[] split = meetingTimeString.split("\\s+");
 
-        char[] days = split[0].toCharArray();
-        String time = split[1];
+        char[] days = split[split.length-2].toCharArray();
+        String time = split[split.length-1];
 
         ArrayList<WeekViewEvent> toRet = new ArrayList<WeekViewEvent>();
 

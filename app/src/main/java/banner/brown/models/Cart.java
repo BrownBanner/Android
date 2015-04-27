@@ -18,6 +18,7 @@ public class Cart {
 //        name = cartName;
 //        term = cartTerm;
         courses = new ArrayList<Course>();
+        crns = new ArrayList<String>();
     }
 
     public void addClass(Course course){
@@ -32,6 +33,13 @@ public class Cart {
 
     public ArrayList<Course> getCourses(){
         return courses;
+    }
+
+    public Course getCourse(String crn) {
+        for (Course course : courses){
+            if (course.getCRN().equals(crn)) return course;
+        }
+        return null;
     }
 
 
