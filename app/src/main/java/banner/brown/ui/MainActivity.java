@@ -23,6 +23,7 @@ import com.alamkanak.weekview.WeekViewEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import banner.brown.models.Cart;
 import banner.brown.models.Course;
 
 
@@ -36,6 +37,7 @@ public class MainActivity extends ActionBarActivity
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private WeekView mWeekView;
     private ArrayList<WeekViewEvent> testCourses;
+    private Cart mCurrentCart;
 //    /**
 //     * Used to store the last screen title. For use in {@link #restoreActionBar()}.
 //     */

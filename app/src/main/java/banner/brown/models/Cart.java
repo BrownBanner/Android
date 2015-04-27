@@ -1,5 +1,7 @@
 package banner.brown.models;
 
+import com.alamkanak.weekview.WeekViewEvent;
+
 import java.util.ArrayList;
 
 /**
@@ -30,5 +32,16 @@ public class Cart {
     }
 
 
+    // Asks each course in cart for its corresponding calendar events and returns the whole cart
+    public ArrayList<WeekViewEvent> getEventsOfCourses(){
+        ArrayList<WeekViewEvent> toRet = new ArrayList<WeekViewEvent>();
+        for (Course course : courses){
+            ArrayList<WeekViewEvent> temp = course.getWeekViewEvent();
+            for (WeekViewEvent each : temp){
+                toRet.add(each);
+            }
+        }
+        return toRet;
+    }
 
 }
