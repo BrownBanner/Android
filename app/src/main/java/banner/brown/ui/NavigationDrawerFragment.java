@@ -1,5 +1,6 @@
 package banner.brown.ui;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.app.Activity;
@@ -20,15 +21,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+
+import banner.brown.BannerApplication;
+import banner.brown.adapters.SemesterSpinnerAdapter;
+import banner.brown.models.Semester;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
  * See the <a href="https://developer.android.com/design/patterns/navigation-drawer.html#Interaction">
  * design guidelines</a> for a complete explanation of the behaviors implemented here.
  */
-public class NavigationDrawerFragment extends Fragment {
+public class NavigationDrawerFragment extends Fragment implements View.OnClickListener{
 
     /**
      * Remember the position of the selected item.
@@ -52,12 +62,14 @@ public class NavigationDrawerFragment extends Fragment {
     private ActionBarDrawerToggle mDrawerToggle;
 
     private DrawerLayout mDrawerLayout;
-    private ListView mDrawerListView;
+    private LinearLayout mDrawerViews;
     private View mFragmentContainerView;
 
     private int mCurrentSelectedPosition = 0;
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
+
+    private Spinner mSpinner;
 
     public NavigationDrawerFragment() {
     }
@@ -88,25 +100,37 @@ public class NavigationDrawerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mDrawerListView = (ListView) inflater.inflate(
+        mDrawerViews = (LinearLayout) inflater.inflate(
                 R.layout.fragment_navigation_drawer, container, false);
-        mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mDrawerViews.findViewById(R.id.department_drawer).setOnClickListener(this);
+        mSpinner = (Spinner) mDrawerViews.findViewById(R.id.semester_spinner);
+
+        ArrayList<Semester> spinnerList = Semester.getSemestersToChooseFrom();
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        SemesterSpinnerAdapter adapter = new SemesterSpinnerAdapter(getActivity(), android.R.layout.simple_spinner_item,
+                spinnerList);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    // Apply the adapter to the spinner
+        mSpinner.setAdapter(adapter);
+        int spot = spinnerList.indexOf(BannerApplication.curSelectedSemester);
+        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectItem(position);
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Semester selected = (Semester)parent.getItemAtPosition(position);
+                BannerApplication.getInstance().setCurSelectedSemester(selected);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
-        mDrawerListView.setAdapter(new ArrayAdapter<String>(
-                getActionBar().getThemedContext(),
-                android.R.layout.simple_list_item_activated_1,
-                android.R.id.text1,
-                new String[]{
-                        getString(R.string.title_section1),
-                        getString(R.string.title_section2),
-                        getString(R.string.title_section3),
-                }));
-        mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
-        return mDrawerListView;
+        mSpinner.setSelection(spinnerList.indexOf(BannerApplication.curSelectedSemester));
+
+
+        return mDrawerViews;
     }
 
     public boolean isDrawerOpen() {
@@ -187,27 +211,7 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
-    private void selectItem(int position) {
-        mCurrentSelectedPosition = position;
-        if (position == 0){
-            Intent myIntent = new Intent(getActivity(), DepartmentsActivity.class);
-            //myIntent.putExtra("key", value); //Optional parameters
-            getActivity().startActivity(myIntent);
-        } else if (position == 1) {
-            Intent myIntent = new Intent(getActivity(), LoginActivity.class);
 
-            getActivity().startActivity(myIntent);
-        }
-        if (mDrawerListView != null) {
-            mDrawerListView.setItemChecked(position, true);
-        }
-        if (mDrawerLayout != null) {
-            mDrawerLayout.closeDrawer(mFragmentContainerView);
-        }
-        if (mCallbacks != null) {
-            mCallbacks.onNavigationDrawerItemSelected(position);
-        }
-    }
 
 
     @Override
@@ -277,6 +281,29 @@ public class NavigationDrawerFragment extends Fragment {
 
     private ActionBar getActionBar() {
         return ((ActionBarActivity) getActivity()).getSupportActionBar();
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.department_drawer) {
+            Intent myIntent = new Intent(getActivity(), DepartmentsActivity.class);
+            //myIntent.putExtra("key", value); //Optional parameters
+            getActivity().startActivity(myIntent);
+//        } else if (v.getId() == 1) {
+//            Intent myIntent = new Intent(getActivity(), LoginActivity.class);
+//
+//            getActivity().startActivity(myIntent);
+//        }
+//        if (mDrawerListView != null) {
+//            mDrawerListView.setItemChecked(position, true);
+//        }
+            if (mDrawerLayout != null) {
+                mDrawerLayout.closeDrawer(mFragmentContainerView);
+            }
+//        if (mCallbacks != null) {
+//            mCallbacks.onNavigationDrawerItemSelected(position);
+//        }
+        }
     }
 
     /**

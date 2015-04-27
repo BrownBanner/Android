@@ -1,6 +1,9 @@
 package banner.brown;
 
 import android.app.Application;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.webkit.CookieSyncManager;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -16,6 +19,10 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import banner.brown.models.Semester;
+import banner.brown.ui.DepartmentsActivity;
+import banner.brown.ui.LoginActivity;
+
 /**
  * Created by Andy on 2/22/15.
  */
@@ -27,6 +34,14 @@ public class BannerApplication extends Application {
 
     private static BannerApplication sInstance;
 
+    public static Semester curSelectedSemester;
+
+    public static String SHARED_PREF_NAME = "banner.brown.prefs";
+
+    public static String SHARED_PREF_SEMESTER = "banner.brown.prefs.semester";
+
+    public static String curCookie = "";
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -34,6 +49,15 @@ public class BannerApplication extends Application {
         // initialize the singleton
         sInstance = this;
         disableSSLCertificateChecking();
+        SharedPreferences prefs = getSharedPreferences(SHARED_PREF_NAME, MODE_PRIVATE);
+        String prefSemester = prefs.getString(SHARED_PREF_SEMESTER, null);
+        if (prefSemester == null) {
+            curSelectedSemester = Semester.getCurrentSemester();
+        } else {
+            curSelectedSemester = new Semester(prefSemester);
+        }
+
+
     }
 
     /**
@@ -79,6 +103,13 @@ public class BannerApplication extends Application {
         }
     }
 
+    public void setCurSelectedSemester(Semester semester) {
+        curSelectedSemester = semester;
+        SharedPreferences pref = getSharedPreferences(SHARED_PREF_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString(BannerApplication.SHARED_PREF_SEMESTER, semester.getSemesterCode());
+        editor.commit();
+    }
     private static void disableSSLCertificateChecking() {
         TrustManager[] trustAllCerts = new TrustManager[] {
                 new X509TrustManager() {

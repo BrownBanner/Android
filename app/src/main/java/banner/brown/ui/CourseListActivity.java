@@ -58,7 +58,7 @@ public class CourseListActivity extends ActionBarActivity implements AdapterView
 
         mCourseListView.setOnItemClickListener(this);
 
-        BannerAPI.getCoursesByDept("201420", dept, 0, new Response.Listener<JSONObject>() {
+        BannerAPI.getCoursesByDept( dept, 0, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
@@ -76,6 +76,8 @@ public class CourseListActivity extends ActionBarActivity implements AdapterView
             }
         });
     }
+
+
 
     private void processClasses(JSONArray classes) {
         mAdapter.clear();

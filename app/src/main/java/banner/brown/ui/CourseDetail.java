@@ -119,7 +119,7 @@ public class CourseDetail extends ActionBarActivity {
     }
 
     private void updateCourse() {
-        BannerAPI.getCourseByCRN("201420", CRN, new Response.Listener<JSONObject>() {
+        BannerAPI.getCourseByCRN(CRN, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {

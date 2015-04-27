@@ -19,11 +19,18 @@ import android.widget.Toast;
 
 import com.alamkanak.weekview.WeekView;
 import com.alamkanak.weekview.WeekViewEvent;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import banner.brown.models.Cart;
+
+import banner.brown.api.BannerAPI;
+
 import banner.brown.models.Course;
 
 
@@ -66,6 +73,23 @@ public class MainActivity extends ActionBarActivity
         mWeekView.setEventLongPressListener(this);
         mWeekView.setMonthChangeListener(this);
 
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        BannerAPI.getCurrentCourses(new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                JSONObject x = response;
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
     }
 
     @Override
@@ -124,6 +148,9 @@ public class MainActivity extends ActionBarActivity
             testCourses.add(new WeekViewEvent("another test","Second Event",2,2, 0, 2, 3, 30));
             testCourses.get(1).setColor(Color.RED);
             mWeekView.notifyDatasetChanged();
+
+            Intent login = new Intent(this, LoginActivity.class);
+            startActivity(login);
         }
 
         return super.onOptionsItemSelected(item);
