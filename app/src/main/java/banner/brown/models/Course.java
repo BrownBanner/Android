@@ -32,6 +32,7 @@ public class Course {
     private String mCoursePreview;
     private String mExamInfo;
     private String mPrereq;
+    private int mColor;
 
     public Course (JSONObject json) {
         try {
@@ -179,6 +180,8 @@ public class Course {
     public String getPrereq() {return mPrereq;}
 
     public int getColor() {
-        return Color.RED;
+        return mColor;
     }
+
+    public void setColor(int col){ mColor = col;}
 }

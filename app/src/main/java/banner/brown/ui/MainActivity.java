@@ -1,20 +1,13 @@
 package banner.brown.ui;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.RectF;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.support.v4.widget.DrawerLayout;
 import android.widget.Toast;
 
 import com.alamkanak.weekview.WeekView;
@@ -22,13 +15,16 @@ import com.alamkanak.weekview.WeekViewEvent;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-import banner.brown.BannerApplication;
 import banner.brown.api.BannerAPI;
+import banner.brown.models.Cart;
 import banner.brown.models.Course;
 
 
@@ -36,16 +32,13 @@ public class MainActivity extends BannerBaseLogoutTimerActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks, WeekView.MonthChangeListener,
         WeekView.EventClickListener, WeekView.EventLongPressListener {
 
-    /**
-     * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
-     */
+
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private WeekView mWeekView;
-    private ArrayList<WeekViewEvent> testCourses;
-//    /**
-//     * Used to store the last screen title. For use in {@link #restoreActionBar()}.
-//     */
-//    private CharSequence mTitle;
+    private Cart mCurrentCart;
+    private ArrayList<Integer> mEventColors;
+    private int currColIndex = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,21 +47,81 @@ public class MainActivity extends BannerBaseLogoutTimerActivity
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
-//        mTitle = getTitle();
 
-        // Set up the drawer.
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
-        // TESTING EVENTS
-        Course testCourse = new Course("Please Work", 2015, 2, "Yay me", "testID", "KAPPI","MWF 0900-1020");
-        testCourses = testCourse.getWeekViewEvent();
+        mCurrentCart = new Cart();
 
         mWeekView = (WeekView)findViewById(R.id.weekView);
         mWeekView.setOnEventClickListener(this);
         mWeekView.setEventLongPressListener(this);
         mWeekView.setMonthChangeListener(this);
+
+        setUpColors();
+
+    }
+
+    private void setUpColors() {
+
+
+        mEventColors = new ArrayList<>();
+
+        mEventColors.add(Color.rgb(127,255,212));
+        mEventColors.add(Color.rgb(210, 77, 87));
+        mEventColors.add(Color.rgb(217, 30, 24));
+        mEventColors.add(Color.rgb(239, 72, 54));
+        mEventColors.add(Color.rgb(192, 57, 43));
+        mEventColors.add(Color.rgb(231, 76, 60));
+        mEventColors.add(Color.rgb(246, 71, 71));
+        mEventColors.add(Color.rgb(210, 82, 127));
+        mEventColors.add(Color.rgb(246, 36, 89));
+        mEventColors.add(Color.rgb(220, 198, 224));
+        mEventColors.add(Color.rgb(103, 65, 114));
+        mEventColors.add(Color.rgb(145, 61, 136));
+        mEventColors.add(Color.rgb(191, 85, 236));
+        mEventColors.add(Color.rgb(142, 68, 173));
+        mEventColors.add(Color.rgb(155, 89, 18));
+        mEventColors.add(Color.rgb(268,108,179));
+        mEventColors.add(Color.rgb(65, 131, 215));
+        mEventColors.add(Color.rgb(129, 207, 224));
+        mEventColors.add(Color.rgb(197, 239, 247));
+        mEventColors.add(Color.rgb(52, 152, 219));
+        mEventColors.add(Color.rgb(25, 181, 254));
+        mEventColors.add(Color.rgb(34, 49, 63));
+        mEventColors.add(Color.rgb(30, 139, 195));
+        mEventColors.add(Color.rgb(52, 73, 94));
+        mEventColors.add(Color.rgb(37, 116, 169));
+        mEventColors.add(Color.rgb(137, 196, 244));
+        mEventColors.add(Color.rgb(92, 151, 191));
+        mEventColors.add(Color.rgb(162, 222, 208));
+        mEventColors.add(Color.rgb(144, 198, 149));
+        mEventColors.add(Color.rgb(3, 201, 169));
+        mEventColors.add(Color.rgb(101, 198, 187));
+        mEventColors.add(Color.rgb(27, 163, 156));
+        mEventColors.add(Color.rgb(54, 215, 183));
+        mEventColors.add(Color.rgb(134, 226, 213));
+        mEventColors.add(Color.rgb(22, 160, 133));
+        mEventColors.add(Color.rgb(81, 152, 117));
+        mEventColors.add(Color.rgb(77, 175, 124));
+        mEventColors.add(Color.rgb(50, 177, 106));
+        mEventColors.add(Color.rgb(4, 147, 114));
+        mEventColors.add(Color.rgb(253, 227, 167));
+        mEventColors.add(Color.rgb(35, 149, 50));
+        mEventColors.add(Color.rgb(44, 179, 80));
+        mEventColors.add(Color.rgb(235, 151, 78));
+        mEventColors.add(Color.rgb(211, 84, 2));
+        mEventColors.add(Color.rgb(249, 105, 14));
+        mEventColors.add(Color.rgb(242, 121, 53));
+        mEventColors.add(Color.rgb(236,236,236));
+        mEventColors.add(Color.rgb(210, 215, 211));
+        mEventColors.add(Color.rgb(189, 195, 199));
+        mEventColors.add(Color.rgb(149, 165, 166));
+        mEventColors.add(Color.rgb(171, 183, 183));
+        mEventColors.add(Color.rgb(191, 191, 191));
+
+        Collections.shuffle(mEventColors);
 
 
     }
@@ -80,6 +133,11 @@ public class MainActivity extends BannerBaseLogoutTimerActivity
             @Override
             public void onResponse(JSONObject response) {
                 JSONObject x = response;
+                try {
+                    processClasses(x.getJSONArray("items"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }, new Response.ErrorListener() {
             @Override
@@ -91,43 +149,15 @@ public class MainActivity extends BannerBaseLogoutTimerActivity
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
-        // update the main content by replacing fragments
-//        FragmentManager fragmentManager = getSupportFragmentManager();
-//        fragmentManager.beginTransaction()
-//                .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
-//                .commit();
     }
 
-    public void onSectionAttached(int number) {
-//        switch (number) {
-//            case 1:
-//                mTitle = getString(R.string.title_section1);
-//                break;
-//            case 2:
-//                mTitle = getString(R.string.title_section2);
-//                break;
-//            case 3:
-//                mTitle = getString(R.string.title_section3);
-//                break;
-//        }
-    }
-
-//    public void restoreActionBar() {
-//        ActionBar actionBar = getSupportActionBar();
-//        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-//        actionBar.setDisplayShowTitleEnabled(true);
-//        actionBar.setTitle(mTitle);
-//    }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (!mNavigationDrawerFragment.isDrawerOpen()) {
-            // Only show items in the action bar relevant to this screen
-            // if the drawer is not showing. Otherwise, let the drawer
-            // decide what to show in the action bar.
+
             getMenuInflater().inflate(R.menu.main, menu);
-//            restoreActionBar();
             return true;
         }
         return super.onCreateOptionsMenu(menu);
@@ -135,15 +165,11 @@ public class MainActivity extends BannerBaseLogoutTimerActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.course_detail) {
-            testCourses.add(new WeekViewEvent("another test","Second Event",2,2, 0, 2, 3, 30));
-            testCourses.get(1).setColor(Color.RED);
+
             mWeekView.notifyDatasetChanged();
 
             Intent login = new Intent(this, LoginActivity.class);
@@ -165,52 +191,51 @@ public class MainActivity extends BannerBaseLogoutTimerActivity
 
     @Override
     public List<WeekViewEvent> onMonthChange(int newYear, int newMonth) {
-        // give a list of events to display
 
         if (newMonth == 1) {
-            return testCourses;
+            return mCurrentCart.getEventsOfCourses();
         }
-        return new ArrayList<WeekViewEvent>();
+        return new ArrayList<>();
     }
 
-//    /**
-//     * A placeholder fragment containing a simple view.
-//     */
-//    public static class PlaceholderFragment extends Fragment {
-//        /**
-//         * The fragment argument representing the section number for this
-//         * fragment.
-//         */
-//        private static final String ARG_SECTION_NUMBER = "section_number";
-//
-//        /**
-//         * Returns a new instance of this fragment for the given section
-//         * number.
-//         */
-//        public static PlaceholderFragment newInstance(int sectionNumber) {
-//            PlaceholderFragment fragment = new PlaceholderFragment();
-//            Bundle args = new Bundle();
-//            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-//            fragment.setArguments(args);
-//            return fragment;
-//        }
-//
-//        public PlaceholderFragment() {
-//        }
-//
-//        @Override
-//        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-//                                 Bundle savedInstanceState) {
-//            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-//            return rootView;
-//        }
-//
-//        @Override
-//        public void onAttach(Activity activity) {
-//            super.onAttach(activity);
-//            ((MainActivity) activity).onSectionAttached(
-//                    getArguments().getInt(ARG_SECTION_NUMBER));
-//        }
-//    }
+    private void processClasses(JSONArray classes) {
+        mCurrentCart = new Cart();
+        try {
+            for (int i = 0; i < classes.length(); i++) {
+                JSONObject course = classes.getJSONObject(i);
+
+                BannerAPI.getCourseByCRN(course.getString("crn"),new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        Course currentCourse = new Course(response);
+
+                        if (!mCurrentCart.hasClass(currentCourse.getCRN())){
+                            currentCourse.setColor(getNewColor());
+                            mCurrentCart.addClass(currentCourse);
+                            mWeekView.notifyDatasetChanged();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        VolleyError x = error;
+                    }
+                });
+            }
+
+        } catch (JSONException e) {
+
+        }
+
+        mWeekView.notifyDatasetChanged();
+    }
+
+    private int getNewColor() {
+        currColIndex ++;
+        if (currColIndex >= mEventColors.size()) {currColIndex = 0;}
+        return mEventColors.get(currColIndex);
+    }
+
 
 }
