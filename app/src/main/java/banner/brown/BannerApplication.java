@@ -65,7 +65,7 @@ public class BannerApplication extends Application {
         } else {
             curSelectedSemester = new Semester(prefSemester);
         }
-
+        mCurrentCart = new Cart();
         curCookie = prefs.getString(SHARED_PREF_COOKIE,"");
 
 

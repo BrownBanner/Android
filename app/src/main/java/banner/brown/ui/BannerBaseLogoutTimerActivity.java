@@ -15,7 +15,7 @@ public class BannerBaseLogoutTimerActivity extends ActionBarActivity {
 
     LogoutCountdownTimer mCountdownTimer;
 
-    public static long startTime=60*1000; // 60 sec IDLE TIME
+    public static long startTime=20*60*1000; // 60 sec IDLE TIME
     private final long interval = 5 * 1000; //5 second toasts
 
     @Override

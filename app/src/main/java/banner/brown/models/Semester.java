@@ -39,10 +39,11 @@ public class Semester {
         String semester = semesterCode.substring(4);
         if (semester.equals("20")) {
             this.semester = 2;
+            this.year = Integer.valueOf(semesterCode.substring(0,4))+1;
         } else {
             this.semester = 1;
+            this.year = Integer.valueOf(semesterCode.substring(0,4));
         }
-        this.year = Integer.valueOf(semesterCode.substring(0,4));
     }
 
     public static Semester getCurrentSemester() {

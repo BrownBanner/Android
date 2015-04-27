@@ -58,10 +58,6 @@ public class MainActivity extends BannerBaseLogoutTimerActivity
         mWeekView.setEventLongPressListener(this);
         mWeekView.setMonthChangeListener(this);
 
-        if (BannerApplication.mCurrentCart != null){
-            BannerApplication.mCurrentCart = new Cart();
-        }
-
         setUpColors();
 
     }
@@ -196,11 +192,14 @@ public class MainActivity extends BannerBaseLogoutTimerActivity
     public List<WeekViewEvent> onMonthChange(int newYear, int newMonth) {
 
         if (newMonth == 1) {
-            return BannerApplication.mCurrentCart.getEventsOfCourses();
+            if (BannerApplication.mCurrentCart != null){
+                return BannerApplication.mCurrentCart.getEventsOfCourses();
+            }
         }
         return new ArrayList<>();
     }
 
+    //note this shit is fucked, for now, when hari writes in all details in cart api, we dont need to make hella calls
     private void processClasses(JSONArray classes) {
         final Cart tempCart = new Cart();
         try {
