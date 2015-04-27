@@ -9,23 +9,26 @@ import java.util.ArrayList;
  */
 public class Cart {
 
-    public final String name;
-    public final String term;
+//    public final String name;
+//    public final String term;
     private ArrayList<Course> courses;
+    private ArrayList<String> crns;
 
-    public Cart(String cartName, String cartTerm){
-        name = cartName;
-        term = cartTerm;
+    public Cart(){
+//        name = cartName;
+//        term = cartTerm;
         courses = new ArrayList<Course>();
     }
 
     public void addClass(Course course){
-        courses.add(course);
+        courses.add(course); crns.add(course.getCRN());
     }
 
     public void removeClass(Course course){
-        courses.remove(course);
+        courses.remove(course); crns.remove(course.getCRN());
     }
+
+    public boolean hasClass(String crn) {return crns.contains(crn);}
 
     public ArrayList<Course> getCourses(){
         return courses;
