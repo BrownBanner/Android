@@ -32,7 +32,8 @@ public class Course {
     private String mCoursePreview;
     private String mExamInfo;
     private String mPrereq;
-    private int mColor;
+    private int mColor = 0;
+    private boolean mRegistered;
 
     public Course (JSONObject json) {
         try {
@@ -51,6 +52,8 @@ public class Course {
             mCriticalReview = json.getString("critical_review");
             mCoursePreview = json.getString("course_preview");
             mPrereq = json.optString("prereq", "No prerequisites");
+            mRegistered = json.getString("reg_indicator").equals("Y");
+
         } catch(JSONException e) {
             JSONException z = e;
         }
@@ -65,6 +68,18 @@ public class Course {
         mCRN = CRN;
         mDepartment = department;
         mMeetingTime = meettime;
+    }
+
+    public void setAsRegistered(){
+        mRegistered = true;
+        setColor(mColor);
+
+    }
+
+    public void setAsUnregistered(){
+        mRegistered = false;
+        setColor(mColor);
+
     }
 
     public String getTitle() {
@@ -127,7 +142,7 @@ public class Course {
             endTime.set(Calendar.MINUTE, Integer.parseInt(times[1].substring(2,4)));
             endTime.set(Calendar.MONTH, 1);
             WeekViewEvent event = new WeekViewEvent(getCRN(), getTitle(), startTime, endTime);
-            event.setColor(getColor());
+            event.setColor(mColor);
 
             toRet.add(event);
         }
@@ -183,5 +198,26 @@ public class Course {
         return mColor;
     }
 
-    public void setColor(int col){ mColor = col;}
+    public void setColor(int col){
+        if (mRegistered) {
+            mColor = saturate(col);
+        }
+        else{
+            mColor = desaturate(col);
+        }
+    }
+
+    private int desaturate(int col){
+        float[] hsv = new float[3];
+        Color.colorToHSV(col,hsv);
+        hsv[1] = (float)0.2;
+        return Color.HSVToColor(hsv);
+    }
+
+    private int saturate(int col){
+        float[] hsv = new float[3];
+        Color.colorToHSV(col,hsv);
+        hsv[1] = (float)1;
+        return Color.HSVToColor(hsv);
+    }
 }

@@ -181,11 +181,19 @@ public class MainActivity extends BannerBaseLogoutTimerActivity
     @Override
     public void onEventClick(WeekViewEvent event, RectF eventRect) {
         Toast.makeText(MainActivity.this, "Clicked " + event.getId(), Toast.LENGTH_SHORT).show();
+        Intent i = new Intent(this, CourseDetail.class);
+        String CRN = event.getId();
+        String name = event.getName();
+        i.putExtra(CourseDetail.CRN_EXTRA, CRN);
+        i.putExtra(CourseDetail.COURSE_NAME_EXTRA, name );
+        startActivity(i);
     }
 
     @Override
     public void onEventLongPress(WeekViewEvent event, RectF eventRect) {
         Toast.makeText(MainActivity.this, "Long pressed event: " + event.getName(), Toast.LENGTH_SHORT).show();
+        BannerApplication.mCurrentCart.getCourse(event.getId()).setAsUnregistered();
+        mWeekView.notifyDatasetChanged();
     }
 
     @Override
@@ -199,41 +207,24 @@ public class MainActivity extends BannerBaseLogoutTimerActivity
         return new ArrayList<>();
     }
 
-    //note this shit is fucked, for now, when hari writes in all details in cart api, we dont need to make hella calls
+
     private void processClasses(JSONArray classes) {
         final Cart tempCart = new Cart();
         try {
             for (int i = 0; i < classes.length(); i++) {
                 JSONObject course = classes.getJSONObject(i);
 
-                BannerAPI.getCourseByCRN(course.getString("crn"),new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
+                Course currentCourse = new Course(course);
 
-                        Course currentCourse = null;
-                        try {
-                            currentCourse = new Course(response.getJSONArray("items").getJSONObject(0));
-
-
-                            if (!BannerApplication.mCurrentCart.hasClass(currentCourse.getCRN())){
+                if (!BannerApplication.mCurrentCart.hasClass(currentCourse.getCRN())){
                                 currentCourse.setColor(getNewColor());
+                                //currentCourse.setAsUnregistered();
                                 tempCart.addClass(currentCourse);
                                 mWeekView.notifyDatasetChanged();
                             }
-                            else {
-
-                                tempCart.addClass(BannerApplication.mCurrentCart.getCourse(currentCourse.getCRN()));
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        VolleyError x = error;
-                    }
-                });
+                else {
+                    tempCart.addClass(BannerApplication.mCurrentCart.getCourse(currentCourse.getCRN()));
+                }
             }
 
         } catch (JSONException e) {
