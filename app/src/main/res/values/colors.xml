@@ -13,8 +13,8 @@
     <color name="transparentTint">#4D000000</color>
     <color name="halfTransparent">#80000000</color>
 
-    <color name="bannerBrown">#2C1713</color>
-    <color name="bannerRed">#1a0e0b</color>
+    <color name="bannerBrown">#FB0F46</color>
+    <color name="bannerRed">#000000</color>
 
     <color name="textMediumGray">#69696e</color>
     <color name="textGray">#757575</color>
