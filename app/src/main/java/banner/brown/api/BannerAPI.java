@@ -7,6 +7,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 
 import org.json.JSONObject;
 
@@ -136,6 +137,21 @@ public class BannerAPI {
             }
         });
         BannerApplication.getInstance().addToRequestQueue(request);
+    }
+
+    public static void addToCart(String crn, Response.Listener listener, Response.ErrorListener error) {
+        String semester = BannerApplication.getInstance().curSelectedSemester.getSemesterCode();
+
+        addToCart(semester, crn, listener, error);
+    }
+
+    private static void addToCart(String term, String crn, Response.Listener<String> listener, Response.ErrorListener error) {
+
+        String url = HOST + "/cart?term=" + term  + "&in_id=" + BannerApplication.curCookie + "&crn=" + crn + "&in_type=I";
+
+        StringRequest request = new StringRequest(Request.Method.GET, url, listener, error);
+        BannerApplication.getInstance().addToRequestQueue(request);
+
     }
 
 }

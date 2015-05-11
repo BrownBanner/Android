@@ -1,5 +1,5 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" tools:context="banner.brown.ui.CourseDetail">
-    <item android:id="@+id/action_refresh" android:title="Refresh" android:icon="@drawable/ic_action_refresh" app:showAsAction="always" />
+    <item android:id="@+id/add_to_cart" android:title="Add to Cart" android:icon="@drawable/add_to_cart" app:showAsAction="always" />
 </menu>

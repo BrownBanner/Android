@@ -83,7 +83,7 @@ public class CourseDetail extends BannerBaseLogoutTimerActivity {
         mBookListButton = (RelativeLayout) findViewById(R.id.book_list_button);
         mCoursePreviewButton = (RelativeLayout) findViewById(R.id.course_preview_button);
         mCriticalReviewButton = (RelativeLayout) findViewById(R.id.critical_review_button);
-        mPrereqText = (TextView) findViewById(R.id.detail_prereq);
+//        mPrereqText = (TextView) findViewById(R.id.detail_prereq);
 
         mBookListButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,7 +152,7 @@ public class CourseDetail extends BannerBaseLogoutTimerActivity {
         mLocationText.setText(mCourse.getMeetingLocation());
         mDescriptionText.setText(mCourse.getDescription());
         mExamInfoText.setText(mCourse.getExamInfo());
-        mPrereqText.setText(mCourse.getPrereq());
+//        mPrereqText.setText(mCourse.getPrereq());
 
         mBookList = mCourse.getBookList();
         mCriticalReview = mCourse.getCriticialReview();
@@ -167,8 +167,19 @@ public class CourseDetail extends BannerBaseLogoutTimerActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_refresh) {
-            updateCourse();
+        if (id == R.id.add_to_cart) {
+            BannerAPI.addToCart(CRN, new Response.Listener(){
+
+                @Override
+                public void onResponse(Object response) {
+                    Object x = response;
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    VolleyError e = error;
+                }
+            });
             return true;
         } else if (id == android.R.id.home) {
             finish();
