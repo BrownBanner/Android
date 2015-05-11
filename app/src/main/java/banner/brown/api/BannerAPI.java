@@ -5,6 +5,7 @@ import android.webkit.CookieManager;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONObject;
@@ -119,6 +120,22 @@ public class BannerAPI {
         catch (Exception e) {
 
         }
+    }
+
+    public static void logOut() {
+        String url = HOST + "/bannerLogout?in_id=" + BannerApplication.curCookie;
+        JsonObjectRequest request = new JsonObjectRequest(url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        BannerApplication.getInstance().addToRequestQueue(request);
     }
 
 }

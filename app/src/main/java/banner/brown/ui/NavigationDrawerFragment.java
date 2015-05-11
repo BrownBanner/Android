@@ -103,6 +103,9 @@ public class NavigationDrawerFragment extends Fragment implements View.OnClickLi
         mDrawerViews = (LinearLayout) inflater.inflate(
                 R.layout.fragment_navigation_drawer, container, false);
         mDrawerViews.findViewById(R.id.department_drawer).setOnClickListener(this);
+        mDrawerViews.findViewById(R.id.logout_drawer).setOnClickListener(this);
+
+
         mSpinner = (Spinner) mDrawerViews.findViewById(R.id.semester_spinner);
 
         ArrayList<Semester> spinnerList = Semester.getSemestersToChooseFrom();
@@ -303,6 +306,9 @@ public class NavigationDrawerFragment extends Fragment implements View.OnClickLi
 //        if (mCallbacks != null) {
 //            mCallbacks.onNavigationDrawerItemSelected(position);
 //        }
+        } else if (v.getId() == R.id.logout_drawer) {
+            BannerBaseLogoutTimerActivity.logUserOut(getActivity());
+            getActivity().finish();
         }
     }
 

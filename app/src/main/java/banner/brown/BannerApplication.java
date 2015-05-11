@@ -19,6 +19,7 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import banner.brown.api.BannerAPI;
 import banner.brown.models.Cart;
 import banner.brown.models.Semester;
 import banner.brown.ui.BannerBaseLogoutTimerActivity;
@@ -79,6 +80,7 @@ public class BannerApplication extends Application {
     }
 
     public static void removeUserCookie() {
+        BannerAPI.logOut();
         curCookie = "";
         SharedPreferences prefs = getInstance().getSharedPreferences(SHARED_PREF_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();

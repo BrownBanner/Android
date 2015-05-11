@@ -1,5 +1,6 @@
 package banner.brown.ui;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.CountDownTimer;
 import android.support.v7.app.ActionBarActivity;
@@ -15,14 +16,14 @@ public class BannerBaseLogoutTimerActivity extends ActionBarActivity {
 
     LogoutCountdownTimer mCountdownTimer;
 
-    public static long startTime=20*60*1000; // 60 sec IDLE TIME
+    public static long startTime=60*20*1000; // 60 sec IDLE TIME
     private final long interval = 5 * 1000; //5 second toasts
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (BannerApplication.curCookie == "") {
-            logUserOut();
+            logUserOut(this);
             finish();
             return;
         }
@@ -34,7 +35,7 @@ public class BannerBaseLogoutTimerActivity extends ActionBarActivity {
         super.onStart();
         boolean shouldLogOut = BannerApplication.getShouldLogOut();
         if (shouldLogOut) {
-            logUserOut();
+            logUserOut(this);
             finish();
         }
         mCountdownTimer = new LogoutCountdownTimer(startTime, interval);
@@ -66,7 +67,7 @@ public class BannerBaseLogoutTimerActivity extends ActionBarActivity {
 
         @Override
         public void onFinish() {
-            logUserOut();
+            logUserOut(BannerBaseLogoutTimerActivity.this);
         }
 
         @Override
@@ -81,12 +82,12 @@ public class BannerBaseLogoutTimerActivity extends ActionBarActivity {
         }
     }
 
-    protected void logUserOut(){
+    public static void logUserOut(Activity activity){
         BannerApplication.removeUserCookie();
-        Intent i = new Intent(this, LoginActivity.class);
+        Intent i = new Intent(activity, LoginActivity.class);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        startActivity(i);
-        finish();
+        activity.startActivity(i);
+        activity.finish();
     }
 
 }
