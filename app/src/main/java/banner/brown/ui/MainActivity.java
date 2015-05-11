@@ -167,13 +167,18 @@ public class MainActivity extends BannerBaseLogoutTimerActivity
 
         int id = item.getItemId();
 
-        if (id == R.id.course_detail) {
-
-            mWeekView.notifyDatasetChanged();
-
-            Intent login = new Intent(this, LoginActivity.class);
-            startActivity(login);
+        if (id == R.id.search_courses) {
+            Intent search = new Intent(this, SearchActivity.class);
+            startActivity(search);
         }
+
+//        if (id == R.id.course_detail) {
+//
+//            mWeekView.notifyDatasetChanged();
+//
+//            Intent login = new Intent(this, LoginActivity.class);
+//            startActivity(login);
+//        }
 
         return super.onOptionsItemSelected(item);
     }

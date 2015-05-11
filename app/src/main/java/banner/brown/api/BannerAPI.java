@@ -9,6 +9,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONObject;
 
+import java.net.URLEncoder;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
@@ -34,6 +35,10 @@ public class BannerAPI {
     private static String TEST = "https://blooming-bastion-7117.herokuapp.com";
 
     public static String HOST = DEV;
+
+    public static String SEARCH_ENDPOINT = "http://blooming-bastion-7117.herokuapp.com/search?";
+
+    private static int NUM_SEARCH_RESULTS = 20;
 
     public static Course getCourse(String CRN) {
         return new Course("Test Course", 2014, 1, "Test Description", "123", "DEPT","TR 0900-1020");
@@ -94,5 +99,26 @@ public class BannerAPI {
 //        String urlRequest = HOST + "/cartbyid?term=" + semester + "&in_id=" + 100445912"
     }
 
+    public static void searchCourses(String query,
+                                     Response.Listener responseListener, Response.ErrorListener errorListener) {
+        String semester = BannerApplication.getInstance().curSelectedSemester.getSemesterCode();
+
+        searchCourses(semester, query, NUM_SEARCH_RESULTS, responseListener, errorListener);
+    }
+
+    private static void searchCourses(String term, String query, int num_results,
+                                       Response.Listener responseListener, Response.ErrorListener errorListener) {
+        try {
+            String cleanedQuery = URLEncoder.encode(query, "UTF-8");
+
+            String urlRequest = SEARCH_ENDPOINT + "term=" + term + "&num_results=" + num_results + "&search="
+                    + cleanedQuery;
+            JsonObjectRequest request = new JsonObjectRequest(urlRequest, null, responseListener, errorListener);
+            BannerApplication.getInstance().addToRequestQueue(request);
+        }
+        catch (Exception e) {
+
+        }
+    }
 
 }

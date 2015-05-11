@@ -17,5 +17,6 @@
     <string name="title_activity_login">Login</string>
     <string name="title_activity_banner_web">BannerWebActivity</string>
     <string name="title_activity_banner_base_logout_timer">BannerBaseLogoutTimerActivity</string>
+    <string name="title_activity_search">SearchActivity</string>
 
 </resources>

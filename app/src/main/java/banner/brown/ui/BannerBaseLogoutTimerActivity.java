@@ -82,11 +82,11 @@ public class BannerBaseLogoutTimerActivity extends ActionBarActivity {
     }
 
     protected void logUserOut(){
-//        BannerApplication.removeUserCookie();
-//        Intent i = new Intent(this, LoginActivity.class);
-//        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
-//        startActivity(i);
-//        finish();
+        BannerApplication.removeUserCookie();
+        Intent i = new Intent(this, LoginActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivity(i);
+        finish();
     }
 
 }
