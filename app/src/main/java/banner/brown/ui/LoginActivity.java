@@ -38,18 +38,19 @@ public class LoginActivity extends ActionBarActivity {
         webview.loadUrl(curLoginAPI);
         webview.getSettings().setJavaScriptEnabled(true);
         webview.setWebViewClient(new WebViewClient() {
+
             @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                if (url.equals(curLoginMain)) {
+            public void onPageFinished(WebView webview, String url) {
+                super.onPageFinished(webview, url);
+                if (url.equals(PPROD_MAIN_PAGE)) {
                     String cookie = getIDMSESSID();
                     BannerApplication.updateUserCookie(cookie);
                     Intent toStart = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(toStart);
                     finish();
-                    return true;
+
                 }
-                view.loadUrl(url);
-                return false;
+
             }
         });
 
