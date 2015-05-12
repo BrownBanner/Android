@@ -42,7 +42,7 @@ public class LoginActivity extends ActionBarActivity {
             @Override
             public void onPageFinished(WebView webview, String url) {
                 super.onPageFinished(webview, url);
-                if (url.equals(PPROD_MAIN_PAGE)) {
+                if (url.equals(curLoginMain)) {
                     String cookie = getIDMSESSID();
                     BannerApplication.updateUserCookie(cookie);
                     Intent toStart = new Intent(LoginActivity.this, MainActivity.class);

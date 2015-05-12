@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import banner.brown.BannerApplication;
 import banner.brown.models.Course;
 import banner.brown.models.listHeader;
 
@@ -58,6 +59,10 @@ public class CourseListAdapter extends ArrayAdapter<Course>{
             Course item = data.get(position);
             holder.title.setText(item.getTitle());
             holder.abbrev.setText(item.getSubjectCode());
+            Course cartCourse = BannerApplication.mCurrentCart.getCourse(item.getCRN());
+            if (cartCourse != null) {
+                row.findViewById(R.id.course_list_row_background).setBackgroundColor(context.getResources().getColor(R.color.registeredRed));
+            }
 
             return row;
         }

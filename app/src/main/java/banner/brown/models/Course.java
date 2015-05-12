@@ -13,7 +13,7 @@ import java.util.Calendar;
 /**
  * Class representing a course
  */
-public class Course {
+public class Course implements Comparable {
 
     private String mTitle;
     private int mYear;
@@ -233,5 +233,10 @@ public class Course {
         Color.colorToHSV(col,hsv);
         hsv[1] = (float)1;
         return Color.HSVToColor(hsv);
+    }
+
+    @Override
+    public int compareTo(Object another) {
+        return mSubjectCode.compareTo(((Course)another).getSubjectCode());
     }
 }

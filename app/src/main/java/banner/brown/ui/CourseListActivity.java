@@ -17,6 +17,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import banner.brown.api.BannerAPI;
 import banner.brown.models.Course;
@@ -86,6 +87,7 @@ public class CourseListActivity extends BannerBaseLogoutTimerActivity implements
                 JSONObject course = classes.getJSONObject(i);
                 mCourseData.add(new Course(course));
             }
+            Collections.sort(mCourseData);
             mAdapter.notifyDataSetChanged();
         } catch (JSONException e) {
 

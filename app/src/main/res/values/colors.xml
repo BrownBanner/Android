@@ -16,6 +16,8 @@
     <color name="bannerBrown">#FB0F46</color>
     <color name="bannerRed">#000000</color>
 
+    <color name="registeredRed">#fee7ec</color>
+
     <color name="textMediumGray">#69696e</color>
     <color name="textGray">#757575</color>
     <color name="textBlack">#212121</color>
