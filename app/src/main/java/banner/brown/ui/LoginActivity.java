@@ -1,12 +1,14 @@
 package banner.brown.ui;
 
 import android.content.Intent;
+import android.net.http.SslError;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
+import android.webkit.SslErrorHandler;
 import android.webkit.ValueCallback;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -20,12 +22,12 @@ public class LoginActivity extends ActionBarActivity {
     public static String PPROD_LOGIN = "https://bannersso.cis-qas.brown.edu/SSB_PPRD";
     public static String PPROD_MAIN_PAGE = "https://selfservice-qas.brown.edu/ssPPRD/twbkwbis.P_GenMenu?name=bmenu.P_MainMnu";
 
-    public static String DPROD_LOGIN = "https://bannersso.cis-qas.brown.edu/SSB_DPRD";
-    public static String DPROD_MAIN_PAGE = "https://selfservice-qas.brown.edu/ssDPRD/twbkwbis.P_GenMenu?name=bmenu.P_MainMnu";
+    public static String DPROD_LOGIN = "https://dshibproxycit.services.brown.edu/SSB_DPRD";
+    public static String DPROD_MAIN_PAGE = "https://selfservice-dev.brown.edu:9190/ssDPRD/twbkwbis.P_GenMenu?name=bmenu.P_MainMnu";
 
 
-    public static String curLoginAPI = PPROD_LOGIN;
-    public static String curLoginMain = PPROD_MAIN_PAGE;
+    public static String curLoginAPI = DPROD_LOGIN;
+    public static String curLoginMain = DPROD_MAIN_PAGE;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +43,10 @@ public class LoginActivity extends ActionBarActivity {
         webview.loadUrl(curLoginAPI);
         webview.getSettings().setJavaScriptEnabled(true);
         webview.setWebViewClient(new WebViewClient() {
-
+            @Override
+            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+                 handler.proceed(); // Ignore SSL certificate errors
+            }
             @Override
             public void onPageFinished(WebView webview, String url) {
                 super.onPageFinished(webview, url);
@@ -55,7 +60,12 @@ public class LoginActivity extends ActionBarActivity {
                 }
 
             }
-        });
+
+
+        }
+        );
+
+
 
 
     }

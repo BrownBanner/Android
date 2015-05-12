@@ -35,6 +35,8 @@ public class SearchActivity extends BannerBaseLogoutTimerActivity implements Sea
 
     CourseListAdapter mListAdapter;
 
+
+
     ArrayList<Course> mSearchResults;
 
     SearchView mSearchView;
