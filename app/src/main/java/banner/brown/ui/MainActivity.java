@@ -131,6 +131,7 @@ public class MainActivity extends BannerBaseLogoutTimerActivity
     @Override
     public void onResume() {
         super.onResume();
+        getSupportActionBar().setTitle(BannerApplication.curSelectedSemester.toString());
         BannerAPI.getCurrentCourses(new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
