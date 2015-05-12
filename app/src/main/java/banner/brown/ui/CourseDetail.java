@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.os.Build;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -168,11 +169,18 @@ public class CourseDetail extends BannerBaseLogoutTimerActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.add_to_cart) {
-            BannerAPI.addToCart(CRN, new Response.Listener(){
+            BannerAPI.addToCart(CRN, new Response.Listener<String>(){
 
                 @Override
-                public void onResponse(Object response) {
-                    Object x = response;
+                public void onResponse(String response) {
+                    if (response.toLowerCase().contains("success")) {
+                        Intent main = new Intent(CourseDetail.this, MainActivity.class);
+                        startActivity(main);
+
+                    } else {
+                        Toast.makeText(CourseDetail.this, response, Toast.LENGTH_SHORT).show();
+
+                    }
                 }
             }, new Response.ErrorListener() {
                 @Override
