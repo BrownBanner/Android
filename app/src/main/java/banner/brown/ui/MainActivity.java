@@ -198,11 +198,7 @@ public class MainActivity extends BannerBaseLogoutTimerActivity
         }
         else{
             WeekView.CollisionBuddies buds = event.getBuds();
-            String test = "";
-            for (WeekViewEvent e: buds.events){
-                test = test+e.getName()+" ";
-            }
-            Toast.makeText(MainActivity.this, test, Toast.LENGTH_LONG).show();
+            conflictAlert(buds.events);
         }
 
     }
@@ -234,14 +230,16 @@ public class MainActivity extends BannerBaseLogoutTimerActivity
 
                 Course currentCourse = new Course(course);
 
-                if (!BannerApplication.mCurrentCart.hasClass(currentCourse)){
-                                currentCourse.setColor(getNewColor());
-                                //currentCourse.setAsUnregistered();
-                                tempCart.addClass(currentCourse);
-                                mWeekView.notifyDatasetChanged();
-                            }
-                else {
-                    tempCart.addClass(BannerApplication.mCurrentCart.getCourse(currentCourse.getCRN()));
+                if (!tempCart.hasClass(currentCourse)) {
+
+                    if (!BannerApplication.mCurrentCart.hasClass(currentCourse)) {
+                        currentCourse.setColor(getNewColor());
+                        //currentCourse.setAsUnregistered();
+                        tempCart.addClass(currentCourse);
+                        mWeekView.notifyDatasetChanged();
+                    } else {
+                        tempCart.addClass(BannerApplication.mCurrentCart.getCourse(currentCourse.getCRN()));
+                    }
                 }
             }
 
@@ -258,36 +256,31 @@ public class MainActivity extends BannerBaseLogoutTimerActivity
         return mEventColors.get(currColIndex);
     }
 
-    private void openAlert(View view) {
+    private void conflictAlert(ArrayList<WeekViewEvent> events) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
 
-        alertDialogBuilder.setTitle(this.getTitle()+ " decision");
-        alertDialogBuilder.setMessage("Are you sure?");
-        // set positive button: Yes message
-        alertDialogBuilder.setPositiveButton("Yes",new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog,int id) {
-                // go to a new activity of the app
+        alertDialogBuilder.setTitle("Choose a class");
 
+        final CharSequence[] classes = new CharSequence[events.size()];
+        final String[] crns = new String[events.size()];
+
+        for (int i = 0; i < events.size(); i++) classes[i] = events.get(i).getName();
+        for (int i = 0; i < events.size(); i++) crns[i] = events.get(i).getId();
+
+        alertDialogBuilder.setItems(classes,new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,int id) {
+
+                Intent i = new Intent(MainActivity.this, CourseDetail.class);
+                String CRN = crns[id];
+                String name = classes[id].toString();
+                i.putExtra(CourseDetail.CRN_EXTRA, CRN);
+                i.putExtra(CourseDetail.COURSE_NAME_EXTRA, name );
+                startActivity(i);
             }
+
         });
 
-        // set negative button: No message
-        alertDialogBuilder.setNegativeButton("No",new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog,int id) {
-                // cancel the alert box and put a Toast to the user
-                dialog.cancel();
-                Toast.makeText(getApplicationContext(), "You chose a negative answer",
-                        Toast.LENGTH_LONG).show();
-            }
-        });
 
-        // set neutral button: Exit the app message
-        alertDialogBuilder.setNeutralButton("Exit the app",new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog,int id) {
-                // exit the app and go to the HOME
-                MainActivity.this.finish();
-            }
-        });
 
         AlertDialog alertDialog = alertDialogBuilder.create();
         // show alert

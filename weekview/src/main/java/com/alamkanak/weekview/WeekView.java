@@ -76,7 +76,7 @@ public class WeekView extends View {
 
     // Attributes and their default values.
     private int mHourHeight = 50;
-    private int mColumnGap = 10;
+    private int mColumnGap = 2;
     private int mFirstDayOfWeek = Calendar.MONDAY;
     private int mTextSize = 12;
     private int mHeaderColumnPadding = 10;
@@ -84,12 +84,12 @@ public class WeekView extends View {
     private int mNumberOfVisibleDays = 3;
     private int mHeaderRowPadding = 10;
     private int mHeaderRowBackgroundColor = Color.WHITE;
-    private int mDayBackgroundColor = Color.rgb(245, 245, 245);
+    private int mDayBackgroundColor = Color.WHITE;//Color.rgb(245, 245, 245);
     private int mHourSeparatorColor = Color.rgb(230, 230, 230);
     private int mTodayBackgroundColor = Color.rgb(239, 247, 254);
     private int mHourSeparatorHeight = 2;
-    private int mTodayHeaderTextColor = Color.rgb(39, 137, 228);
-    private int mEventTextSize = 12;
+    private int mTodayHeaderTextColor = Color.rgb(251,15,70);
+    private int mEventTextSize = 10;
     private int mEventTextColor = Color.BLACK;
     private int mEventPadding = 8;
     private int mHeaderColumnBackgroundColor = Color.WHITE;
@@ -241,7 +241,7 @@ public class WeekView extends View {
             mNumberOfVisibleDays = a.getInteger(R.styleable.WeekView_noOfVisibleDays, mNumberOfVisibleDays);
             mHeaderRowPadding = a.getDimensionPixelSize(R.styleable.WeekView_headerRowPadding, mHeaderRowPadding);
             mHeaderRowBackgroundColor = a.getColor(R.styleable.WeekView_headerRowBackgroundColor, mHeaderRowBackgroundColor);
-            mDayBackgroundColor = a.getColor(R.styleable.WeekView_dayBackgroundColor, mDayBackgroundColor);
+            //mDayBackgroundColor = a.getColor(R.styleable.WeekView_dayBackgroundColor, mDayBackgroundColor);
             mHourSeparatorColor = a.getColor(R.styleable.WeekView_hourSeparatorColor, mHourSeparatorColor);
             mTodayBackgroundColor = a.getColor(R.styleable.WeekView_todayBackgroundColor, mTodayBackgroundColor);
             mHourSeparatorHeight = a.getDimensionPixelSize(R.styleable.WeekView_hourSeparatorHeight, mHourSeparatorHeight);
@@ -298,7 +298,7 @@ public class WeekView extends View {
 
         // Prepare header background paint.
         mHeaderBackgroundPaint = new Paint();
-        mHeaderBackgroundPaint.setColor(Color.RED);
+        mHeaderBackgroundPaint.setColor(mHeaderColumnBackgroundColor);
 
         // Prepare day background color paint.
         mDayBackgroundPaint = new Paint();
@@ -595,13 +595,18 @@ public class WeekView extends View {
                         mEventRects.get(i).rectF = eventRectF;
                         mEventBackgroundPaint.setColor(mEventRects.get(i).event.getColor() == 0 ? mDefaultEventColor : mEventRects.get(i).event.getColor());
                         canvas.drawRect(mEventRects.get(i).rectF, mEventBackgroundPaint);
-                        drawText(mEventRects.get(i).event.getName(), mEventRects.get(i).rectF, canvas, originalTop, originalLeft);
+                        drawText(getNameNoSection(mEventRects.get(i).event.getName()), mEventRects.get(i).rectF, canvas, originalTop, originalLeft);
                     }
                     else
                         mEventRects.get(i).rectF = null;
                 }
             }
         }
+    }
+
+    private static String getNameNoSection(String fullNameString){
+        String[] split = fullNameString.split(" ");
+        return split[0] + " " + split[1];
     }
 
 
@@ -827,7 +832,6 @@ public class WeekView extends View {
         if (collisionGroup.size() > 1){
             CollisionBuddies cb = new CollisionBuddies();
             for (EventRect eRect: collisionGroup){
-                eRect.event.setColor(Color.BLACK);
                 cb.events.add(eRect.event);
                 eRect.event.setBuds(cb);
             }
