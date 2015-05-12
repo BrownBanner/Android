@@ -20,6 +20,9 @@ public class LoginActivity extends ActionBarActivity {
     public static String PPROD_LOGIN = "https://bannersso.cis-qas.brown.edu/SSB_PPRD";
     public static String PPROD_MAIN_PAGE = "https://selfservice-qas.brown.edu/ssPPRD/twbkwbis.P_GenMenu?name=bmenu.P_MainMnu";
 
+    public static String DPROD_LOGIN = "https://bannersso.cis-qas.brown.edu/SSB_DPRD";
+    public static String DPROD_MAIN_PAGE = "https://selfservice-qas.brown.edu/ssDPRD/twbkwbis.P_GenMenu?name=bmenu.P_MainMnu";
+
 
     public static String curLoginAPI = PPROD_LOGIN;
     public static String curLoginMain = PPROD_MAIN_PAGE;

@@ -34,6 +34,9 @@ public class BannerAPI {
 
     private static String DEV = "https://ords-qa.services.brown.edu:8443/pprd/banner/mobile";
 
+    private static String DPRD = "https://ords-qa.services.brown.edu:8443/dprd/banner/mobile";
+
+
     private static String TEST = "https://blooming-bastion-7117.herokuapp.com";
 
     public static String HOST = DEV;
