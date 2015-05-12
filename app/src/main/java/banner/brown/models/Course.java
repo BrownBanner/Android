@@ -80,6 +80,15 @@ public class Course {
 
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (((Course) o).getCRN().equals(getCRN())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public void setAsUnregistered(){
         mRegistered = false;
         setColor(mColor);

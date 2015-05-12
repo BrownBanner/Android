@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.os.Build;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -83,7 +84,7 @@ public class CourseDetail extends BannerBaseLogoutTimerActivity {
         mBookListButton = (RelativeLayout) findViewById(R.id.book_list_button);
         mCoursePreviewButton = (RelativeLayout) findViewById(R.id.course_preview_button);
         mCriticalReviewButton = (RelativeLayout) findViewById(R.id.critical_review_button);
-        mPrereqText = (TextView) findViewById(R.id.detail_prereq);
+//        mPrereqText = (TextView) findViewById(R.id.detail_prereq);
 
         mBookListButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,7 +153,7 @@ public class CourseDetail extends BannerBaseLogoutTimerActivity {
         mLocationText.setText(mCourse.getMeetingLocation());
         mDescriptionText.setText(mCourse.getDescription());
         mExamInfoText.setText(mCourse.getExamInfo());
-        mPrereqText.setText(mCourse.getPrereq());
+//        mPrereqText.setText(mCourse.getPrereq());
 
         mBookList = mCourse.getBookList();
         mCriticalReview = mCourse.getCriticialReview();
@@ -167,8 +168,25 @@ public class CourseDetail extends BannerBaseLogoutTimerActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_refresh) {
-            updateCourse();
+        if (id == R.id.add_to_cart) {
+            BannerAPI.addToCart(CRN, new Response.Listener<String>(){
+
+                @Override
+                public void onResponse(String response) {
+                    if (response.toLowerCase().contains("success")) {
+                        Intent main = new Intent(CourseDetail.this, MainActivity.class);
+                        startActivity(main);
+
+                    } else {
+                        Toast.makeText(CourseDetail.this, response, Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    VolleyError e = error;
+                }
+            });
             return true;
         } else if (id == android.R.id.home) {
             finish();

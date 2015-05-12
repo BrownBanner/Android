@@ -234,7 +234,7 @@ public class MainActivity extends BannerBaseLogoutTimerActivity
 
                 Course currentCourse = new Course(course);
 
-                if (!BannerApplication.mCurrentCart.hasClass(currentCourse.getCRN())){
+                if (!BannerApplication.mCurrentCart.hasClass(currentCourse)){
                                 currentCourse.setColor(getNewColor());
                                 //currentCourse.setAsUnregistered();
                                 tempCart.addClass(currentCourse);

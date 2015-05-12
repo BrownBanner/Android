@@ -56,8 +56,10 @@ public class BannerBaseLogoutTimerActivity extends ActionBarActivity {
         super.onUserInteraction();
 
         //Reset the timer on user interaction...
-        mCountdownTimer.cancel();
-        mCountdownTimer.start();
+        if (mCountdownTimer != null) {
+            mCountdownTimer.cancel();
+            mCountdownTimer.start();
+        }
     }
 
     public class LogoutCountdownTimer extends CountDownTimer {
@@ -84,8 +86,8 @@ public class BannerBaseLogoutTimerActivity extends ActionBarActivity {
 
     public static void logUserOut(Activity activity){
         BannerApplication.removeUserCookie();
+
         Intent i = new Intent(activity, LoginActivity.class);
-        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
         activity.startActivity(i);
         activity.finish();
     }

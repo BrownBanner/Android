@@ -10,4 +10,6 @@
     <dimen name="detail_vertical_margin">36dp</dimen>
     <dimen name="detail_vertical_padding_descriptor">7dp</dimen>
     <dimen name="detail_horizontal_padding_descriptor">16dp</dimen>
+    <dimen name="vertical_space_detail_page">16dp</dimen>
+
 </resources>
