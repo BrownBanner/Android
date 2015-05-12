@@ -575,6 +575,14 @@ public class WeekView extends View {
                         right -= mOverlappingEventGap;
                     if (left < mHeaderColumnWidth) left = mHeaderColumnWidth;
 
+                    //The event is in a collision
+                    if (mEventRects.get(i).width < 1){
+                        CollisionBuddies buds = mEventRects.get(i).event.getBuds();
+
+                    }
+
+
+
                     // Draw the event and the event name on top of it.
                     RectF eventRectF = new RectF(left, top, right, bottom);
                     if (bottom > mHeaderTextHeight + mHeaderRowPadding * 2 + mHeaderMarginBottom + mTimeTextHeight/2 && left < right &&
@@ -632,7 +640,15 @@ public class WeekView extends View {
         canvas.restore();
     }
 
+    public class CollisionBuddies {
 
+        public ArrayList<WeekViewEvent> events;
+
+        public CollisionBuddies(){
+            events = new ArrayList<>();
+        }
+
+    }
     /**
      * A class to hold reference to the events and their visual representation. An EventRect is
      * actually the rectangle that is drawn on the calendar for a given event. There may be more
@@ -706,30 +722,6 @@ public class WeekView extends View {
             }
             mFetchedMonths[0] = previousMonth;
         }
-
-        // Get events of this month.
-//        if (mFetchedMonths[1] < 1 || mFetchedMonths[1] != day.get(Calendar.MONTH)+1 || mRefreshEvents) {
-//            if (!containsValue(lastFetchedMonth, day.get(Calendar.MONTH)+1) && !isInEditMode()) {
-//                List<WeekViewEvent> events = mMonthChangeListener.onMonthChange(day.get(Calendar.YEAR), day.get(Calendar.MONTH) + 1);
-//                sortEvents(events);
-//                for (WeekViewEvent event : events) {
-//                    cacheEvent(event);
-//                }
-//            }
-//            mFetchedMonths[1] = day.get(Calendar.MONTH)+1;
-//        }
-
-        // Get events of next month.
-//        if (mFetchedMonths[2] < 1 || mFetchedMonths[2] != nextMonth || mRefreshEvents) {
-//            if (!containsValue(lastFetchedMonth, nextMonth) && !isInEditMode()) {
-//                List<WeekViewEvent> events = mMonthChangeListener.onMonthChange(nextMonth == 1 ? day.get(Calendar.YEAR) + 1 : day.get(Calendar.YEAR), nextMonth);
-//                sortEvents(events);
-//                for (WeekViewEvent event : events) {
-//                    cacheEvent(event);
-//                }
-//            }
-//            mFetchedMonths[2] = nextMonth;
-//        }
 
         // Prepare to calculate positions of each events.
         ArrayList<EventRect> tempEvents = new ArrayList<EventRect>(mEventRects);
@@ -827,6 +819,18 @@ public class WeekView extends View {
 
         for (List<EventRect> collisionGroup : collisionGroups) {
             expandEventsToMaxWidth(collisionGroup);
+            changeColorsCollided(collisionGroup);
+        }
+    }
+
+    private void changeColorsCollided(List<EventRect> collisionGroup) {
+        if (collisionGroup.size() > 1){
+            CollisionBuddies cb = new CollisionBuddies();
+            for (EventRect eRect: collisionGroup){
+                eRect.event.setColor(Color.BLACK);
+                cb.events.add(eRect.event);
+                eRect.event.setBuds(cb);
+            }
         }
     }
 
@@ -1494,5 +1498,7 @@ public class WeekView extends View {
     private boolean isSameDay(Calendar dayOne, Calendar dayTwo) {
         return dayOne.get(Calendar.YEAR) == dayTwo.get(Calendar.YEAR) && dayOne.get(Calendar.DAY_OF_YEAR) == dayTwo.get(Calendar.DAY_OF_YEAR);
     }
+
+
 
 }

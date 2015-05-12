@@ -13,6 +13,10 @@ import java.util.Calendar;
 /**
  * Class representing a course
  */
+
+//https://ords-qa.services.brown.edu:8443/pprd/banner/mobile/cartbyid?term=201420&in_id=100445912
+    //getting a cart
+
 public class Course {
 
     private String mTitle;
