@@ -12,24 +12,22 @@ public class Cart {
 //    public final String name;
 //    public final String term;
     private ArrayList<Course> courses;
-    private ArrayList<String> crns;
 
     public Cart(){
 //        name = cartName;
 //        term = cartTerm;
         courses = new ArrayList<Course>();
-        crns = new ArrayList<String>();
     }
 
     public void addClass(Course course){
-        courses.add(course); crns.add(course.getCRN());
+        courses.add(course);
     }
 
     public void removeClass(Course course){
-        courses.remove(course); crns.remove(course.getCRN());
+        courses.remove(course);
     }
 
-    public boolean hasClass(String crn) {return crns.contains(crn);}
+    public boolean hasClass(Course course) {return courses.contains(course);}
 
     public ArrayList<Course> getCourses(){
         return courses;

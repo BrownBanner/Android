@@ -179,7 +179,6 @@ public class CourseDetail extends BannerBaseLogoutTimerActivity {
 
                     } else {
                         Toast.makeText(CourseDetail.this, response, Toast.LENGTH_SHORT).show();
-
                     }
                 }
             }, new Response.ErrorListener() {
