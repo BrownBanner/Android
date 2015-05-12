@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="main"><source path="/Users/kappi/Documents/Werk/CourseCub/BannerApp/Android/weekview/src/main/assets"/></dataSet><dataSet config="release"><source path="/Users/kappi/Documents/Werk/CourseCub/BannerApp/Android/weekview/src/release/assets"/></dataSet></merger>
+<merger version="3"><dataSet config="main"><source path="/Users/Andy/Documents/Banner/weekview/src/main/assets"/></dataSet><dataSet config="release"><source path="/Users/Andy/Documents/Banner/weekview/src/release/assets"/></dataSet></merger>

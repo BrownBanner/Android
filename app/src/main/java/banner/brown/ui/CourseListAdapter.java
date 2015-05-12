@@ -37,41 +37,32 @@ public class CourseListAdapter extends ArrayAdapter<Course>{
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            View row = convertView;
-            InfoHolder holder = null;
-
-            if(row == null)
-            {
-                LayoutInflater inflater = ((Activity)context).getLayoutInflater();
-                row = inflater.inflate(layoutResourceId, parent, false);
-
-                holder = new InfoHolder();
-                holder.abbrev = (TextView)row.findViewById(R.id.listViewAbbreviation);
-                holder.title = (TextView)row.findViewById(R.id.listViewTitle);
-
-                row.setTag(holder);
+            View view = convertView;
+            if (view == null) {
+                LayoutInflater vi = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                view = vi.inflate(layoutResourceId, null);
             }
-            else
-            {
-                holder = (InfoHolder)row.getTag();
-            }
+
+            TextView abbrev = (TextView) view.findViewById(R.id.listViewAbbreviation);
+            TextView title = (TextView)view.findViewById(R.id.listViewTitle);
+
+
 
             Course item = data.get(position);
-            holder.title.setText(item.getTitle());
-            holder.abbrev.setText(item.getSubjectCode());
             Course cartCourse = BannerApplication.mCurrentCart.getCourse(item.getCRN());
+
+
             if (cartCourse != null) {
-                row.findViewById(R.id.course_list_row_background).setBackgroundColor(context.getResources().getColor(R.color.registeredRed));
+                view.findViewById(R.id.course_list_row_background).setBackgroundColor(context.getResources().getColor(R.color.registeredRed));
+            } else {
+                view.findViewById(R.id.course_list_row_background).setBackgroundColor(context.getResources().getColor(android.R.color.white));
             }
-
-            return row;
+            title.setText(item.getTitle());
+            abbrev.setText(item.getSubjectCode());
+            return view;
         }
 
-        static class InfoHolder
-        {
-            TextView abbrev;
-            TextView title;
-        }
+
 
     }
 
