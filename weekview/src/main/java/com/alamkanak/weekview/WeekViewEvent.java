@@ -12,6 +12,7 @@ public class WeekViewEvent {
     private Calendar mEndTime;
     private String mName;
     private int mColor;
+    private WeekView.CollisionBuddies buds;
 
     public WeekViewEvent(){
 
@@ -106,5 +107,13 @@ public class WeekViewEvent {
 
     public void setId(String id) {
         this.mId = id;
+    }
+
+    public void setBuds(WeekView.CollisionBuddies buds) {
+        this.buds = buds;
+    }
+
+    public WeekView.CollisionBuddies getBuds() {
+        return buds;
     }
 }

@@ -1,5 +1,7 @@
 package banner.brown.ui;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.RectF;
@@ -8,6 +10,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.alamkanak.weekview.WeekView;
@@ -185,13 +188,19 @@ public class MainActivity extends BannerBaseLogoutTimerActivity
 
     @Override
     public void onEventClick(WeekViewEvent event, RectF eventRect) {
-        Toast.makeText(MainActivity.this, "Clicked " + event.getId(), Toast.LENGTH_SHORT).show();
-        Intent i = new Intent(this, CourseDetail.class);
-        String CRN = event.getId();
-        String name = event.getName();
-        i.putExtra(CourseDetail.CRN_EXTRA, CRN);
-        i.putExtra(CourseDetail.COURSE_NAME_EXTRA, name );
-        startActivity(i);
+        if (event.getBuds() == null){
+            Intent i = new Intent(this, CourseDetail.class);
+            String CRN = event.getId();
+            String name = event.getName();
+            i.putExtra(CourseDetail.CRN_EXTRA, CRN);
+            i.putExtra(CourseDetail.COURSE_NAME_EXTRA, name );
+            startActivity(i);
+        }
+        else{
+            WeekView.CollisionBuddies buds = event.getBuds();
+            conflictAlert(buds.events);
+        }
+
     }
 
     @Override
@@ -221,14 +230,16 @@ public class MainActivity extends BannerBaseLogoutTimerActivity
 
                 Course currentCourse = new Course(course);
 
-                if (!BannerApplication.mCurrentCart.hasClass(currentCourse)){
-                                currentCourse.setColor(getNewColor());
-                                //currentCourse.setAsUnregistered();
-                                tempCart.addClass(currentCourse);
-                                mWeekView.notifyDatasetChanged();
-                            }
-                else {
-                    tempCart.addClass(BannerApplication.mCurrentCart.getCourse(currentCourse.getCRN()));
+                if (!tempCart.hasClass(currentCourse)) {
+
+                    if (!BannerApplication.mCurrentCart.hasClass(currentCourse)) {
+                        currentCourse.setColor(getNewColor());
+                        //currentCourse.setAsUnregistered();
+                        tempCart.addClass(currentCourse);
+                        mWeekView.notifyDatasetChanged();
+                    } else {
+                        tempCart.addClass(BannerApplication.mCurrentCart.getCourse(currentCourse.getCRN()));
+                    }
                 }
             }
 
@@ -244,6 +255,38 @@ public class MainActivity extends BannerBaseLogoutTimerActivity
         if (currColIndex >= mEventColors.size()) {currColIndex = 0;}
         return mEventColors.get(currColIndex);
     }
+
+    private void conflictAlert(ArrayList<WeekViewEvent> events) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
+
+        alertDialogBuilder.setTitle("Choose a class");
+
+        final CharSequence[] classes = new CharSequence[events.size()];
+        final String[] crns = new String[events.size()];
+
+        for (int i = 0; i < events.size(); i++) classes[i] = events.get(i).getName();
+        for (int i = 0; i < events.size(); i++) crns[i] = events.get(i).getId();
+
+        alertDialogBuilder.setItems(classes,new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,int id) {
+
+                Intent i = new Intent(MainActivity.this, CourseDetail.class);
+                String CRN = crns[id];
+                String name = classes[id].toString();
+                i.putExtra(CourseDetail.CRN_EXTRA, CRN);
+                i.putExtra(CourseDetail.COURSE_NAME_EXTRA, name );
+                startActivity(i);
+            }
+
+        });
+
+
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        // show alert
+        alertDialog.show();
+    }
+
 
 
 }

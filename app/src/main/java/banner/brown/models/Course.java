@@ -15,6 +15,10 @@ import java.util.Calendar;
  */
 public class Course implements Comparable {
 
+//https://ords-qa.services.brown.edu:8443/pprd/banner/mobile/cartbyid?term=201420&in_id=100445912
+    //getting a cart
+
+
     private String mTitle;
     private int mYear;
     private int mSemester; //1 for spring, 2 for fall
@@ -150,13 +154,18 @@ public class Course implements Comparable {
             endTime.set(Calendar.HOUR_OF_DAY, Integer.parseInt(times[1].substring(0,2)) - OFFSET);
             endTime.set(Calendar.MINUTE, Integer.parseInt(times[1].substring(2,4)));
             endTime.set(Calendar.MONTH, 1);
-            WeekViewEvent event = new WeekViewEvent(getCRN(), getTitle(), startTime, endTime);
+            WeekViewEvent event = new WeekViewEvent(getCRN(), getSubjectCode(), startTime, endTime);
             event.setColor(mColor);
 
             toRet.add(event);
         }
 
         return toRet;
+    }
+
+    public static String getNameNoSection(String fullNameString){
+        String[] split = fullNameString.split(" ");
+        return split[0] + " " + split[1];
     }
 
     public String getCRN() {

@@ -76,7 +76,7 @@ public class WeekView extends View {
 
     // Attributes and their default values.
     private int mHourHeight = 50;
-    private int mColumnGap = 10;
+    private int mColumnGap = 2;
     private int mFirstDayOfWeek = Calendar.MONDAY;
     private int mTextSize = 12;
     private int mHeaderColumnPadding = 10;
@@ -84,12 +84,12 @@ public class WeekView extends View {
     private int mNumberOfVisibleDays = 3;
     private int mHeaderRowPadding = 10;
     private int mHeaderRowBackgroundColor = Color.WHITE;
-    private int mDayBackgroundColor = Color.rgb(245, 245, 245);
+    private int mDayBackgroundColor = Color.WHITE;//Color.rgb(245, 245, 245);
     private int mHourSeparatorColor = Color.rgb(230, 230, 230);
     private int mTodayBackgroundColor = Color.rgb(239, 247, 254);
     private int mHourSeparatorHeight = 2;
-    private int mTodayHeaderTextColor = Color.rgb(39, 137, 228);
-    private int mEventTextSize = 12;
+    private int mTodayHeaderTextColor = Color.rgb(251,15,70);
+    private int mEventTextSize = 10;
     private int mEventTextColor = Color.BLACK;
     private int mEventPadding = 8;
     private int mHeaderColumnBackgroundColor = Color.WHITE;
@@ -241,7 +241,7 @@ public class WeekView extends View {
             mNumberOfVisibleDays = a.getInteger(R.styleable.WeekView_noOfVisibleDays, mNumberOfVisibleDays);
             mHeaderRowPadding = a.getDimensionPixelSize(R.styleable.WeekView_headerRowPadding, mHeaderRowPadding);
             mHeaderRowBackgroundColor = a.getColor(R.styleable.WeekView_headerRowBackgroundColor, mHeaderRowBackgroundColor);
-            mDayBackgroundColor = a.getColor(R.styleable.WeekView_dayBackgroundColor, mDayBackgroundColor);
+            //mDayBackgroundColor = a.getColor(R.styleable.WeekView_dayBackgroundColor, mDayBackgroundColor);
             mHourSeparatorColor = a.getColor(R.styleable.WeekView_hourSeparatorColor, mHourSeparatorColor);
             mTodayBackgroundColor = a.getColor(R.styleable.WeekView_todayBackgroundColor, mTodayBackgroundColor);
             mHourSeparatorHeight = a.getDimensionPixelSize(R.styleable.WeekView_hourSeparatorHeight, mHourSeparatorHeight);
@@ -298,7 +298,7 @@ public class WeekView extends View {
 
         // Prepare header background paint.
         mHeaderBackgroundPaint = new Paint();
-        mHeaderBackgroundPaint.setColor(Color.RED);
+        mHeaderBackgroundPaint.setColor(mHeaderColumnBackgroundColor);
 
         // Prepare day background color paint.
         mDayBackgroundPaint = new Paint();
@@ -575,6 +575,14 @@ public class WeekView extends View {
                         right -= mOverlappingEventGap;
                     if (left < mHeaderColumnWidth) left = mHeaderColumnWidth;
 
+                    //The event is in a collision
+                    if (mEventRects.get(i).width < 1){
+                        CollisionBuddies buds = mEventRects.get(i).event.getBuds();
+
+                    }
+
+
+
                     // Draw the event and the event name on top of it.
                     RectF eventRectF = new RectF(left, top, right, bottom);
                     if (bottom > mHeaderTextHeight + mHeaderRowPadding * 2 + mHeaderMarginBottom + mTimeTextHeight/2 && left < right &&
@@ -587,13 +595,18 @@ public class WeekView extends View {
                         mEventRects.get(i).rectF = eventRectF;
                         mEventBackgroundPaint.setColor(mEventRects.get(i).event.getColor() == 0 ? mDefaultEventColor : mEventRects.get(i).event.getColor());
                         canvas.drawRect(mEventRects.get(i).rectF, mEventBackgroundPaint);
-                        drawText(mEventRects.get(i).event.getName(), mEventRects.get(i).rectF, canvas, originalTop, originalLeft);
+                        drawText(getNameNoSection(mEventRects.get(i).event.getName()), mEventRects.get(i).rectF, canvas, originalTop, originalLeft);
                     }
                     else
                         mEventRects.get(i).rectF = null;
                 }
             }
         }
+    }
+
+    private static String getNameNoSection(String fullNameString){
+        String[] split = fullNameString.split(" ");
+        return split[0] + " " + split[1];
     }
 
 
@@ -632,7 +645,15 @@ public class WeekView extends View {
         canvas.restore();
     }
 
+    public class CollisionBuddies {
 
+        public ArrayList<WeekViewEvent> events;
+
+        public CollisionBuddies(){
+            events = new ArrayList<>();
+        }
+
+    }
     /**
      * A class to hold reference to the events and their visual representation. An EventRect is
      * actually the rectangle that is drawn on the calendar for a given event. There may be more
@@ -706,30 +727,6 @@ public class WeekView extends View {
             }
             mFetchedMonths[0] = previousMonth;
         }
-
-        // Get events of this month.
-//        if (mFetchedMonths[1] < 1 || mFetchedMonths[1] != day.get(Calendar.MONTH)+1 || mRefreshEvents) {
-//            if (!containsValue(lastFetchedMonth, day.get(Calendar.MONTH)+1) && !isInEditMode()) {
-//                List<WeekViewEvent> events = mMonthChangeListener.onMonthChange(day.get(Calendar.YEAR), day.get(Calendar.MONTH) + 1);
-//                sortEvents(events);
-//                for (WeekViewEvent event : events) {
-//                    cacheEvent(event);
-//                }
-//            }
-//            mFetchedMonths[1] = day.get(Calendar.MONTH)+1;
-//        }
-
-        // Get events of next month.
-//        if (mFetchedMonths[2] < 1 || mFetchedMonths[2] != nextMonth || mRefreshEvents) {
-//            if (!containsValue(lastFetchedMonth, nextMonth) && !isInEditMode()) {
-//                List<WeekViewEvent> events = mMonthChangeListener.onMonthChange(nextMonth == 1 ? day.get(Calendar.YEAR) + 1 : day.get(Calendar.YEAR), nextMonth);
-//                sortEvents(events);
-//                for (WeekViewEvent event : events) {
-//                    cacheEvent(event);
-//                }
-//            }
-//            mFetchedMonths[2] = nextMonth;
-//        }
 
         // Prepare to calculate positions of each events.
         ArrayList<EventRect> tempEvents = new ArrayList<EventRect>(mEventRects);
@@ -827,6 +824,17 @@ public class WeekView extends View {
 
         for (List<EventRect> collisionGroup : collisionGroups) {
             expandEventsToMaxWidth(collisionGroup);
+            changeColorsCollided(collisionGroup);
+        }
+    }
+
+    private void changeColorsCollided(List<EventRect> collisionGroup) {
+        if (collisionGroup.size() > 1){
+            CollisionBuddies cb = new CollisionBuddies();
+            for (EventRect eRect: collisionGroup){
+                cb.events.add(eRect.event);
+                eRect.event.setBuds(cb);
+            }
         }
     }
 
@@ -1494,5 +1502,7 @@ public class WeekView extends View {
     private boolean isSameDay(Calendar dayOne, Calendar dayTwo) {
         return dayOne.get(Calendar.YEAR) == dayTwo.get(Calendar.YEAR) && dayOne.get(Calendar.DAY_OF_YEAR) == dayTwo.get(Calendar.DAY_OF_YEAR);
     }
+
+
 
 }
