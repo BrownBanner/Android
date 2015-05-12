@@ -154,4 +154,19 @@ public class BannerAPI {
 
     }
 
+    public static void removeFromCart(String crn, Response.Listener listener, Response.ErrorListener error) {
+        String semester = BannerApplication.getInstance().curSelectedSemester.getSemesterCode();
+
+        removeFromCart(semester, crn, listener, error);
+    }
+
+    private static void removeFromCart(String term, String crn, Response.Listener<String> listener, Response.ErrorListener error) {
+
+        String url = HOST + "/cart?term=" + term  + "&in_id=" + BannerApplication.curCookie + "&crn=" + crn + "&in_type=D";
+
+        StringRequest request = new StringRequest(Request.Method.GET, url, listener, error);
+        BannerApplication.getInstance().addToRequestQueue(request);
+
+    }
+
 }

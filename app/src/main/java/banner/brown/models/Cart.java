@@ -29,6 +29,7 @@ public class Cart {
 
     public boolean hasClass(Course course) {return courses.contains(course);}
 
+
     public ArrayList<Course> getCourses(){
         return courses;
     }

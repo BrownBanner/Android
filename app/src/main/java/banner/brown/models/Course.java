@@ -167,6 +167,11 @@ public class Course {
         return mSubjectCode;
     }
 
+    public boolean getRegistered() {
+        return mRegistered;
+    }
+
+
     public String getMeetingTime() {
         return mMeetingTime;
     }

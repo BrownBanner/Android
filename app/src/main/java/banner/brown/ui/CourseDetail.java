@@ -2,16 +2,11 @@ package banner.brown.ui;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.os.Build;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,16 +18,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import banner.brown.BannerApplication;
 import banner.brown.api.BannerAPI;
 import banner.brown.models.Course;
-import banner.brown.ui.R;
 
 public class CourseDetail extends BannerBaseLogoutTimerActivity {
 
     public static String CRN_EXTRA = "crn_extra";
     public static String COURSE_NAME_EXTRA = "course_name_extra";
 
-    private String CRN = "";
+    private String mCrn = "";
 
     private Course mCourse;
 
@@ -46,6 +41,7 @@ public class CourseDetail extends BannerBaseLogoutTimerActivity {
     private TextView mCRNText;
     private TextView mExamInfoText;
     private TextView mPrereqText;
+    private ImageView mInCart;
 
 
     private RelativeLayout mBookListButton;
@@ -67,7 +63,7 @@ public class CourseDetail extends BannerBaseLogoutTimerActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Bundle b = getIntent().getExtras();
-        CRN = b.getString(CRN_EXTRA);
+        mCrn = b.getString(CRN_EXTRA);
         String title = b.getString(COURSE_NAME_EXTRA);
 
         getSupportActionBar().setTitle(title);
@@ -84,7 +80,12 @@ public class CourseDetail extends BannerBaseLogoutTimerActivity {
         mBookListButton = (RelativeLayout) findViewById(R.id.book_list_button);
         mCoursePreviewButton = (RelativeLayout) findViewById(R.id.course_preview_button);
         mCriticalReviewButton = (RelativeLayout) findViewById(R.id.critical_review_button);
-//        mPrereqText = (TextView) findViewById(R.id.detail_prereq);
+        mPrereqText = (TextView) findViewById(R.id.detail_prereq);
+        mInCart = (ImageView) findViewById(R.id.in_cart);
+
+        if (BannerApplication.mCurrentCart.getCourse(mCrn) != null) {
+            mInCart.setVisibility(View.VISIBLE);
+        }
 
         mBookListButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,7 +121,7 @@ public class CourseDetail extends BannerBaseLogoutTimerActivity {
     }
 
     private void updateCourse() {
-        BannerAPI.getCourseByCRN(CRN, new Response.Listener<JSONObject>() {
+        BannerAPI.getCourseByCRN(mCrn, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
@@ -153,7 +154,7 @@ public class CourseDetail extends BannerBaseLogoutTimerActivity {
         mLocationText.setText(mCourse.getMeetingLocation());
         mDescriptionText.setText(mCourse.getDescription());
         mExamInfoText.setText(mCourse.getExamInfo());
-//        mPrereqText.setText(mCourse.getPrereq());
+        mPrereqText.setText(mCourse.getPrereq());
 
         mBookList = mCourse.getBookList();
         mCriticalReview = mCourse.getCriticialReview();
@@ -169,7 +170,7 @@ public class CourseDetail extends BannerBaseLogoutTimerActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.add_to_cart) {
-            BannerAPI.addToCart(CRN, new Response.Listener<String>(){
+            BannerAPI.addToCart(mCrn, new Response.Listener<String>(){
 
                 @Override
                 public void onResponse(String response) {
@@ -188,6 +189,30 @@ public class CourseDetail extends BannerBaseLogoutTimerActivity {
                 }
             });
             return true;
+        } else if (id == R.id.remove_from_cart) {
+            Course cartCourse = BannerApplication.mCurrentCart.getCourse(mCrn);
+            if (!cartCourse.getRegistered()) {
+                BannerAPI.removeFromCart(mCrn, new Response.Listener<String>() {
+
+                    @Override
+                    public void onResponse(String response) {
+                        if (response.toLowerCase().contains("success")) {
+                            Intent main = new Intent(CourseDetail.this, MainActivity.class);
+                            startActivity(main);
+
+                        } else {
+                            Toast.makeText(CourseDetail.this, response, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        VolleyError e = error;
+                    }
+                });
+            } else {
+                Toast.makeText(CourseDetail.this, "You can't remove a course you're registered for", Toast.LENGTH_SHORT).show();
+            }
         } else if (id == android.R.id.home) {
             finish();
             return true;
@@ -199,8 +224,14 @@ public class CourseDetail extends BannerBaseLogoutTimerActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+            Course cartCourse = BannerApplication.mCurrentCart.getCourse(mCrn);
+            if (cartCourse != null) {
+                getMenuInflater().inflate(R.menu.menu_course_detail_remove, menu);
 
-            getMenuInflater().inflate(R.menu.menu_course_detail, menu);
+
+            } else {
+                getMenuInflater().inflate(R.menu.menu_course_detail, menu);
+            }
             return true;
 
     }
