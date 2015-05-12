@@ -23,7 +23,6 @@ import banner.brown.api.BannerAPI;
 import banner.brown.models.Cart;
 import banner.brown.models.Semester;
 import banner.brown.ui.BannerBaseLogoutTimerActivity;
-import banner.brown.ui.DepartmentsActivity;
 import banner.brown.ui.LoginActivity;
 
 /**

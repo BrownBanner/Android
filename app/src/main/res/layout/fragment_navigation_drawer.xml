@@ -22,17 +22,17 @@
      </LinearLayout>
     <include layout="@layout/light_line" android:paddingTop="8dp" android:paddingBottom="8dp"></include>
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:id="@+id/department_drawer"
-        style="@style/BannerDrawerSection">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/BannerBody2"
-            android:gravity="center_vertical"
-            android:text="Departments"/>
-    </LinearLayout>
+    <!--<LinearLayout-->
+        <!--android:orientation="horizontal"-->
+        <!--android:id="@+id/department_drawer"-->
+        <!--style="@style/BannerDrawerSection">-->
+        <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--style="@style/BannerBody2"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:text="Departments"/>-->
+    <!--</LinearLayout>-->
     <include layout="@layout/light_line" android:paddingTop="8dp" android:paddingBottom="8dp"></include>
 
     <LinearLayout

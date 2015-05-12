@@ -25,7 +25,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import banner.brown.api.BannerAPI;
+import banner.brown.api.DepartmentList;
 import banner.brown.models.Course;
+import banner.brown.models.listHeader;
 import banner.brown.ui.R;
 
 public class SearchActivity extends BannerBaseLogoutTimerActivity implements SearchView.OnQueryTextListener, AdapterView.OnItemClickListener {
@@ -35,10 +37,13 @@ public class SearchActivity extends BannerBaseLogoutTimerActivity implements Sea
 
     CourseListAdapter mListAdapter;
 
-
+    CourseCubListAdapter mDepartmentAdapter;
 
     ArrayList<Course> mSearchResults;
 
+    ArrayList<listHeader> mDepartmentList;
+
+    private boolean mSearching = false;
     SearchView mSearchView;
 
     @Override
@@ -48,7 +53,14 @@ public class SearchActivity extends BannerBaseLogoutTimerActivity implements Sea
         mListView = (ListView) findViewById(R.id.search_list);
         mSearchResults = new ArrayList<>();
         mListAdapter = new CourseListAdapter(this,  R.layout.general_list_view_row, mSearchResults);
-        mListView.setAdapter(mListAdapter);
+
+        mDepartmentList = new ArrayList<listHeader>();
+
+        for (int i = 0; i < DepartmentList.titles.size();i++){
+            mDepartmentList.add(new listHeader(DepartmentList.abbreviations.get(i),DepartmentList.titles.get(i)));
+        }
+        mDepartmentAdapter = new CourseCubListAdapter(this,R.layout.general_list_view_row, mDepartmentList);
+        mListView.setAdapter(mDepartmentAdapter);
 
         mListView.setOnItemClickListener(this);
 
@@ -68,7 +80,7 @@ public class SearchActivity extends BannerBaseLogoutTimerActivity implements Sea
         MenuItem item = menu.findItem(R.id.search_courses_in_activity);
         item.expandActionView();
 
-        MenuItemCompat.setOnActionExpandListener(item,new MenuItemCompat.OnActionExpandListener() {
+        MenuItemCompat.setOnActionExpandListener(item, new MenuItemCompat.OnActionExpandListener() {
 
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
@@ -117,7 +129,9 @@ public class SearchActivity extends BannerBaseLogoutTimerActivity implements Sea
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        if (newText.length() > 1) {
+        if (newText.length() > 0) {
+            mSearching = true;
+            mListView.setAdapter(mListAdapter);
 
             BannerAPI.searchCourses(newText, new Response.Listener<JSONObject>() {
                 @Override
@@ -146,17 +160,31 @@ public class SearchActivity extends BannerBaseLogoutTimerActivity implements Sea
                 }
             });
             return true;
+        } else {
+            mSearching = false;
+            mListView.setAdapter(mDepartmentAdapter);
+            return true;
         }
-        return false;
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Intent i = new Intent(this, CourseDetail.class);
-        String CRN = mSearchResults.get(position).getCRN();
-        String name = mSearchResults.get(position).getSubjectCode();
-        i.putExtra(CourseDetail.CRN_EXTRA, CRN);
-        i.putExtra(CourseDetail.COURSE_NAME_EXTRA, name );
-        startActivity(i);
+        if (mSearching) {
+            Intent i = new Intent(this, CourseDetail.class);
+            String CRN = mSearchResults.get(position).getCRN();
+            String name = mSearchResults.get(position).getSubjectCode();
+            i.putExtra(CourseDetail.CRN_EXTRA, CRN);
+            i.putExtra(CourseDetail.COURSE_NAME_EXTRA, name);
+            startActivity(i);
+        } else {
+
+            Intent i = new Intent(this, CourseListActivity.class);
+            String dept = mDepartmentList.get(position).abbrev;
+            String full = mDepartmentList.get(position).title;
+            i.putExtra(CourseListActivity.DEPT_ABBREV_EXTRA, dept);
+            i.putExtra(CourseListActivity.DEPT_FULL_EXTRA, full);
+            startActivity(i);
+
+        }
     }
 }

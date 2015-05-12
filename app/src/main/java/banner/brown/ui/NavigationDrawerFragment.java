@@ -102,7 +102,7 @@ public class NavigationDrawerFragment extends Fragment implements View.OnClickLi
                              Bundle savedInstanceState) {
         mDrawerViews = (LinearLayout) inflater.inflate(
                 R.layout.fragment_navigation_drawer, container, false);
-        mDrawerViews.findViewById(R.id.department_drawer).setOnClickListener(this);
+//        mDrawerViews.findViewById(R.id.department_drawer).setOnClickListener(this);
         mDrawerViews.findViewById(R.id.logout_drawer).setOnClickListener(this);
 
 
@@ -287,25 +287,29 @@ public class NavigationDrawerFragment extends Fragment implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.department_drawer) {
-            Intent myIntent = new Intent(getActivity(), DepartmentsActivity.class);
-            //myIntent.putExtra("key", value); //Optional parameters
-            getActivity().startActivity(myIntent);
-//        } else if (v.getId() == 1) {
-//            Intent myIntent = new Intent(getActivity(), LoginActivity.class);
-//
+//        if (mDrawerLayout != null) {
+//            mDrawerLayout.closeDrawer(mFragmentContainerView);
+//        }
+//        if (v.getId() == R.id.department_drawer) {
+//            Intent myIntent = new Intent(getActivity(), DepartmentsActivity.class);
+//            //myIntent.putExtra("key", value); //Optional parameters
 //            getActivity().startActivity(myIntent);
-//        }
-//        if (mDrawerListView != null) {
-//            mDrawerListView.setItemChecked(position, true);
-//        }
-            if (mDrawerLayout != null) {
-                mDrawerLayout.closeDrawer(mFragmentContainerView);
-            }
-//        if (mCallbacks != null) {
-//            mCallbacks.onNavigationDrawerItemSelected(position);
-//        }
-        } else if (v.getId() == R.id.logout_drawer) {
+////        } else if (v.getId() == 1) {
+////            Intent myIntent = new Intent(getActivity(), LoginActivity.class);
+////
+////            getActivity().startActivity(myIntent);
+////        }
+////        if (mDrawerListView != null) {
+////            mDrawerListView.setItemChecked(position, true);
+////        }
+//            if (mDrawerLayout != null) {
+//                mDrawerLayout.closeDrawer(mFragmentContainerView);
+//            }
+////        if (mCallbacks != null) {
+////            mCallbacks.onNavigationDrawerItemSelected(position);
+////        }
+//        } else
+        if (v.getId() == R.id.logout_drawer) {
             BannerBaseLogoutTimerActivity.logUserOut(getActivity());
             getActivity().finish();
         }
