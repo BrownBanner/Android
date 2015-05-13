@@ -242,10 +242,11 @@ public class BannerAPI {
                         Course c = new Course (course);
                         if (!c.getRegistered()) {
                             curCrns += c.getCRN();
+                            if (x < courses.length() - 1) {
+                                curCrns += ",";
+                            }
                         }
-                        if (x < courses.length() - 1) {
-                            curCrns += ",";
-                        }
+
                     }
                     if (curCrns.isEmpty()) {
                         getNamedCart(name, getNamedCartListener, error);
