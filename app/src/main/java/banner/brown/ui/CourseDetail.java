@@ -60,6 +60,8 @@ public class CourseDetail extends BannerBaseLogoutTimerActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_course_detail);
 
+        BannerApplication.showLoadingIcon(this);
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Bundle b = getIntent().getExtras();
@@ -125,6 +127,7 @@ public class CourseDetail extends BannerBaseLogoutTimerActivity {
             @Override
             public void onResponse(JSONObject response) {
                 try {
+
                     JSONArray courseList = response.getJSONArray("items");
                     if (courseList.length() > 0) {
                         mCourse = new Course(courseList.getJSONObject(0));
@@ -139,6 +142,7 @@ public class CourseDetail extends BannerBaseLogoutTimerActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                BannerApplication.hideLoadingIcon();
                 VolleyError x = error;
             }
         });
@@ -159,6 +163,8 @@ public class CourseDetail extends BannerBaseLogoutTimerActivity {
         mBookList = mCourse.getBookList();
         mCriticalReview = mCourse.getCriticialReview();
         mCoursePreview = mCourse.getCoursePreview();
+
+        BannerApplication.hideLoadingIcon();
     }
 
     @Override
