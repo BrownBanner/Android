@@ -203,11 +203,17 @@ public class NavigationDrawerFragment extends Fragment implements View.OnClickLi
                 mNamedCarts.removeAllViews();
                 LayoutInflater inflater = getActivity().getLayoutInflater();
 
-                for (String s : carts) {
+                for (final String s : carts) {
                     View toAdd = inflater.inflate(R.layout.name_cart_row, null);
                     TextView name = (TextView) toAdd.findViewById(R.id.name_cart_text);
                     name.setText(s);
                     mNamedCarts.addView(toAdd);
+                    toAdd.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            String x = s;
+                        }
+                    });
                 }
 
                 if (!mUserLearnedDrawer) {

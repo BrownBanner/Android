@@ -96,6 +96,7 @@ public class MainActivity extends BannerBaseLogoutTimerActivity
     @Override
     public void onResume() {
         super.onResume();
+        getSupportActionBar().setTitle(BannerApplication.curSelectedSemester.toString());
         BannerAPI.getCurrentCourses(new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -105,6 +106,19 @@ public class MainActivity extends BannerBaseLogoutTimerActivity
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        BannerAPI.getNamedCarts(new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+                BannerApplication.updateNamedCarts(response);
             }
         }, new Response.ErrorListener() {
             @Override
