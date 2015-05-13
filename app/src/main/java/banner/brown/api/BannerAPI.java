@@ -1,6 +1,8 @@
 package banner.brown.api;
 
+import android.content.Intent;
 import android.webkit.CookieManager;
+import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
@@ -9,6 +11,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URLEncoder;
@@ -26,6 +30,7 @@ import javax.net.ssl.X509TrustManager;
 import banner.brown.BannerApplication;
 import banner.brown.models.Course;
 import banner.brown.ui.LoginActivity;
+import banner.brown.ui.MainActivity;
 
 /**
  * Created by Andy on 2/16/15.
@@ -178,6 +183,89 @@ public class BannerAPI {
         JsonObjectRequest request = new JsonObjectRequest(url, null, listener, error);
         BannerApplication.getInstance().addToRequestQueue(request);
 
+    }
+
+    public static void bulkRemoveFromCart(String crnList, Response.Listener listener, Response.ErrorListener error) {
+        String semester = BannerApplication.getInstance().curSelectedSemester.getSemesterCode();
+
+        String url = HOST + "/cartBulkDML?term=" + semester  + "&in_id=" + BannerApplication.curCookie + "&crn_string=" + crnList + "&in_type=D";
+
+        StringRequest request = new StringRequest(Request.Method.GET, url, listener, error);
+        BannerApplication.getInstance().addToRequestQueue(request);
+    }
+
+    public static void bulkAdd(String crnList, Response.Listener listener, Response.ErrorListener error) {
+        String semester = BannerApplication.getInstance().curSelectedSemester.getSemesterCode();
+
+        String url = HOST + "/cartBulkDML?term=" + semester  + "&in_id=" + BannerApplication.curCookie + "&crn_string=" + crnList + "&in_type=I";
+
+        StringRequest request = new StringRequest(Request.Method.GET, url, listener, error);
+        BannerApplication.getInstance().addToRequestQueue(request);
+    }
+
+    public static void getNamedCart(String cartName, Response.Listener listener, Response.ErrorListener error) {
+        String semester = BannerApplication.getInstance().curSelectedSemester.getSemesterCode();
+
+        String url = HOST + "/cartbyname?term=" + semester  + "&in_id=" + BannerApplication.curCookie + "&cart_name=" + cartName;
+
+        JsonObjectRequest request = new JsonObjectRequest(url, null, listener, error);
+        BannerApplication.getInstance().addToRequestQueue(request);
+    }
+
+    public static void loadNamedCart(final String name,final Response.Listener listener, final Response.ErrorListener error) {
+
+        final Response.Listener getNamedCartListener = new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try{
+                    JSONArray carts = response.getJSONArray("items");
+                    if (carts.length() > 0) {
+                        JSONObject cart = carts.getJSONObject(0);
+                        String crnList = cart.getString("crn_list");
+                        bulkAdd(crnList, listener, error);
+
+                    }
+                } catch (JSONException e){
+
+                }
+            }
+        };
+
+        getCurrentCourses(new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    JSONArray courses = (response.getJSONArray("items"));
+                    String curCrns = "";
+                    for (int x = 0; x < courses.length(); x++) {
+                        JSONObject course = courses.getJSONObject(x);
+                        Course c = new Course (course);
+                        if (!c.getRegistered()) {
+                            curCrns += c.getCRN();
+                        }
+                        if (x < courses.length() - 1) {
+                            curCrns += ",";
+                        }
+                    }
+                    if (curCrns.isEmpty()) {
+                        getNamedCart(name, getNamedCartListener, error);
+                    } else {
+                        bulkRemoveFromCart(curCrns, new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                if (response.toLowerCase().contains("success")) {
+                                    getNamedCart(name, getNamedCartListener, error);
+                                }
+                            }
+                        }, error);
+                    }
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, error);
     }
 
 }

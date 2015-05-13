@@ -2,6 +2,7 @@ package banner.brown.ui;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.app.Activity;
 import android.support.v7.app.ActionBar;
@@ -32,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Set;
 
 import banner.brown.BannerApplication;
+import banner.brown.Dialogs.LoadCartDialogFragment;
 import banner.brown.adapters.SemesterSpinnerAdapter;
 import banner.brown.models.Semester;
 
@@ -179,6 +181,7 @@ public class NavigationDrawerFragment extends Fragment implements View.OnClickLi
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
+                ((MainActivity)getActivity()).updateCalendar();
                 if (!isAdded()) {
                     return;
                 }
@@ -211,7 +214,12 @@ public class NavigationDrawerFragment extends Fragment implements View.OnClickLi
                     toAdd.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            String x = s;
+                            LoadCartDialogFragment dialog = new LoadCartDialogFragment();
+                            Bundle args = new Bundle();
+                            args.putString(LoadCartDialogFragment.CART_NAME_EXTRA, s);
+                            dialog.setArguments(args);
+                            FragmentTransaction ft = getFragmentManager().beginTransaction();
+                            dialog.show(ft, "load_cart_dialog");
                         }
                     });
                 }
