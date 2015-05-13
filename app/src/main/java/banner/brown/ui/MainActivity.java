@@ -217,7 +217,7 @@ public class MainActivity extends BannerBaseLogoutTimerActivity
 
                     if (!BannerApplication.mCurrentCart.hasClass(currentCourse)) {
                         boolean colorSet = false;
-                        for (Course comparingCourse: BannerApplication.mCurrentCart.getCourses()){
+                        for (Course comparingCourse: tempCart.getCourses()){
                             if (comparingCourse.getCRN().equals(currentCourse.getCRN())){
                                 currentCourse.setColor(comparingCourse.getColor());
                                 colorSet = true;
