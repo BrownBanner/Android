@@ -93,9 +93,7 @@ public class MainActivity extends BannerBaseLogoutTimerActivity
         mEventColors.add(Color.rgb(127, 140, 141));
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
+    public void updateCalendar() {
         getSupportActionBar().setTitle(BannerApplication.curSelectedSemester.toString());
         BannerAPI.getCurrentCourses(new Response.Listener<JSONObject>() {
             @Override
@@ -126,6 +124,12 @@ public class MainActivity extends BannerBaseLogoutTimerActivity
 
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateCalendar();
     }
 
     @Override
