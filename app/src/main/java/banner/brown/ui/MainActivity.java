@@ -228,7 +228,7 @@ public class MainActivity extends BannerBaseLogoutTimerActivity
                         tempCart.addClass(currentCourse);
                         mWeekView.notifyDatasetChanged();
                     } else {
-                        tempCart.addClass(BannerApplication.mCurrentCart.getCourse(currentCourse.getCRN()));
+                        tempCart.addClass(BannerApplication.mCurrentCart.getCourse(currentCourse));
                     }
                 }
             }

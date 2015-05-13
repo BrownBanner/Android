@@ -41,6 +41,14 @@ public class Cart {
         return null;
     }
 
+    public Course getCourse(Course course) {
+        int index = courses.indexOf(course);
+        if (index == -1) {
+            return null;
+        } else {
+            return courses.get(index);
+        }
+    }
 
     // Asks each course in cart for its corresponding calendar events and returns the whole cart
     public ArrayList<WeekViewEvent> getEventsOfCourses(){
