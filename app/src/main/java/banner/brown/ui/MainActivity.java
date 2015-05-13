@@ -212,7 +212,14 @@ public class MainActivity extends BannerBaseLogoutTimerActivity
                 if (!tempCart.hasClass(currentCourse)) {
 
                     if (!BannerApplication.mCurrentCart.hasClass(currentCourse)) {
-                        currentCourse.setColor(getNewColor());
+                        boolean colorSet = false;
+                        for (Course comparingCourse: BannerApplication.mCurrentCart.getCourses()){
+                            if (comparingCourse.getCRN().equals(currentCourse.getCRN())){
+                                currentCourse.setColor(comparingCourse.getColor());
+                                colorSet = true;
+                            }
+                        }
+                        if (!colorSet) currentCourse.setColor(getNewColor());
                         //currentCourse.setAsUnregistered();
                         tempCart.addClass(currentCourse);
                         mWeekView.notifyDatasetChanged();

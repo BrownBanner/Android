@@ -52,7 +52,7 @@ public class SearchActivity extends BannerBaseLogoutTimerActivity implements Sea
         setContentView(R.layout.activity_search);
         mListView = (ListView) findViewById(R.id.search_list);
         mSearchResults = new ArrayList<>();
-        mListAdapter = new CourseListAdapter(this,  R.layout.general_list_view_row, mSearchResults);
+        mListAdapter = new CourseListAdapter(this,  R.layout.course_list_view_row, mSearchResults);
 
         mDepartmentList = new ArrayList<listHeader>();
 

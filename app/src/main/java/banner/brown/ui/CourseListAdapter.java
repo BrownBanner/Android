@@ -19,9 +19,6 @@ import banner.brown.models.listHeader;
  */
 public class CourseListAdapter extends ArrayAdapter<Course>{
 
-    /**
-     * Created by kappi on 3/4/15.
-     */
 
         Context context;
         int layoutResourceId;
@@ -45,6 +42,7 @@ public class CourseListAdapter extends ArrayAdapter<Course>{
 
             TextView abbrev = (TextView) view.findViewById(R.id.listViewAbbreviation);
             TextView title = (TextView)view.findViewById(R.id.listViewTitle);
+            TextView time = (TextView)view.findViewById(R.id.courseTime);
 
 
 
@@ -59,6 +57,7 @@ public class CourseListAdapter extends ArrayAdapter<Course>{
             }
             title.setText(item.getTitle());
             abbrev.setText(item.getSubjectCode());
+            time.setText(item.getFormattedTime());
             return view;
         }
 
