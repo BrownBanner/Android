@@ -91,8 +91,6 @@ public class Course implements Comparable {
 
     public void setAsUnregistered(){
         mRegistered = false;
-        setColor(mColor);
-
     }
 
     public String getTitle() {
@@ -105,6 +103,13 @@ public class Course implements Comparable {
 
     public String getDepartment() {
         return mDepartment;
+    }
+
+    public String getFormattedTime(){
+        String meetingTimeString = this.getMeetingTime();
+        String[] split = meetingTimeString.split("\\s+");
+
+        return split[split.length-2] + " " +split[split.length-1];
     }
 
     public ArrayList<WeekViewEvent> getWeekViewEvent(){
@@ -222,12 +227,7 @@ public class Course implements Comparable {
     }
 
     public void setColor(int col){
-        if (mRegistered) {
-            mColor = saturate(col);
-        }
-        else{
-            mColor = desaturate(col);
-        }
+        mColor = col;
     }
 
     private int desaturate(int col){

@@ -8,6 +8,7 @@ import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.view.ContextThemeWrapper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -70,68 +71,31 @@ public class MainActivity extends BannerBaseLogoutTimerActivity
 
         mEventColors = new ArrayList<>();
 
-        mEventColors.add(Color.rgb(127,255,212));
-        mEventColors.add(Color.rgb(210, 77, 87));
-        mEventColors.add(Color.rgb(217, 30, 24));
-        mEventColors.add(Color.rgb(239, 72, 54));
-        mEventColors.add(Color.rgb(192, 57, 43));
-        mEventColors.add(Color.rgb(231, 76, 60));
-        mEventColors.add(Color.rgb(246, 71, 71));
-        mEventColors.add(Color.rgb(210, 82, 127));
-        mEventColors.add(Color.rgb(246, 36, 89));
-        mEventColors.add(Color.rgb(220, 198, 224));
-        mEventColors.add(Color.rgb(103, 65, 114));
-        mEventColors.add(Color.rgb(145, 61, 136));
-        mEventColors.add(Color.rgb(191, 85, 236));
-        mEventColors.add(Color.rgb(142, 68, 173));
-        mEventColors.add(Color.rgb(155, 89, 18));
-        mEventColors.add(Color.rgb(268,108,179));
-        mEventColors.add(Color.rgb(65, 131, 215));
-        mEventColors.add(Color.rgb(129, 207, 224));
-        mEventColors.add(Color.rgb(197, 239, 247));
+        mEventColors.add(Color.rgb(26, 188, 156));
+        mEventColors.add(Color.rgb(46, 204, 113));
         mEventColors.add(Color.rgb(52, 152, 219));
-        mEventColors.add(Color.rgb(25, 181, 254));
-        mEventColors.add(Color.rgb(34, 49, 63));
-        mEventColors.add(Color.rgb(30, 139, 195));
+        mEventColors.add(Color.rgb(155, 89, 182));
         mEventColors.add(Color.rgb(52, 73, 94));
-        mEventColors.add(Color.rgb(37, 116, 169));
-        mEventColors.add(Color.rgb(137, 196, 244));
-        mEventColors.add(Color.rgb(92, 151, 191));
-        mEventColors.add(Color.rgb(162, 222, 208));
-        mEventColors.add(Color.rgb(144, 198, 149));
-        mEventColors.add(Color.rgb(3, 201, 169));
-        mEventColors.add(Color.rgb(101, 198, 187));
-        mEventColors.add(Color.rgb(27, 163, 156));
-        mEventColors.add(Color.rgb(54, 215, 183));
-        mEventColors.add(Color.rgb(134, 226, 213));
-        mEventColors.add(Color.rgb(22, 160, 133));
-        mEventColors.add(Color.rgb(81, 152, 117));
-        mEventColors.add(Color.rgb(77, 175, 124));
-        mEventColors.add(Color.rgb(50, 177, 106));
-        mEventColors.add(Color.rgb(4, 147, 114));
-        mEventColors.add(Color.rgb(253, 227, 167));
-        mEventColors.add(Color.rgb(35, 149, 50));
-        mEventColors.add(Color.rgb(44, 179, 80));
-        mEventColors.add(Color.rgb(235, 151, 78));
-        mEventColors.add(Color.rgb(211, 84, 2));
-        mEventColors.add(Color.rgb(249, 105, 14));
-        mEventColors.add(Color.rgb(242, 121, 53));
-        mEventColors.add(Color.rgb(236,236,236));
-        mEventColors.add(Color.rgb(210, 215, 211));
-        mEventColors.add(Color.rgb(189, 195, 199));
+        mEventColors.add(Color.rgb(241, 196, 15));
+        mEventColors.add(Color.rgb(230, 126, 34));
+        mEventColors.add(Color.rgb(231, 76, 60));
+        mEventColors.add(Color.rgb(118, 47, 0));
         mEventColors.add(Color.rgb(149, 165, 166));
-        mEventColors.add(Color.rgb(171, 183, 183));
-        mEventColors.add(Color.rgb(191, 191, 191));
-
-        Collections.shuffle(mEventColors);
-
-
+        mEventColors.add(Color.rgb(22, 160, 133));
+        mEventColors.add(Color.rgb(39, 174, 96));
+        mEventColors.add(Color.rgb(41, 128, 185));
+        mEventColors.add(Color.rgb(142, 68, 173));
+        mEventColors.add(Color.rgb(44, 62, 80));
+        mEventColors.add(Color.rgb(243, 156, 18));
+        mEventColors.add(Color.rgb(211, 84, 0));
+        mEventColors.add(Color.rgb(192, 57, 43));
+        mEventColors.add(Color.rgb(189, 195, 199));
+        mEventColors.add(Color.rgb(127, 140, 141));
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        getSupportActionBar().setTitle(BannerApplication.curSelectedSemester.toString());
         BannerAPI.getCurrentCourses(new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -141,19 +105,6 @@ public class MainActivity extends BannerBaseLogoutTimerActivity
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        });
-
-        BannerAPI.getNamedCarts(new Response.Listener<JSONObject>() {
-
-            @Override
-            public void onResponse(JSONObject response) {
-                BannerApplication.updateNamedCarts(response);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -271,19 +222,19 @@ public class MainActivity extends BannerBaseLogoutTimerActivity
     }
 
     private void conflictAlert(ArrayList<WeekViewEvent> events) {
+        ContextThemeWrapper ctw = new ContextThemeWrapper(this, R.style.BannerDrawerSection);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
 
         alertDialogBuilder.setTitle("Choose a class");
 
-        final CharSequence[] classes = new CharSequence[events.size()];
-        final String[] crns = new String[events.size()];
+        final CharSequence[] classes = new CharSequence[events.size()-1];
+        final String[] crns = new String[events.size()-1];
 
-        for (int i = 0; i < events.size(); i++) classes[i] = events.get(i).getName();
-        for (int i = 0; i < events.size(); i++) crns[i] = events.get(i).getId();
+        for (int i = 0; i < events.size()-1; i++) classes[i] = events.get(i).getName();
+        for (int i = 0; i < events.size()-1; i++) crns[i] = events.get(i).getId();
 
         alertDialogBuilder.setItems(classes,new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog,int id) {
-
                 Intent i = new Intent(MainActivity.this, CourseDetail.class);
                 String CRN = crns[id];
                 String name = classes[id].toString();

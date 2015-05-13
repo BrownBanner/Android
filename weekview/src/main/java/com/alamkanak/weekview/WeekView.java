@@ -2,12 +2,16 @@ package com.alamkanak.weekview;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.view.ViewCompat;
@@ -575,14 +579,6 @@ public class WeekView extends View {
                         right -= mOverlappingEventGap;
                     if (left < mHeaderColumnWidth) left = mHeaderColumnWidth;
 
-                    //The event is in a collision
-                    if (mEventRects.get(i).width < 1){
-                        CollisionBuddies buds = mEventRects.get(i).event.getBuds();
-
-                    }
-
-
-
                     // Draw the event and the event name on top of it.
                     RectF eventRectF = new RectF(left, top, right, bottom);
                     if (bottom > mHeaderTextHeight + mHeaderRowPadding * 2 + mHeaderMarginBottom + mTimeTextHeight/2 && left < right &&
@@ -593,9 +589,61 @@ public class WeekView extends View {
                             left < right
                             ) {
                         mEventRects.get(i).rectF = eventRectF;
+                        mEventBackgroundPaint.setColor(Color.rgb(230,230,230));
+
+                        float bgtop = top;
+
+                        if (mEventRects.get(i).event.getBuds() != null) {
+
+                            EventRect back = mEventRects.get(i).event.getBuds().bg;
+                            bgtop = mHourHeight * 24 * back.top / 1440 + mCurrentOrigin.y + mHeaderTextHeight + mHeaderRowPadding * 2 + mHeaderMarginBottom + mTimeTextHeight / 2 + mEventMarginVertical;
+
+                            // Calculate top.
+
+                            if (bgtop < mHeaderTextHeight + mHeaderRowPadding * 2 + mHeaderMarginBottom + mTimeTextHeight / 2)
+                                bgtop = mHeaderTextHeight + mHeaderRowPadding * 2 + mHeaderMarginBottom + mTimeTextHeight / 2;
+
+                            if(mEventRects.get(i).event.getBuds().events.get(0).getName()
+                                    .equals(mEventRects.get(i).event.getName())) {
+
+                                // Calculate bottom.
+                                float bgbottom = back.bottom;
+                                bgbottom = mHourHeight * 24 * bgbottom / 1440 + mCurrentOrigin.y + mHeaderTextHeight + mHeaderRowPadding * 2 + mHeaderMarginBottom + mTimeTextHeight / 2 - mEventMarginVertical;
+
+                                RectF backrect = new RectF(startFromPixel, bgtop+20, startFromPixel + mWidthPerDay, bgbottom);
+                                mEventBackgroundPaint.setColor(Color.rgb(219,195,198));
+                                canvas.drawRect(backrect, mEventBackgroundPaint);
+                            }
+
+                        }
+
+                        else if  (mEventRects.get(i).event.getBuds() == null) canvas.drawRect(mEventRects.get(i).rectF, mEventBackgroundPaint);
+
+
+                        RectF textbox = new RectF(startFromPixel,top,startFromPixel+mWidthPerDay,bottom);
+
+                        String allcollisions = "";
+                        if (mEventRects.get(i).event.getBuds() != null){
+                            if(mEventRects.get(i).event.getBuds().events.get(0).getName()
+                                        .equals(mEventRects.get(i).event.getName())) {
+
+                              for (int j = 0;j<mEventRects.get(i).event.getBuds().events.size()-1;j++){
+
+                                  WeekViewEvent ev = mEventRects.get(i).event.getBuds().events.get(j);
+                                    allcollisions = allcollisions + getNameNoSection(ev.getName()) + "\n";
+
+                                }
+                            }
+                        }
+
+                        else allcollisions = getNameNoSection(mEventRects.get(i).event.getName());
+                        drawText(allcollisions,textbox , canvas, originalTop+25, startFromPixel);
+
                         mEventBackgroundPaint.setColor(mEventRects.get(i).event.getColor() == 0 ? mDefaultEventColor : mEventRects.get(i).event.getColor());
-                        canvas.drawRect(mEventRects.get(i).rectF, mEventBackgroundPaint);
-                        drawText(getNameNoSection(mEventRects.get(i).event.getName()), mEventRects.get(i).rectF, canvas, originalTop, originalLeft);
+                        mEventBackgroundPaint = stripedBackground(mEventBackgroundPaint);
+                        RectF colorBar = new RectF(left,bgtop,right,bgtop+20);
+                        canvas.drawRect(colorBar, mEventBackgroundPaint);
+
                     }
                     else
                         mEventRects.get(i).rectF = null;
@@ -607,6 +655,20 @@ public class WeekView extends View {
     private static String getNameNoSection(String fullNameString){
         String[] split = fullNameString.split(" ");
         return split[0] + " " + split[1];
+    }
+
+
+    private Paint stripedBackground(Paint paint){
+
+//        int patternID = getResources().getIdentifier("strips", "drawable-hdpi", "com.banner.brown");
+//        Bitmap patternBMP = BitmapFactory.decodeResource(getResources(), patternID);
+//        BitmapShader patternBMPshader = new BitmapShader(patternBMP,
+//                Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
+//        paint.setColor(0xFFFFFFFF);
+//        paint.setShader(patternBMPshader);
+
+        return paint;
+
     }
 
 
@@ -648,6 +710,8 @@ public class WeekView extends View {
     public class CollisionBuddies {
 
         public ArrayList<WeekViewEvent> events;
+        public EventRect bg;
+        public boolean done = false;
 
         public CollisionBuddies(){
             events = new ArrayList<>();
@@ -751,6 +815,7 @@ public class WeekView extends View {
         }
     }
 
+
     /**
      * Cache the event for smooth scrolling functionality.
      * @param event The event to cache.
@@ -831,10 +896,33 @@ public class WeekView extends View {
     private void changeColorsCollided(List<EventRect> collisionGroup) {
         if (collisionGroup.size() > 1){
             CollisionBuddies cb = new CollisionBuddies();
+
+            WeekViewEvent background = new WeekViewEvent();
+            Calendar minTime = collisionGroup.get(0).event.getStartTime();
+            Calendar maxTime = collisionGroup.get(0).event.getEndTime();
+
             for (EventRect eRect: collisionGroup){
+                if (eRect.event.getStartTime().compareTo(minTime) <0 ){
+                    minTime = eRect.event.getStartTime();
+                }
+                if (eRect.event.getEndTime().compareTo(maxTime) >0 ){
+                    maxTime = eRect.event.getEndTime();
+                }
                 cb.events.add(eRect.event);
                 eRect.event.setBuds(cb);
             }
+
+            EventRect eventRect = new EventRect(background,background,null);
+
+            background.setStartTime(minTime);
+            background.setEndTime(maxTime);
+            background.setName("bg");
+            cb.events.add(background);
+
+            eventRect.top = background.getStartTime().get(Calendar.HOUR_OF_DAY) * 60 + background.getStartTime().get(Calendar.MINUTE);
+            eventRect.bottom = background.getEndTime().get(Calendar.HOUR_OF_DAY) * 60 + background.getEndTime().get(Calendar.MINUTE);
+
+            cb.bg = eventRect;
         }
     }
 
