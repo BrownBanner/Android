@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content"
+    style="@style/BannerDrawerSection"
+    >
+    <include layout="@layout/light_line" android:layout_marginLeft="16dp" android:layout_height="1dp" android:layout_width="match_parent" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginLeft="16dp"
+        android:gravity="center_vertical"
+        style="@style/BannerBody2"
+        android:id="@+id/name_cart_text"
+        android:text="name"/>
+
+</LinearLayout>

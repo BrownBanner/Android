@@ -9,8 +9,14 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -48,6 +54,7 @@ public class BannerApplication extends Application {
 
     public static Cart mCurrentCart;
 
+    public static HashMap<String, String []> mNamedCarts;
 
     public static String curCookie = "";
 
@@ -66,6 +73,7 @@ public class BannerApplication extends Application {
             curSelectedSemester = new Semester(prefSemester);
         }
         mCurrentCart = new Cart();
+        mNamedCarts = new HashMap<String, String[]>();
         curCookie = prefs.getString(SHARED_PREF_COOKIE,"");
 
 
@@ -200,6 +208,20 @@ public class BannerApplication extends Application {
             e.printStackTrace();
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
+        }
+    }
+
+    public static void updateNamedCarts(JSONObject carts) {
+        mNamedCarts.clear();
+        try {
+            JSONArray cartList = carts.getJSONArray("items");
+            for (int i = 0; i < cartList.length(); i++){
+                JSONObject curCart = cartList.getJSONObject(i);
+                String[] crnList = curCart.getString("crn_list").split(",");
+                mNamedCarts.put(curCart.getString("cart_name"), crnList);
+            }
+        } catch (JSONException e){
+
         }
     }
 }

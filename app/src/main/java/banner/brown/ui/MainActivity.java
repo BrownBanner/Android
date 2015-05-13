@@ -148,6 +148,19 @@ public class MainActivity extends BannerBaseLogoutTimerActivity
 
             }
         });
+
+        BannerAPI.getNamedCarts(new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+                BannerApplication.updateNamedCarts(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
     }
 
     @Override

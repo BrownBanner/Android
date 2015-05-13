@@ -25,9 +25,11 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import banner.brown.BannerApplication;
 import banner.brown.adapters.SemesterSpinnerAdapter;
@@ -71,6 +73,10 @@ public class NavigationDrawerFragment extends Fragment implements View.OnClickLi
 
     private Spinner mSpinner;
 
+    private LinearLayout mNamedCartsOuter;
+    private LinearLayout mNamedCarts;
+
+
     public NavigationDrawerFragment() {
     }
 
@@ -102,7 +108,6 @@ public class NavigationDrawerFragment extends Fragment implements View.OnClickLi
                              Bundle savedInstanceState) {
         mDrawerViews = (LinearLayout) inflater.inflate(
                 R.layout.fragment_navigation_drawer, container, false);
-//        mDrawerViews.findViewById(R.id.department_drawer).setOnClickListener(this);
         mDrawerViews.findViewById(R.id.logout_drawer).setOnClickListener(this);
 
 
@@ -133,8 +138,12 @@ public class NavigationDrawerFragment extends Fragment implements View.OnClickLi
         mSpinner.setSelection(spinnerList.indexOf(BannerApplication.curSelectedSemester));
 
 
+        mNamedCarts = (LinearLayout) mDrawerViews.findViewById(R.id.named_carts_container);
+        mNamedCartsOuter = (LinearLayout) mDrawerViews.findViewById(R.id.named_carts_container_outer);
+
         return mDrawerViews;
     }
+
 
     public boolean isDrawerOpen() {
         return mDrawerLayout != null && mDrawerLayout.isDrawerOpen(mFragmentContainerView);
@@ -182,6 +191,23 @@ public class NavigationDrawerFragment extends Fragment implements View.OnClickLi
                 super.onDrawerOpened(drawerView);
                 if (!isAdded()) {
                     return;
+                }
+
+                Set<String> keySet = BannerApplication.mNamedCarts.keySet();
+                String [] carts = keySet.toArray(new String[keySet.size()]);
+                if (carts.length == 0) {
+                    mNamedCartsOuter.setVisibility(View.GONE);
+                } else {
+                    mNamedCartsOuter.setVisibility(View.VISIBLE);
+                }
+                mNamedCarts.removeAllViews();
+                LayoutInflater inflater = getActivity().getLayoutInflater();
+
+                for (String s : carts) {
+                    View toAdd = inflater.inflate(R.layout.name_cart_row, null);
+                    TextView name = (TextView) toAdd.findViewById(R.id.name_cart_text);
+                    name.setText(s);
+                    mNamedCarts.addView(toAdd);
                 }
 
                 if (!mUserLearnedDrawer) {

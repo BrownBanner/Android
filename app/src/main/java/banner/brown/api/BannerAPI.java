@@ -172,4 +172,12 @@ public class BannerAPI {
 
     }
 
+    public static void getNamedCarts(Response.Listener listener, Response.ErrorListener error) {
+        String semester = BannerApplication.getInstance().curSelectedSemester.getSemesterCode();
+        String url = HOST + "/getNamedCarts?term=" + semester + "&in_id=" + BannerApplication.curCookie;
+        JsonObjectRequest request = new JsonObjectRequest(url, null, listener, error);
+        BannerApplication.getInstance().addToRequestQueue(request);
+
+    }
+
 }

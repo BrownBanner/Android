@@ -22,6 +22,34 @@
      </LinearLayout>
     <include layout="@layout/light_line" android:paddingTop="8dp" android:paddingBottom="8dp"></include>
 
+    <LinearLayout
+        android:id="@+id/named_carts_container_outer"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:orientation="vertical">
+        <LinearLayout
+            android:orientation="horizontal"
+            style="@style/BannerDrawerSection"
+            android:clickable="false">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/BannerSubhead"
+                android:gravity="center_vertical"
+                android:text="Saved Carts"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/named_carts_container"
+            />
+    </LinearLayout>
+
+
     <!--<LinearLayout-->
         <!--android:orientation="horizontal"-->
         <!--android:id="@+id/department_drawer"-->
@@ -42,7 +70,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/BannerBody2"
+            style="@style/BannerSubhead"
             android:gravity="center_vertical"
             android:text="Log Out"/>
     </LinearLayout>
