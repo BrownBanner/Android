@@ -152,7 +152,7 @@ public class CourseDetail extends BannerBaseLogoutTimerActivity {
         mCRNText.setText( mCourse.getCRN());
         mTitleText.setText(mCourse.getTitle());
         mInstructorText.setText(mCourse.getInstructor());
-        mScheduleText.setText(mCourse.getMeetingTime());
+        mScheduleText.setText(mCourse.getFormattedTime());
         mAvailableSeatsText.setText(""+mCourse.getSeatsAvailable());
         mTotalSeatsText.setText(" / "+mCourse.getSeatsTotal());
         mLocationText.setText(mCourse.getMeetingLocation());
