@@ -247,7 +247,7 @@ public class MainActivity extends BannerBaseLogoutTimerActivity
     }
 
     private void conflictAlert(ArrayList<WeekViewEvent> events) {
-        //ContextThemeWrapper ctw = new ContextThemeWrapper(this, R.style.BannerDrawerSection);
+        //ContextThemeWrapper ctw = new ContextThemeWrapper(this, R.style.BannerDrawerSection);s
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
 
         alertDialogBuilder.setTitle("Choose a class");
