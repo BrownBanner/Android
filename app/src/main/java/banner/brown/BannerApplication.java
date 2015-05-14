@@ -58,6 +58,8 @@ public class BannerApplication extends Application {
 
     public static String curCookie = "";
 
+    public static String mostRecentNamedCart = "ExampleCart";
+
     @Override
     public void onCreate() {
         super.onCreate();

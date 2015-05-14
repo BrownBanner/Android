@@ -1,7 +1,11 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    tools:context=".NavigationDrawerFragment"
     android:layout_height="match_parent"
-    android:background="@android:color/white" tools:context=".NavigationDrawerFragment"
+    android:background="@android:color/white"
+    >
+<LinearLayout  android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical">
 
     <LinearLayout
@@ -65,6 +69,19 @@
 
     <LinearLayout
         android:orientation="horizontal"
+        android:id="@+id/save_cart_drawer"
+        style="@style/BannerDrawerSection">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/BannerSubhead"
+            android:gravity="center_vertical"
+            android:text="Save Cart"/>
+    </LinearLayout>
+    <include layout="@layout/light_line" android:paddingTop="8dp" android:paddingBottom="8dp"></include>
+
+    <LinearLayout
+        android:orientation="horizontal"
         android:id="@+id/logout_drawer"
         style="@style/BannerDrawerSection">
         <TextView
@@ -75,3 +92,4 @@
             android:text="Log Out"/>
     </LinearLayout>
 </LinearLayout>
+</ScrollView>
