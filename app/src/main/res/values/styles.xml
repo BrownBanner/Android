@@ -47,13 +47,34 @@
         <item name="android:layout_marginRight">16dp</item>
     </style>
 
-    <style name="BannerDrawerSection">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">48dp</item>
+    <style name="Clickable">
         <item name="android:clickable">true</item>
         <item name="android:background">?android:attr/selectableItemBackground</item>
-        <item name="android:paddingLeft">@dimen/detail_horizontal_padding_descriptor</item>
+    </style>
+
+    <style name="BannerDrawerSection" parent="Clickable">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/drawer_row_height</item>
+
         <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="BannerDrawerImage">
+        <item name="android:layout_width">@dimen/drawer_image</item>
+        <item name="android:layout_height">@dimen/drawer_image</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:layout_marginLeft">16dp</item>
+    </style>
+
+    <style name="BannerDrawerText" parent="@style/BannerSubhead">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_marginLeft">54dp</item>
+    </style>
+
+    <style name="BannerDrawerTextClickable" parent="@style/BannerDrawerText">
+        <item name="android:clickable">true</item>
+        <item name="android:background">?android:attr/selectableItemBackground</item>
     </style>
 
     <style name="BannerDetailSectionImage">
