@@ -7,6 +7,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.LightingColorFilter;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Rect;
@@ -117,6 +119,8 @@ public class WeekView extends View {
     private EmptyViewLongPressListener mEmptyViewLongPressListener;
     private DateTimeInterpreter mDateTimeInterpreter;
 
+    private int mpatternID;
+
     private final GestureDetector.SimpleOnGestureListener mGestureListener = new GestureDetector.SimpleOnGestureListener() {
 
         @Override
@@ -214,6 +218,7 @@ public class WeekView extends View {
             }
         }
     };
+    private Paint mColorBarPaint;
 
     private enum Direction {
         NONE, HORIZONTAL, VERTICAL
@@ -230,8 +235,12 @@ public class WeekView extends View {
     public WeekView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
+
+
         // Hold references.
         mContext = context;
+
+        mpatternID = mContext.getResources().getIdentifier("stripe", "drawable", mContext.getPackageName());
 
         // Get the attribute values (if any).
         TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.WeekView, 0, 0);
@@ -317,6 +326,8 @@ public class WeekView extends View {
         // Prepare today background color paint.
         mTodayBackgroundPaint = new Paint();
         mTodayBackgroundPaint.setColor(mTodayBackgroundColor);
+
+        mColorBarPaint = stripedBackground(new Paint());
 
         // Prepare today header text color paint.
         mTodayHeaderTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -585,7 +596,8 @@ public class WeekView extends View {
 
                     // Draw the event and the event name on top of it.
                     RectF eventRectF = new RectF(left, top, right, bottom);
-                    if (bottom > mHeaderTextHeight + mHeaderRowPadding * 2 + mHeaderMarginBottom + mTimeTextHeight/2 && left < right &&
+                    if (bottom > mHeaderTextHeight + mHeaderRowPadding * 2 + mHeaderMarginBottom + mTimeTextHeight/2 &&
+                            left < right &&
                             eventRectF.right > mHeaderColumnWidth &&
                             eventRectF.left < getWidth() &&
                             eventRectF.bottom > mHeaderTextHeight + mHeaderRowPadding * 2 + mTimeTextHeight / 2 + mHeaderMarginBottom &&
@@ -594,6 +606,7 @@ public class WeekView extends View {
                             ) {
                         mEventRects.get(i).rectF = eventRectF;
 
+                        boolean colorBlockShow = true;
 
                         float bgtop = top;
 
@@ -604,27 +617,21 @@ public class WeekView extends View {
 
                             // Calculate top.
 
-                            if (bgtop < mHeaderTextHeight + mHeaderRowPadding * 2 + mHeaderMarginBottom + mTimeTextHeight / 2)
+                            if (bgtop < mHeaderTextHeight + mHeaderRowPadding * 2 + mHeaderMarginBottom + mTimeTextHeight / 2){
                                 bgtop = mHeaderTextHeight + mHeaderRowPadding * 2 + mHeaderMarginBottom + mTimeTextHeight / 2;
+                                colorBlockShow = false;
+                            }
 
-//                            if(mEventRects.get(i).event.getBuds().events.get(0).getName()
-//                                    .equals(mEventRects.get(i).event.getName())) {
+                            float bgbottom = back.bottom;
+                            bgbottom = mHourHeight * 24 * bgbottom / 1440 + mCurrentOrigin.y + mHeaderTextHeight + mHeaderRowPadding * 2 + mHeaderMarginBottom + mTimeTextHeight / 2 - mEventMarginVertical;
 
-                                // Calculate bottom.
-                                float bgbottom = back.bottom;
-                                bgbottom = mHourHeight * 24 * bgbottom / 1440 + mCurrentOrigin.y + mHeaderTextHeight + mHeaderRowPadding * 2 + mHeaderMarginBottom + mTimeTextHeight / 2 - mEventMarginVertical;
-
-                                RectF backrect = new RectF(left, bgtop+20, right, bgbottom);
-                                mEventBackgroundPaint.setColor(Color.rgb(240,240,240));
-                                canvas.drawRect(backrect, mEventBackgroundPaint);
-
-                            //}
-
+                            RectF backrect = new RectF(left, bgtop, right, bgbottom);
+                            mEventBackgroundPaint.setColor(Color.rgb(245,245,245));
+                            canvas.drawRect(backrect, mEventBackgroundPaint);
                         }
 
-                        //else if  (mEventRects.get(i).event.getBuds() == null)
                         mEventBackgroundPaint.setColor(Color.rgb(230,230,230));
-                            canvas.drawRect(mEventRects.get(i).rectF, mEventBackgroundPaint);
+                        canvas.drawRect(mEventRects.get(i).rectF, mEventBackgroundPaint);
 
 
                         RectF textbox = new RectF(startFromPixel,top,startFromPixel+mWidthPerDay,bottom);
@@ -645,17 +652,68 @@ public class WeekView extends View {
 
                         if (mEventRects.get(i).event.getBuds() == null) {
                             drawText(allcollisions, textbox, canvas, originalTop + 25, startFromPixel);
+                            if (originalTop < mHeaderTextHeight + mHeaderRowPadding * 2 + mHeaderMarginBottom + mTimeTextHeight / 2){
+                                colorBlockShow = false;
+                            }
                         }
                         else{
+                            // add text to list of text to be drawn last on top of all conflicts
                             conflictTitleBoxes.add(new conflictTitleBox(canvas,textbox,allcollisions,originalTop+25, startFromPixel));
                         }
 
-                        mEventBackgroundPaint.setColor(mEventRects.get(i).event.getColor() == 0 ? mDefaultEventColor : mEventRects.get(i).event.getColor());
-                        mEventBackgroundPaint = stripedBackground(mEventBackgroundPaint);
+                        int col = mEventRects.get(i).event.getColor() == 0 ? mDefaultEventColor : mEventRects.get(i).event.getColor();
+                        ColorFilter filter = new LightingColorFilter(col, col);
+                        mColorBarPaint.setColorFilter(filter);
+
                         RectF colorBar = new RectF(left,bgtop,right,bgtop+20);
 
-                        canvas.drawRect(colorBar, mEventBackgroundPaint);
+                        //if colorbar should be visible, draw it
+                        if (colorBlockShow){
+                            if (mEventRects.get(i).event.registered){
+                                mEventBackgroundPaint.setColor(col);
+                                canvas.drawRect(colorBar, mEventBackgroundPaint);
+                            }
+                            else canvas.drawRect(colorBar, mColorBarPaint);
+                        }
 
+
+                    }
+
+                    else if (mEventRects.get(i).event.getBuds() != null) {
+                        EventRect back = mEventRects.get(i).event.getBuds().bg;
+                        float bgtop = mHourHeight * 24 * back.top / 1440 + mCurrentOrigin.y + mHeaderTextHeight + mHeaderRowPadding * 2 + mHeaderMarginBottom + mTimeTextHeight / 2 + mEventMarginVertical;
+
+                        // Calculate top.
+                        boolean colorBlock = true;
+                        if (bgtop < mHeaderTextHeight + mHeaderRowPadding * 2 + mHeaderMarginBottom + mTimeTextHeight / 2)
+                        {
+                            bgtop = mHeaderTextHeight + mHeaderRowPadding * 2 + mHeaderMarginBottom + mTimeTextHeight / 2;
+                            colorBlock = false;
+                        }
+
+
+                        float bgbottom = back.bottom;
+                        bgbottom = mHourHeight * 24 * bgbottom / 1440 + mCurrentOrigin.y + mHeaderTextHeight + mHeaderRowPadding * 2 + mHeaderMarginBottom + mTimeTextHeight / 2 - mEventMarginVertical;
+
+                        RectF backrect = new RectF(left, bgtop, right, bgbottom);
+                        mEventBackgroundPaint.setColor(Color.rgb(245,245,245));
+                        canvas.drawRect(backrect, mEventBackgroundPaint);
+
+                        int col = mEventRects.get(i).event.getColor();
+
+
+                        ColorFilter filter = new LightingColorFilter(col, col);
+                        mColorBarPaint.setColorFilter(filter);
+
+                        RectF colorBar = new RectF(left,bgtop,right,bgtop+20);
+
+                        if (colorBlock){
+                            if (mEventRects.get(i).event.registered){
+                                mEventBackgroundPaint.setColor(col);
+                                canvas.drawRect(colorBar, mEventBackgroundPaint);
+                            }
+                            else canvas.drawRect(colorBar, mColorBarPaint);
+                        }
                     }
                     else
                         mEventRects.get(i).rectF = null;
@@ -670,6 +728,7 @@ public class WeekView extends View {
 
         }
     }
+
 
     private class conflictTitleBox {
 
@@ -696,16 +755,17 @@ public class WeekView extends View {
 
     private Paint stripedBackground(Paint paint){
 
-//        int patternID = getResources().getIdentifier("strips", "drawable-hdpi", "com.banner.brown");
-//        Bitmap patternBMP = BitmapFactory.decodeResource(getResources(), patternID);
-//        BitmapShader patternBMPshader = new BitmapShader(patternBMP,
-//                Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
-//        paint.setColor(0xFFFFFFFF);
-//        paint.setShader(patternBMPshader);
+        Bitmap patternBMP = BitmapFactory.decodeResource(getResources(), mpatternID);
+        BitmapShader patternBMPshader = new BitmapShader(patternBMP,
+                Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
+        //paint.setColor(Color.BLUE);
+        paint.setShader(patternBMPshader);
+
 
         return paint;
 
     }
+
 
 
     /**
@@ -978,11 +1038,11 @@ public class WeekView extends View {
                     column.add(eventRect);
                     isPlaced = true;
                 }
-                else if (!isEventsCollide(eventRect.event, column.get(column.size()-1).event)) {
-                    column.add(eventRect);
-                    isPlaced = true;
-                    break;
-                }
+//                else if (!isEventsCollide(eventRect.event, column.get(column.size()-1).event)) {
+//                    column.add(eventRect);
+//                    isPlaced = true;
+//                    break;
+//                }
             }
             if (!isPlaced) {
                 List<EventRect> newColumn = new ArrayList<EventRect>();

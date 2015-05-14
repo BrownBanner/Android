@@ -225,16 +225,19 @@ containing a value of this type.
          */
         public static int xScrollingSpeed=0x7f010015;
     }
+    public static final class drawable {
+        public static int stripe=0x7f020000;
+    }
     public static final class id {
-        public static int friday=0x7f020000;
-        public static int length_long=0x7f020007;
-        public static int length_short=0x7f020008;
-        public static int monday=0x7f020001;
-        public static int saturday=0x7f020002;
-        public static int sunday=0x7f020003;
-        public static int thursday=0x7f020004;
-        public static int tuesday=0x7f020005;
-        public static int wednesday=0x7f020006;
+        public static int friday=0x7f030000;
+        public static int length_long=0x7f030007;
+        public static int length_short=0x7f030008;
+        public static int monday=0x7f030001;
+        public static int saturday=0x7f030002;
+        public static int sunday=0x7f030003;
+        public static int thursday=0x7f030004;
+        public static int tuesday=0x7f030005;
+        public static int wednesday=0x7f030006;
     }
     public static final class styleable {
         /** Attributes that can be used with a WeekView.

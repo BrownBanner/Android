@@ -76,7 +76,6 @@ public class Course implements Comparable {
 
     public void setAsRegistered(){
         mRegistered = true;
-        setColor(mColor);
 
     }
 
@@ -160,6 +159,7 @@ public class Course implements Comparable {
             endTime.set(Calendar.MINUTE, Integer.parseInt(times[1].substring(2,4)));
             endTime.set(Calendar.MONTH, 1);
             WeekViewEvent event = new WeekViewEvent(getCRN(), getSubjectCode(), startTime, endTime);
+            event.registered = getRegistered();
             event.setColor(mColor);
 
             toRet.add(event);
