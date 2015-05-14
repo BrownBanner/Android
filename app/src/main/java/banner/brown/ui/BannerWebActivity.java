@@ -1,5 +1,7 @@
 package banner.brown.ui;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.http.SslError;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import banner.brown.BannerApplication;
 import banner.brown.ui.R;
 
 public class BannerWebActivity extends BannerBaseLogoutTimerActivity {
@@ -53,7 +56,19 @@ public class BannerWebActivity extends BannerBaseLogoutTimerActivity {
             }
         });
         webview.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageFinished(WebView webview, String url) {
+                super.onPageFinished(webview, url);
+                BannerApplication.hideLoadingIcon();
 
+
+            }
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon)
+            {
+                super.onPageStarted(view, url, favicon);
+                BannerApplication.showLoadingIcon(BannerWebActivity.this);
+            }
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
