@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.webkit.CookieSyncManager;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -61,7 +62,7 @@ public class BannerApplication extends Application {
 
     public static String curCookie = "";
 
-    public static String mostRecentNamedCart = "ExampleCart";
+    public static String mostRecentNamedCart = "Example";
     static ProgressDialog progress;
 
     @Override
@@ -231,7 +232,15 @@ public class BannerApplication extends Application {
         }
     }
 
+    public static void showToast(Activity activity, String text) {
+        Toast.makeText(activity, text, Toast.LENGTH_SHORT).show();
+
+    }
+
     public static void showLoadingIcon(Activity activity){
+        if (progress != null) {
+            hideLoadingIcon();
+        }
         progress = new ProgressDialog(activity, R.style.CustomDialogTheme);
         progress.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
         progress.setCancelable(false);

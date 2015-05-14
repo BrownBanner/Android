@@ -1,5 +1,6 @@
 package banner.brown.api;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.webkit.CookieManager;
 import android.widget.Toast;
@@ -19,6 +20,7 @@ import java.net.URLEncoder;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.net.ssl.HostnameVerifier;
@@ -219,7 +221,7 @@ public class BannerAPI {
         }
     }
 
-    public static void loadNamedCart(final String name,final Response.Listener listener, final Response.ErrorListener error) {
+    public static void loadNamedCart(final String name,final Activity activity, final Response.Listener listener, final Response.ErrorListener error) {
 
         final Response.Listener getNamedCartListener = new Response.Listener<JSONObject>() {
             @Override
@@ -244,25 +246,35 @@ public class BannerAPI {
                 try {
                     JSONArray courses = (response.getJSONArray("items"));
                     String curCrns = "";
+                    HashSet<String> crnSet = new HashSet<String>();
                     for (int x = 0; x < courses.length(); x++) {
                         JSONObject course = courses.getJSONObject(x);
                         Course c = new Course (course);
                         if (!c.getRegistered()) {
-                            curCrns += c.getCRN();
-                            if (x < courses.length() - 1) {
-                                curCrns += ",";
-                            }
+                            crnSet.add(c.getCRN());
+
                         }
 
+
+                    }
+
+                    for (Object crnKey : crnSet.toArray()) {
+                        String crn = (String) crnKey;
+                        curCrns += crn;
+                        curCrns += ",";
                     }
                     if (curCrns.isEmpty()) {
                         getNamedCart(name, getNamedCartListener, error);
                     } else {
+                        curCrns = curCrns.substring(0, curCrns.length()-1);
                         bulkRemoveFromCart(curCrns, new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
                                 if (response.toLowerCase().contains("success")) {
                                     getNamedCart(name, getNamedCartListener, error);
+                                } else {
+                                    BannerApplication.hideLoadingIcon();
+                                    BannerApplication.showToast(activity, "Error loading cart: \"" + name + "\": " + response);
                                 }
                             }
                         }, error);
@@ -293,7 +305,7 @@ public class BannerAPI {
 
             String url = HOST + "/cartbyname?term=" + semester + "&in_id=" + BannerApplication.curCookie + "&cart_name=" + name + "&crn_list=" + crnList + "&in_type=I";
 
-            JsonObjectRequest request = new JsonObjectRequest(url, null, listener, error);
+            StringRequest request = new StringRequest(Request.Method.GET, url, listener, error);
             BannerApplication.getInstance().addToRequestQueue(request);
         } catch (Exception e) {
 
@@ -309,7 +321,7 @@ public class BannerAPI {
 
             String url = HOST + "/cartbyname?term=" + semester + "&in_id=" + BannerApplication.curCookie + "&cart_name=" + name + "&crn_list=1"  + "&in_type=D";
 
-            JsonObjectRequest request = new JsonObjectRequest(url, null, listener, error);
+            StringRequest request = new StringRequest(Request.Method.GET, url, listener, error);
             BannerApplication.getInstance().addToRequestQueue(request);
         } catch (Exception e) {
 

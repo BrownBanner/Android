@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Set;
 
 import banner.brown.BannerApplication;
+import banner.brown.Dialogs.DeleteCartDialog;
 import banner.brown.Dialogs.LoadCartDialogFragment;
 import banner.brown.Dialogs.SaveCartDialog;
 import banner.brown.adapters.SemesterSpinnerAdapter;
@@ -139,6 +140,10 @@ public class NavigationDrawerFragment extends Fragment implements View.OnClickLi
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Semester selected = (Semester)parent.getItemAtPosition(position);
                 BannerApplication.getInstance().setCurSelectedSemester(selected);
+                if (mDrawerLayout.isDrawerOpen(GravityCompat.START)){
+                    mDrawerLayout.closeDrawers();
+                    ((MainActivity)getActivity()).updateCalendar(true);
+                }
 
             }
 
@@ -159,6 +164,50 @@ public class NavigationDrawerFragment extends Fragment implements View.OnClickLi
 
     public boolean isDrawerOpen() {
         return mDrawerLayout != null && mDrawerLayout.isDrawerOpen(mFragmentContainerView);
+    }
+
+    public void updateSavedCarts() {
+        Set<String> keySet = BannerApplication.mNamedCarts.keySet();
+        String [] carts = keySet.toArray(new String[keySet.size()]);
+        if (carts.length == 0) {
+            mNamedCartsOuter.setVisibility(View.GONE);
+        } else {
+            mNamedCartsOuter.setVisibility(View.VISIBLE);
+        }
+        mNamedCarts.removeAllViews();
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+
+        for (final String s : carts) {
+            View toAdd = inflater.inflate(R.layout.name_cart_row, null);
+            TextView name = (TextView) toAdd.findViewById(R.id.name_cart_text);
+            name.setText(s);
+            mNamedCarts.addView(toAdd);
+            name.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    LoadCartDialogFragment dialog = new LoadCartDialogFragment();
+                    Bundle args = new Bundle();
+                    args.putString(LoadCartDialogFragment.CART_NAME_EXTRA, s);
+                    dialog.setArguments(args);
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    dialog.show(ft, "load_cart_dialog");
+                }
+            });
+
+            ImageView delete = (ImageView) toAdd.findViewById(R.id.delete_cart);
+            delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    DeleteCartDialog dialog = new DeleteCartDialog();
+                    Bundle args = new Bundle();
+                    args.putString(DeleteCartDialog.CART_NAME_EXTRA, s);
+                    dialog.setArguments(args);
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    dialog.show(ft, "load_cart_dialog");
+                }
+            });
+        }
+
     }
 
     /**
@@ -191,7 +240,6 @@ public class NavigationDrawerFragment extends Fragment implements View.OnClickLi
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
-                ((MainActivity)getActivity()).updateCalendar();
                 if (!isAdded()) {
                     return;
                 }
@@ -206,52 +254,7 @@ public class NavigationDrawerFragment extends Fragment implements View.OnClickLi
                     return;
                 }
 
-                Set<String> keySet = BannerApplication.mNamedCarts.keySet();
-                String [] carts = keySet.toArray(new String[keySet.size()]);
-                if (carts.length == 0) {
-                    mNamedCartsOuter.setVisibility(View.GONE);
-                } else {
-                    mNamedCartsOuter.setVisibility(View.VISIBLE);
-                }
-                mNamedCarts.removeAllViews();
-                LayoutInflater inflater = getActivity().getLayoutInflater();
-
-                for (final String s : carts) {
-                    View toAdd = inflater.inflate(R.layout.name_cart_row, null);
-                    TextView name = (TextView) toAdd.findViewById(R.id.name_cart_text);
-                    name.setText(s);
-                    mNamedCarts.addView(toAdd);
-                    name.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            LoadCartDialogFragment dialog = new LoadCartDialogFragment();
-                            Bundle args = new Bundle();
-                            args.putString(LoadCartDialogFragment.CART_NAME_EXTRA, s);
-                            dialog.setArguments(args);
-                            FragmentTransaction ft = getFragmentManager().beginTransaction();
-                            dialog.show(ft, "load_cart_dialog");
-                        }
-                    });
-
-                    ImageView delete = (ImageView) toAdd.findViewById(R.id.delete_cart);
-                    delete.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            BannerAPI.deleteNameCart(s, new Response.Listener() {
-                                @Override
-                                public void onResponse(Object response) {
-                                    Object x = response;
-                                }
-                            }, new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-
-                                }
-                            });
-                        }
-                    });
-                }
-
+                updateSavedCarts();
                 if (!mUserLearnedDrawer) {
                     // The user manually opened the drawer; store this flag to prevent auto-showing
                     // the navigation drawer automatically in the future.
@@ -351,6 +354,11 @@ public class NavigationDrawerFragment extends Fragment implements View.OnClickLi
 
     private ActionBar getActionBar() {
         return ((ActionBarActivity) getActivity()).getSupportActionBar();
+    }
+
+    public void closeDrawer() {
+        mDrawerLayout.closeDrawer(mFragmentContainerView);
+
     }
 
     @Override

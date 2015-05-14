@@ -93,11 +93,17 @@ public class MainActivity extends BannerBaseLogoutTimerActivity
         mEventColors.add(Color.rgb(127, 140, 141));
     }
 
-    public void updateCalendar() {
+    public void updateCalendar(final boolean shouldShowLoading) {
         getSupportActionBar().setTitle(BannerApplication.curSelectedSemester.toString());
+        if (shouldShowLoading) {
+            BannerApplication.showLoadingIcon(this);
+        }
         BannerAPI.getCurrentCourses(new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+                if (shouldShowLoading) {
+                    BannerApplication.hideLoadingIcon();
+                }
                 JSONObject x = response;
                 try {
                     processClasses(x.getJSONArray("items"));
@@ -108,6 +114,8 @@ public class MainActivity extends BannerBaseLogoutTimerActivity
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                BannerApplication.hideLoadingIcon();
+                Toast.makeText(MainActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -121,15 +129,17 @@ public class MainActivity extends BannerBaseLogoutTimerActivity
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                Toast.makeText(MainActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
+
+
     @Override
     public void onResume() {
         super.onResume();
-        updateCalendar();
+        updateCalendar(true);
     }
 
     @Override
@@ -275,6 +285,10 @@ public class MainActivity extends BannerBaseLogoutTimerActivity
         AlertDialog alertDialog = alertDialogBuilder.create();
         // show alert
         alertDialog.show();
+    }
+
+    public NavigationDrawerFragment getNavigationDrawerFragment() {
+        return mNavigationDrawerFragment;
     }
 
 

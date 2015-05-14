@@ -11,13 +11,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
+import org.json.JSONObject;
+
 import banner.brown.BannerApplication;
 import banner.brown.api.BannerAPI;
 import banner.brown.models.Cart;
+import banner.brown.ui.MainActivity;
 import banner.brown.ui.R;
 
 /**
@@ -45,18 +49,45 @@ public class SaveCartDialog extends DialogFragment implements DialogInterface.On
 
         @Override
         public void onClick(DialogInterface d, int which) {
-            String text = mEditText.getText().toString();
-            text = text.replaceAll("\\s", "");
-            BannerApplication.mostRecentNamedCart = text;
-            BannerAPI.saveNamedCart(text, new Response.Listener() {
+             String text = mEditText.getText().toString();
+            if (text.length() > 10) {
+                text = text.substring(0, 10);
+            }
+            final String cleaned = text.replaceAll("\\s", "");
+            BannerApplication.mostRecentNamedCart = cleaned;
+            final MainActivity activity = (MainActivity) getActivity();
+            BannerApplication.showLoadingIcon(activity);
+            BannerAPI.saveNamedCart(cleaned, new Response.Listener<String>() {
                 @Override
-                public void onResponse(Object response) {
-                    Object x = response;
+                public void onResponse(String response) {
+
+                    if (!response.toLowerCase().contains("success")) {
+                        BannerApplication.hideLoadingIcon();
+                        BannerApplication.showToast(activity, "Error saving: " + response);
+                    } else {
+                        BannerAPI.getNamedCarts(new Response.Listener<JSONObject>() {
+
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                BannerApplication.hideLoadingIcon();
+                                BannerApplication.updateNamedCarts(response);
+                                activity.getNavigationDrawerFragment().updateSavedCarts();
+                                BannerApplication.showToast(activity, "cart named \"" + cleaned + "\" successfully saved");
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                BannerApplication.hideLoadingIcon();
+                                Toast.makeText(activity, error.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-
+                    BannerApplication.hideLoadingIcon();
+                    BannerApplication.showToast(activity, error.getMessage());
                 }
             });
 
