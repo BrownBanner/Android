@@ -7,5 +7,13 @@
         android:layout_height="fill_parent"
         android:id="@+id/course_list">
     </ListView>
+    <TextView android:id="@+id/emptyview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:paddingTop="20dp"
+        android:textSize="20sp"
+        android:text="No courses to show"
+        android:visibility="gone"/>
 
 </RelativeLayout>

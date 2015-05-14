@@ -117,7 +117,9 @@
         </LinearLayout>
         <include layout="@layout/light_line"/>
         <RelativeLayout
-            style="@style/BannerDetailSubSectionClickable">
+            style="@style/BannerDetailSubSectionClickable"
+            android:id="@+id/mapViewButton">
+
             <ImageView
                 style="@style/BannerDetailSectionImage"
                 android:src="@drawable/ic_map"

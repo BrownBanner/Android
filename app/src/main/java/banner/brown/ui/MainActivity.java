@@ -24,7 +24,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import banner.brown.BannerApplication;
@@ -40,10 +39,6 @@ public class MainActivity extends BannerBaseLogoutTimerActivity
 
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private WeekView mWeekView;
-
-    private ArrayList<Integer> mEventColors;
-    private int currColIndex = 0;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,36 +57,10 @@ public class MainActivity extends BannerBaseLogoutTimerActivity
         mWeekView.setEventLongPressListener(this);
         mWeekView.setMonthChangeListener(this);
 
-        setUpColors();
 
     }
 
-    private void setUpColors() {
 
-
-        mEventColors = new ArrayList<>();
-
-        mEventColors.add(Color.rgb(26, 188, 156));
-        mEventColors.add(Color.rgb(46, 204, 113));
-        mEventColors.add(Color.rgb(52, 152, 219));
-        mEventColors.add(Color.rgb(155, 89, 182));
-        mEventColors.add(Color.rgb(52, 73, 94));
-        mEventColors.add(Color.rgb(241, 196, 15));
-        mEventColors.add(Color.rgb(230, 126, 34));
-        mEventColors.add(Color.rgb(231, 76, 60));
-        mEventColors.add(Color.rgb(118, 47, 0));
-        mEventColors.add(Color.rgb(149, 165, 166));
-        mEventColors.add(Color.rgb(22, 160, 133));
-        mEventColors.add(Color.rgb(39, 174, 96));
-        mEventColors.add(Color.rgb(41, 128, 185));
-        mEventColors.add(Color.rgb(142, 68, 173));
-        mEventColors.add(Color.rgb(44, 62, 80));
-        mEventColors.add(Color.rgb(243, 156, 18));
-        mEventColors.add(Color.rgb(211, 84, 0));
-        mEventColors.add(Color.rgb(192, 57, 43));
-        mEventColors.add(Color.rgb(189, 195, 199));
-        mEventColors.add(Color.rgb(127, 140, 141));
-    }
 
     public void updateCalendar(final boolean shouldShowLoading) {
         getSupportActionBar().setTitle(BannerApplication.curSelectedSemester.toString());
@@ -251,9 +220,9 @@ public class MainActivity extends BannerBaseLogoutTimerActivity
     }
 
     private int getNewColor() {
-        currColIndex ++;
-        if (currColIndex >= mEventColors.size()) {currColIndex = 0;}
-        return mEventColors.get(currColIndex);
+        BannerApplication.currColIndex ++;
+        if (BannerApplication.currColIndex >= BannerApplication.mEventColors.size()) {BannerApplication.currColIndex = 0;}
+        return BannerApplication.mEventColors.get(BannerApplication.currColIndex);
     }
 
     private void conflictAlert(ArrayList<WeekViewEvent> events) {
@@ -264,6 +233,7 @@ public class MainActivity extends BannerBaseLogoutTimerActivity
 
         final CharSequence[] classes = new CharSequence[events.size()-1];
         final String[] crns = new String[events.size()-1];
+
 
         for (int i = 0; i < events.size()-1; i++) classes[i] = events.get(i).getName();
         for (int i = 0; i < events.size()-1; i++) crns[i] = events.get(i).getId();

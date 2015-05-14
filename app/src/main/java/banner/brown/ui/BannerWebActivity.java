@@ -20,6 +20,10 @@ public class BannerWebActivity extends BannerBaseLogoutTimerActivity {
 
     public static String WEB_ACTIVITY_NAME = "WEB_URL_NAME";
 
+    public static String LOCATION_STRING = "LOCATION_STRING";
+
+    protected WebView mWebView;
+
 
     private String url = "";
 
@@ -29,8 +33,10 @@ public class BannerWebActivity extends BannerBaseLogoutTimerActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        WebView webview = new WebView(this);
+        mWebView = new WebView(this);
         CookieManager.getInstance().setAcceptCookie(true);
+
+        mWebView.getSettings().setJavaScriptEnabled(true);
 
         String title = getIntent().getExtras().getString(WEB_ACTIVITY_NAME);
 
@@ -39,20 +45,19 @@ public class BannerWebActivity extends BannerBaseLogoutTimerActivity {
 
         }
 
-
-        setContentView(webview);
+        setContentView(mWebView);
 
         url = getIntent().getExtras().getString(WEB_URL_EXTRA);
-        webview.loadUrl(url);
-        webview.getSettings().setJavaScriptEnabled(true);
-        webview.setWebChromeClient(new WebChromeClient() {
+        mWebView.loadUrl(url);
+        mWebView.getSettings().setJavaScriptEnabled(true);
+        mWebView.setWebChromeClient(new WebChromeClient() {
             public void onProgressChanged(WebView view, int progress) {
                 // Activities and WebViews measure progress with different scales.
                 // The progress meter will automatically disappear when we reach 100%
                 BannerWebActivity.this.setSupportProgress(progress * 1000);
             }
         });
-        webview.setWebViewClient(new WebViewClient() {
+        mWebView.setWebViewClient(new WebViewClient() {
 
 
             @Override

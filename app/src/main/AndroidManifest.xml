@@ -41,6 +41,10 @@
             android:label="Web" >
         </activity>
         <activity
+            android:name=".MapBannerWebActivity"
+            android:label="Web" >
+        </activity>
+        <activity
             android:name=".BannerBaseLogoutTimerActivity"
             android:label="@string/title_activity_banner_base_logout_timer" >
         </activity>

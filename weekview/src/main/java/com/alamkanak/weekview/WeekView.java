@@ -606,7 +606,8 @@ public class WeekView extends View {
                             ) {
                         mEventRects.get(i).rectF = eventRectF;
 
-                        boolean colorBlockShow = true;
+                        float colorBlockShow = 20;
+
 
                         float bgtop = top;
 
@@ -618,8 +619,8 @@ public class WeekView extends View {
                             // Calculate top.
 
                             if (bgtop < mHeaderTextHeight + mHeaderRowPadding * 2 + mHeaderMarginBottom + mTimeTextHeight / 2){
+                                colorBlockShow = 20 - (mHeaderTextHeight + mHeaderRowPadding * 2 + mHeaderMarginBottom + mTimeTextHeight / 2 - bgtop);
                                 bgtop = mHeaderTextHeight + mHeaderRowPadding * 2 + mHeaderMarginBottom + mTimeTextHeight / 2;
-                                colorBlockShow = false;
                             }
 
                             float bgbottom = back.bottom;
@@ -653,7 +654,7 @@ public class WeekView extends View {
                         if (mEventRects.get(i).event.getBuds() == null) {
                             drawText(allcollisions, textbox, canvas, originalTop + 25, startFromPixel);
                             if (originalTop < mHeaderTextHeight + mHeaderRowPadding * 2 + mHeaderMarginBottom + mTimeTextHeight / 2){
-                                colorBlockShow = false;
+                                colorBlockShow = 20 - (mHeaderTextHeight + mHeaderRowPadding * 2 + mHeaderMarginBottom + mTimeTextHeight / 2- originalTop);
                             }
                         }
                         else{
@@ -665,10 +666,11 @@ public class WeekView extends View {
                         ColorFilter filter = new LightingColorFilter(col, col);
                         mColorBarPaint.setColorFilter(filter);
 
-                        RectF colorBar = new RectF(left,bgtop,right,bgtop+20);
+
 
                         //if colorbar should be visible, draw it
-                        if (colorBlockShow){
+                        if (colorBlockShow > 0){
+                            RectF colorBar = new RectF(left,bgtop,right,bgtop+colorBlockShow);
                             if (mEventRects.get(i).event.registered){
                                 mEventBackgroundPaint.setColor(col);
                                 canvas.drawRect(colorBar, mEventBackgroundPaint);
@@ -684,11 +686,11 @@ public class WeekView extends View {
                         float bgtop = mHourHeight * 24 * back.top / 1440 + mCurrentOrigin.y + mHeaderTextHeight + mHeaderRowPadding * 2 + mHeaderMarginBottom + mTimeTextHeight / 2 + mEventMarginVertical;
 
                         // Calculate top.
-                        boolean colorBlock = true;
+                        float colorBlock = 20;
                         if (bgtop < mHeaderTextHeight + mHeaderRowPadding * 2 + mHeaderMarginBottom + mTimeTextHeight / 2)
                         {
+                            colorBlock = 20 - (mHeaderTextHeight + mHeaderRowPadding * 2 + mHeaderMarginBottom + mTimeTextHeight / 2 - bgtop);
                             bgtop = mHeaderTextHeight + mHeaderRowPadding * 2 + mHeaderMarginBottom + mTimeTextHeight / 2;
-                            colorBlock = false;
                         }
 
 
@@ -705,9 +707,12 @@ public class WeekView extends View {
                         ColorFilter filter = new LightingColorFilter(col, col);
                         mColorBarPaint.setColorFilter(filter);
 
-                        RectF colorBar = new RectF(left,bgtop,right,bgtop+20);
 
-                        if (colorBlock){
+
+                        if (colorBlock > 0){
+
+                            RectF colorBar = new RectF(left,bgtop,right,bgtop+colorBlock);
+
                             if (mEventRects.get(i).event.registered){
                                 mEventBackgroundPaint.setColor(col);
                                 canvas.drawRect(colorBar, mEventBackgroundPaint);

@@ -47,6 +47,7 @@ public class CourseDetail extends BannerBaseLogoutTimerActivity {
     private RelativeLayout mBookListButton;
     private RelativeLayout mCriticalReviewButton;
     private RelativeLayout mCoursePreviewButton;
+    private RelativeLayout mMapViewButton;
     private String mBookList;
     private String mCriticalReview;
     private String mCoursePreview;
@@ -84,6 +85,7 @@ public class CourseDetail extends BannerBaseLogoutTimerActivity {
         mCriticalReviewButton = (RelativeLayout) findViewById(R.id.critical_review_button);
         mPrereqText = (TextView) findViewById(R.id.detail_prereq);
         mInCart = (ImageView) findViewById(R.id.in_cart);
+        mMapViewButton = (RelativeLayout) findViewById(R.id.mapViewButton);
 
         if (BannerApplication.mCurrentCart.getCourse(mCrn) != null) {
             mInCart.setVisibility(View.VISIBLE);
@@ -117,8 +119,42 @@ public class CourseDetail extends BannerBaseLogoutTimerActivity {
                 startActivity(i);
             }
         });
+
+        mMapViewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(CourseDetail.this, MapBannerWebActivity.class);
+                i.putExtra(MapBannerWebActivity.WEB_ACTIVITY_NAME,"Course Location");
+                i.putExtra(MapBannerWebActivity.WEB_URL_EXTRA, "http://www.brown.edu/Facilities/Facilities_Management/m/index.php");
+                i.putExtra(MapBannerWebActivity.LOCATION_STRING,parseLocation(mCourse.getMeetingLocation()));
+                startActivity(i);
+            }
+        });
+
         updateCourse();
 
+
+    }
+
+    private String parseLocation(String meetingLocation) {
+
+        String toRet = "";
+
+        String[] split = meetingLocation.split("\\s+");
+        for (int i = 0 ; i <split.length; i++ ){
+            if (split[i].matches("[0-9]+")){
+                split[i] = "";
+            }
+            else if (split[i].equals("&")){
+                split[i] = "and";
+            }
+            else if (split[i].equals("Bldg.")){
+                split[i] = "";
+            }
+            toRet = toRet + split[i] + " ";
+        }
+
+        return toRet;
 
     }
 
@@ -175,6 +211,7 @@ public class CourseDetail extends BannerBaseLogoutTimerActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
+
         if (id == R.id.add_to_cart) {
             BannerAPI.addToCart(mCrn, new Response.Listener<String>(){
 

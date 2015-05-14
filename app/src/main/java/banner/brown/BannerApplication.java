@@ -5,6 +5,7 @@ import android.app.Application;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.webkit.CookieSyncManager;
 import android.widget.Toast;
 
@@ -39,6 +40,7 @@ import banner.brown.ui.R;
  * Created by Andy on 2/22/15.
  */
 public class BannerApplication extends Application {
+    public static int currColIndex = 0;
     /**
      * Global request queue for Volley
      */
@@ -59,6 +61,8 @@ public class BannerApplication extends Application {
     public static Cart mCurrentCart;
 
     public static HashMap<String, String []> mNamedCarts;
+
+    public static ArrayList<Integer> mEventColors;
 
     public static String curCookie = "";
 
@@ -82,6 +86,8 @@ public class BannerApplication extends Application {
         mCurrentCart = new Cart();
         mNamedCarts = new HashMap<String, String[]>();
         curCookie = prefs.getString(SHARED_PREF_COOKIE,"");
+
+        setUpColors();
 
 
     }
@@ -249,5 +255,32 @@ public class BannerApplication extends Application {
 
     public static void hideLoadingIcon(){
         progress.dismiss();
+    }
+
+    private void setUpColors() {
+
+
+        mEventColors = new ArrayList<>();
+
+        mEventColors.add(Color.rgb(26, 188, 156));
+        mEventColors.add(Color.rgb(46, 204, 113));
+        mEventColors.add(Color.rgb(52, 152, 219));
+        mEventColors.add(Color.rgb(155, 89, 182));
+        mEventColors.add(Color.rgb(52, 73, 94));
+        mEventColors.add(Color.rgb(241, 196, 15));
+        mEventColors.add(Color.rgb(230, 126, 34));
+        mEventColors.add(Color.rgb(231, 76, 60));
+        mEventColors.add(Color.rgb(118, 47, 0));
+        mEventColors.add(Color.rgb(149, 165, 166));
+        mEventColors.add(Color.rgb(22, 160, 133));
+        mEventColors.add(Color.rgb(39, 174, 96));
+        mEventColors.add(Color.rgb(41, 128, 185));
+        mEventColors.add(Color.rgb(142, 68, 173));
+        mEventColors.add(Color.rgb(44, 62, 80));
+        mEventColors.add(Color.rgb(243, 156, 18));
+        mEventColors.add(Color.rgb(211, 84, 0));
+        mEventColors.add(Color.rgb(192, 57, 43));
+        mEventColors.add(Color.rgb(189, 195, 199));
+        mEventColors.add(Color.rgb(127, 140, 141));
     }
 }

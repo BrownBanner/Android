@@ -63,9 +63,10 @@ public class CourseListActivity extends BannerBaseLogoutTimerActivity implements
         mCourseListView = (ListView) findViewById(R.id.course_list);
         mCourseData = new ArrayList<>();
         mAdapter = new CourseListAdapter(this,  R.layout.course_list_view_row, mCourseData);
-        mCourseListView.setAdapter(mAdapter);
 
         mCourseListView.setOnItemClickListener(this);
+
+        mCourseListView.setAdapter(mAdapter);
 
         BannerAPI.getCoursesByDept( dept, 0, new Response.Listener<JSONObject>() {
             @Override
@@ -74,6 +75,7 @@ public class CourseListActivity extends BannerBaseLogoutTimerActivity implements
                     BannerApplication.hideLoadingIcon();
                     JSONArray classes = response.getJSONArray("items");
                     processClasses(classes);
+                    mCourseListView.setEmptyView(findViewById(R.id.emptyview));
 
 
                 } catch (JSONException e) {
