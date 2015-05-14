@@ -1,6 +1,7 @@
 package banner.brown.ui;
 
 import android.content.Intent;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -8,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.SearchView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -25,17 +27,20 @@ import banner.brown.models.Course;
 import banner.brown.models.listHeader;
 import banner.brown.ui.R;
 
-public class CourseListActivity extends BannerBaseLogoutTimerActivity implements AdapterView.OnItemClickListener{
+public class CourseListActivity extends BannerBaseLogoutTimerActivity implements SearchView.OnQueryTextListener, AdapterView.OnItemClickListener{
 
     public static String DEPT_ABBREV_EXTRA = "dept_extra";
     public static String DEPT_FULL_EXTRA = "dept_full";
 
+    SearchView mSearchView;
 
     ListView mCourseListView;
 
     CourseListAdapter mAdapter;
 
     ArrayList<Course> mCourseData;
+    ArrayList<Course> mOriginalCourseData;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +75,7 @@ public class CourseListActivity extends BannerBaseLogoutTimerActivity implements
                     JSONArray classes = response.getJSONArray("items");
                     processClasses(classes);
 
+
                 } catch (JSONException e) {
 
                 }
@@ -83,6 +89,44 @@ public class CourseListActivity extends BannerBaseLogoutTimerActivity implements
         });
     }
 
+    @Override
+    public boolean onCreateOptionsMenu( Menu menu )
+    {
+
+        getMenuInflater().inflate(R.menu.menu_search, menu);
+
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setTitle("");
+        MenuItem item = menu.findItem(R.id.search_courses_in_activity);
+        item.expandActionView();
+
+
+        MenuItemCompat.setOnActionExpandListener(item, new MenuItemCompat.OnActionExpandListener() {
+
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                //Do whatever you want
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                //Do whatever you want
+                finish();
+                return true;
+            }
+        });
+        mSearchView = (SearchView) item.getActionView();
+        mSearchView.setIconifiedByDefault(true);
+        mSearchView.setFocusable(true);
+        mSearchView.setIconified(false);
+        mSearchView.requestFocusFromTouch();
+        mSearchView.setQueryHint("Filter results by time etc");
+        mSearchView.setOnQueryTextListener(this);
+
+        return true;
+    }
+
 
 
     private void processClasses(JSONArray classes) {
@@ -93,6 +137,8 @@ public class CourseListActivity extends BannerBaseLogoutTimerActivity implements
                 mCourseData.add(new Course(course));
             }
             Collections.sort(mCourseData);
+            mOriginalCourseData = new ArrayList<>();
+            mOriginalCourseData.addAll(mCourseData);
             mAdapter.notifyDataSetChanged();
         } catch (JSONException e) {
 
@@ -128,4 +174,40 @@ public class CourseListActivity extends BannerBaseLogoutTimerActivity implements
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        if (newText.length() > 0) {
+
+            ArrayList<Course> matching = new ArrayList<>();
+            for (Course course : mOriginalCourseData){
+                if (course.getCRN().toLowerCase().contains(newText.toLowerCase()) ||
+                        course.getMeetingTime().toLowerCase().contains(newText.toLowerCase())||
+                        course.getDepartment().toLowerCase().contains(newText.toLowerCase())||
+                        course.getTitle().toLowerCase().contains(newText.toLowerCase())||
+                        course.getSubjectCode().toLowerCase().contains(newText.toLowerCase())
+                        ){
+                    matching.add(course);
+                }
+            }
+            mOriginalCourseData.size();
+            mCourseData.clear();
+            mCourseData.addAll(matching);
+            Collections.sort(mCourseData);
+
+            mAdapter.notifyDataSetChanged();
+
+
+        }
+        else{
+            mCourseData.clear();
+            mCourseData.addAll(mOriginalCourseData);
+            mAdapter.notifyDataSetChanged();
+        }
+        return true;
+    }
 }

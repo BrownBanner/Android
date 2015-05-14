@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -80,6 +81,7 @@ public class SearchActivity extends BannerBaseLogoutTimerActivity implements Sea
         MenuItem item = menu.findItem(R.id.search_courses_in_activity);
         item.expandActionView();
 
+
         MenuItemCompat.setOnActionExpandListener(item, new MenuItemCompat.OnActionExpandListener() {
 
             @Override
@@ -102,7 +104,6 @@ public class SearchActivity extends BannerBaseLogoutTimerActivity implements Sea
         mSearchView.requestFocusFromTouch();
         mSearchView.setQueryHint("CSCI 1900 John Smith");
         mSearchView.setOnQueryTextListener(this);
-
 
         return true;
     }
