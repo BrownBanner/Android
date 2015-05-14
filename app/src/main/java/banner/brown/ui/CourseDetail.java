@@ -228,11 +228,26 @@ public class CourseDetail extends BannerBaseLogoutTimerActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem item = menu.findItem(R.id.registered_check);
+        if (item != null) {
+            item.setEnabled(false);
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
             Course cartCourse = BannerApplication.mCurrentCart.getCourse(mCrn);
             if (cartCourse != null) {
-                getMenuInflater().inflate(R.menu.menu_course_detail_remove, menu);
+                if (cartCourse.getRegistered()) {
+                    getMenuInflater().inflate(R.menu.menu_course_detail_registered, menu);
+
+                } else {
+                    getMenuInflater().inflate(R.menu.menu_course_detail_remove, menu);
+                }
 
 
             } else {
