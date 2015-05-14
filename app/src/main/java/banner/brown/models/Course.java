@@ -82,7 +82,7 @@ public class Course implements Comparable {
 
     @Override
     public boolean equals(Object o) {
-        if (((Course) o).getCRN().equals(getCRN()) && ((Course) o).getMeetingTime().equals(getMeetingTime())) {
+        if (((Course) o).getCRN().equals(getCRN()) && ((Course) o).getFormattedTime().equals(getFormattedTime())) {
             return true;
         } else {
             return false;

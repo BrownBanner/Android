@@ -18,6 +18,7 @@ import org.json.JSONObject;
 import java.net.URLEncoder;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.net.ssl.HostnameVerifier;
@@ -205,11 +206,17 @@ public class BannerAPI {
 
     public static void getNamedCart(String cartName, Response.Listener listener, Response.ErrorListener error) {
         String semester = BannerApplication.getInstance().curSelectedSemester.getSemesterCode();
+        try {
+            cartName = URLEncoder.encode(cartName, "UTF-8");
 
-        String url = HOST + "/cartbyname?term=" + semester  + "&in_id=" + BannerApplication.curCookie + "&cart_name=" + cartName;
 
-        JsonObjectRequest request = new JsonObjectRequest(url, null, listener, error);
-        BannerApplication.getInstance().addToRequestQueue(request);
+            String url = HOST + "/cartbyname?term=" + semester + "&in_id=" + BannerApplication.curCookie + "&cart_name=" + cartName;
+
+            JsonObjectRequest request = new JsonObjectRequest(url, null, listener, error);
+            BannerApplication.getInstance().addToRequestQueue(request);
+        } catch (Exception e) {
+
+        }
     }
 
     public static void loadNamedCart(final String name,final Response.Listener listener, final Response.ErrorListener error) {
@@ -242,10 +249,11 @@ public class BannerAPI {
                         Course c = new Course (course);
                         if (!c.getRegistered()) {
                             curCrns += c.getCRN();
+                            if (x < courses.length() - 1) {
+                                curCrns += ",";
+                            }
                         }
-                        if (x < courses.length() - 1) {
-                            curCrns += ",";
-                        }
+
                     }
                     if (curCrns.isEmpty()) {
                         getNamedCart(name, getNamedCartListener, error);
@@ -267,5 +275,46 @@ public class BannerAPI {
             }
         }, error);
     }
+    public static void saveNamedCart(String name, Response.Listener listener, Response.ErrorListener error) {
+        String semester = BannerApplication.getInstance().curSelectedSemester.getSemesterCode();
+        try {
+            name = URLEncoder.encode(name, "UTF-8");
+
+            String crnList = "";
+            ArrayList<Course> courses = BannerApplication.mCurrentCart.getCourses();
+
+            for (int x = 0; x < courses.size(); x++) {
+                Course c = courses.get(x);
+                crnList += c.getCRN();
+                if (x < courses.size() - 1) {
+                    crnList += ",";
+                }
+            }
+
+            String url = HOST + "/cartbyname?term=" + semester + "&in_id=" + BannerApplication.curCookie + "&cart_name=" + name + "&crn_list=" + crnList + "&in_type=I";
+
+            JsonObjectRequest request = new JsonObjectRequest(url, null, listener, error);
+            BannerApplication.getInstance().addToRequestQueue(request);
+        } catch (Exception e) {
+
+        }
+    }
+
+    public static void deleteNameCart(String name, Response.Listener listener, Response.ErrorListener error) {
+        String semester = BannerApplication.getInstance().curSelectedSemester.getSemesterCode();
+        try {
+            name = URLEncoder.encode(name, "UTF-8");
+
+
+
+            String url = HOST + "/cartbyname?term=" + semester + "&in_id=" + BannerApplication.curCookie + "&cart_name=" + name + "&crn_list=1"  + "&in_type=D";
+
+            JsonObjectRequest request = new JsonObjectRequest(url, null, listener, error);
+            BannerApplication.getInstance().addToRequestQueue(request);
+        } catch (Exception e) {
+
+        }
+    }
+
 
 }

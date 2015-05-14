@@ -61,6 +61,7 @@ public class BannerApplication extends Application {
 
     public static String curCookie = "";
 
+    public static String mostRecentNamedCart = "ExampleCart";
     static ProgressDialog progress;
 
     @Override
