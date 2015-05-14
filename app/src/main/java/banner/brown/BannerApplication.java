@@ -1,6 +1,8 @@
 package banner.brown;
 
+import android.app.Activity;
 import android.app.Application;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.webkit.CookieSyncManager;
@@ -30,6 +32,7 @@ import banner.brown.models.Cart;
 import banner.brown.models.Semester;
 import banner.brown.ui.BannerBaseLogoutTimerActivity;
 import banner.brown.ui.LoginActivity;
+import banner.brown.ui.R;
 
 /**
  * Created by Andy on 2/22/15.
@@ -59,6 +62,7 @@ public class BannerApplication extends Application {
     public static String curCookie = "";
 
     public static String mostRecentNamedCart = "ExampleCart";
+    static ProgressDialog progress;
 
     @Override
     public void onCreate() {
@@ -225,5 +229,16 @@ public class BannerApplication extends Application {
         } catch (JSONException e){
 
         }
+    }
+
+    public static void showLoadingIcon(Activity activity){
+        progress = new ProgressDialog(activity, R.style.CustomDialogTheme);
+        progress.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
+        progress.setCancelable(false);
+        progress.show();
+    }
+
+    public static void hideLoadingIcon(){
+        progress.dismiss();
     }
 }

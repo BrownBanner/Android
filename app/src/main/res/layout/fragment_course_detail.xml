@@ -82,7 +82,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/seats_available"
-                android:text="10"
+
                 style="@style/BannerTitleThin"
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@id/seats_icon"
@@ -93,7 +93,6 @@
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/seats_available"
                 android:id="@+id/seats_total"
-                android:text=" / 999"
                 style="@style/BannerTitleThin"
                 android:layout_toLeftOf="@+id/in_cart"
                 android:layout_centerVertical="true"
@@ -114,7 +113,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/detail_instructor_teaching"
-                android:text="Andy Chen"
                 style="@style/BannerTitleThin"/>
         </LinearLayout>
         <include layout="@layout/light_line"/>
@@ -137,7 +135,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/detail_location_taught"
-                android:text="Smitty B Really long name tesat"
                 style="@style/BannerTitleThin"
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@id/map_icon"
@@ -154,7 +151,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/detail_description_course"
-                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas quis sodales mauris, at porttitor ligula. Nullam mattis mi dolor, non auctor est malesuada eget. Fusce pharetra ac eros nec feugiat. Maecenas eu eros nulla. Etiam et nisi nunc. Pellentesque sed tempor augue. Cras et dolor elit."
                 style="@style/BannerSubhead"
                 android:paddingRight="@dimen/detail_horizontal_padding_descriptor"/>
         </LinearLayout>
@@ -192,7 +188,6 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/detail_CRN_text"
                 android:id="@+id/detail_CRN"
-                android:text="123456"
                 style="@style/BannerSubhead"/>
         </RelativeLayout>
         <include layout="@layout/light_line"/>
@@ -212,7 +207,6 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/detail_exam_text"
                 android:id="@+id/detail_exam"
-                android:text="Some bulshit about examt imes and shit"
                 style="@style/BannerSubhead"
                 android:paddingRight="@dimen/detail_horizontal_padding_descriptor"/>
         </RelativeLayout>

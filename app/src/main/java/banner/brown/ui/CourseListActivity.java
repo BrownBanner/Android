@@ -19,6 +19,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import banner.brown.BannerApplication;
 import banner.brown.api.BannerAPI;
 import banner.brown.models.Course;
 import banner.brown.models.listHeader;
@@ -49,6 +50,8 @@ public class CourseListActivity extends BannerBaseLogoutTimerActivity implements
             full = extras.getString(DEPT_FULL_EXTRA);
         }
 
+        BannerApplication.showLoadingIcon(this);
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(full);
 
@@ -63,6 +66,7 @@ public class CourseListActivity extends BannerBaseLogoutTimerActivity implements
             @Override
             public void onResponse(JSONObject response) {
                 try {
+                    BannerApplication.hideLoadingIcon();
                     JSONArray classes = response.getJSONArray("items");
                     processClasses(classes);
 
@@ -73,6 +77,7 @@ public class CourseListActivity extends BannerBaseLogoutTimerActivity implements
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                BannerApplication.hideLoadingIcon();
                 VolleyError x = error;
             }
         });
