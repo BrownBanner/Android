@@ -6,13 +6,21 @@
     >
 <LinearLayout  android:layout_width="match_parent"
     android:layout_height="match_parent"
+
+
     android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ImageView
+            style="@style/BannerDrawerImage"
+            android:src="@drawable/ic_insert_invitation_grey600_48dp"/>
 
     <LinearLayout
         android:orientation="horizontal"
         style="@style/BannerDrawerSection"
-        android:layout_height="56dp"
-        android:background="@color/bannerHeaderBackground"
         android:paddingLeft="9dp"
         android:paddingRight="16dp"
         >
@@ -21,10 +29,10 @@
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:gravity="center_vertical"
-            android:paddingLeft="0dp"
+
             />
      </LinearLayout>
-    <include layout="@layout/light_line" android:paddingTop="8dp" android:paddingBottom="8dp"></include>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/named_carts_container_outer"
@@ -32,18 +40,20 @@
         android:layout_width="match_parent"
         android:visibility="gone"
         android:orientation="vertical">
-        <LinearLayout
-            android:orientation="horizontal"
+        <RelativeLayout
             style="@style/BannerDrawerSection"
             android:clickable="false">
+                <ImageView
+                    style="@style/BannerDrawerImage"
+                    android:src="@drawable/ic_bookmark_grey600_48dp"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/BannerSubhead"
+                style="@style/BannerDrawerText"
                 android:gravity="center_vertical"
                 android:text="Saved Carts"
                 />
-        </LinearLayout>
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -65,31 +75,35 @@
             <!--android:gravity="center_vertical"-->
             <!--android:text="Departments"/>-->
     <!--</LinearLayout>-->
-    <include layout="@layout/light_line" android:paddingTop="8dp" android:paddingBottom="8dp"></include>
 
-    <LinearLayout
-        android:orientation="horizontal"
+    <RelativeLayout
         android:id="@+id/save_cart_drawer"
         style="@style/BannerDrawerSection">
+        <ImageView
+            style="@style/BannerDrawerImage"
+            android:src="@drawable/ic_get_app_grey600_48dp" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/BannerSubhead"
+            style="@style/BannerDrawerText"
             android:gravity="center_vertical"
-            android:text="Save Cart"/>
-    </LinearLayout>
-    <include layout="@layout/light_line" android:paddingTop="8dp" android:paddingBottom="8dp"></include>
+            android:text="Save Cart"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
 
-    <LinearLayout
-        android:orientation="horizontal"
+    <RelativeLayout
         android:id="@+id/logout_drawer"
         style="@style/BannerDrawerSection">
+        <ImageView
+            style="@style/BannerDrawerImage"
+            android:src="@drawable/ic_logout" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/BannerSubhead"
+            style="@style/BannerDrawerText"
             android:gravity="center_vertical"
             android:text="Log Out"/>
-    </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>
 </ScrollView>

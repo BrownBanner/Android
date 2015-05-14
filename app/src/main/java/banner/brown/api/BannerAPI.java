@@ -45,7 +45,7 @@ public class BannerAPI {
 
     private static String TEST = "https://blooming-bastion-7117.herokuapp.com";
 
-    public static String HOST = DPRD;
+    public static String HOST = DEV;
 
     public static String SEARCH_ENDPOINT = "http://blooming-bastion-7117.herokuapp.com/search?";
 

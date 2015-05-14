@@ -26,8 +26,8 @@ public class LoginActivity extends ActionBarActivity {
     public static String DPROD_MAIN_PAGE = "https://selfservice-dev.brown.edu:9190/ssDPRD/twbkwbis.P_GenMenu?name=bmenu.P_MainMnu";
 
 
-    public static String curLoginAPI = DPROD_LOGIN;
-    public static String curLoginMain = DPROD_MAIN_PAGE;
+    public static String curLoginAPI = PPROD_LOGIN;
+    public static String curLoginMain = PPROD_MAIN_PAGE;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
