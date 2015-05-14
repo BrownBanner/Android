@@ -3,6 +3,7 @@ package banner.brown.ui;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,7 +23,7 @@ import banner.brown.BannerApplication;
 import banner.brown.api.BannerAPI;
 import banner.brown.models.Course;
 
-public class CourseDetail extends BannerBaseLogoutTimerActivity {
+public class CourseDetail extends BannerBaseLogoutTimerActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     public static String CRN_EXTRA = "crn_extra";
     public static String COURSE_NAME_EXTRA = "course_name_extra";
@@ -51,7 +52,7 @@ public class CourseDetail extends BannerBaseLogoutTimerActivity {
     private String mCriticalReview;
     private String mCoursePreview;
 
-
+    private SwipeRefreshLayout mSwipeLayout;
 
 
 
@@ -119,6 +120,9 @@ public class CourseDetail extends BannerBaseLogoutTimerActivity {
         });
         updateCourse();
 
+        mSwipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+        mSwipeLayout.setOnRefreshListener(this);
+
 
     }
 
@@ -126,6 +130,7 @@ public class CourseDetail extends BannerBaseLogoutTimerActivity {
         BannerAPI.getCourseByCRN(mCrn, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+                mSwipeLayout.setRefreshing(false);
                 try {
 
                     JSONArray courseList = response.getJSONArray("items");
@@ -258,4 +263,9 @@ public class CourseDetail extends BannerBaseLogoutTimerActivity {
     }
 
 
+    @Override
+    public void onRefresh() {
+        mSwipeLayout.setRefreshing(true);
+        updateCourse();
+    }
 }
