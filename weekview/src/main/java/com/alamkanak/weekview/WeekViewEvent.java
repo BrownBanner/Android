@@ -13,6 +13,7 @@ public class WeekViewEvent {
     private String mName;
     private int mColor;
     private WeekView.CollisionBuddies buds;
+    public boolean registered = false;
 
     public WeekViewEvent(){
 
@@ -38,11 +39,6 @@ public class WeekViewEvent {
         this.mStartTime.set(Calendar.DAY_OF_MONTH, startDay);
         this.mStartTime.set(Calendar.HOUR_OF_DAY, startHour);
         this.mStartTime.set(Calendar.MINUTE, startMinute);
-//        this.mStartTime.set(Calendar.YEAR, startYear);
-//        this.mStartTime.set(Calendar.MONTH, startMonth-1);
-//        this.mStartTime.set(Calendar.DAY_OF_MONTH, startDay);
-//        this.mStartTime.set(Calendar.HOUR_OF_DAY, startHour);
-//        this.mStartTime.set(Calendar.MINUTE, startMinute);
 
         this.mEndTime = Calendar.getInstance();
         this.mEndTime.set(Calendar.YEAR, 2015);

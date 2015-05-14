@@ -20,15 +20,16 @@ int attr textSize 0x7f010002
 int attr todayBackgroundColor 0x7f01000c
 int attr todayHeaderTextColor 0x7f01000d
 int attr xScrollingSpeed 0x7f010015
-int id friday 0x7f020000
-int id length_long 0x7f020007
-int id length_short 0x7f020008
-int id monday 0x7f020001
-int id saturday 0x7f020002
-int id sunday 0x7f020003
-int id thursday 0x7f020004
-int id tuesday 0x7f020005
-int id wednesday 0x7f020006
+int drawable stripe 0x7f020000
+int id friday 0x7f030000
+int id length_long 0x7f030007
+int id length_short 0x7f030008
+int id monday 0x7f030001
+int id saturday 0x7f030002
+int id sunday 0x7f030003
+int id thursday 0x7f030004
+int id tuesday 0x7f030005
+int id wednesday 0x7f030006
 int[] styleable WeekView { 0x7f010000, 0x7f010001, 0x7f010002, 0x7f010003, 0x7f010004, 0x7f010005, 0x7f010006, 0x7f010007, 0x7f010008, 0x7f010009, 0x7f01000a, 0x7f01000b, 0x7f01000c, 0x7f01000d, 0x7f01000e, 0x7f01000f, 0x7f010010, 0x7f010011, 0x7f010012, 0x7f010013, 0x7f010014, 0x7f010015 }
 int styleable WeekView_columnGap 6
 int styleable WeekView_dayBackgroundColor 10
