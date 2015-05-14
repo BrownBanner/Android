@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -31,6 +32,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -38,6 +42,7 @@ import banner.brown.BannerApplication;
 import banner.brown.Dialogs.LoadCartDialogFragment;
 import banner.brown.Dialogs.SaveCartDialog;
 import banner.brown.adapters.SemesterSpinnerAdapter;
+import banner.brown.api.BannerAPI;
 import banner.brown.models.Semester;
 
 /**
@@ -216,7 +221,7 @@ public class NavigationDrawerFragment extends Fragment implements View.OnClickLi
                     TextView name = (TextView) toAdd.findViewById(R.id.name_cart_text);
                     name.setText(s);
                     mNamedCarts.addView(toAdd);
-                    toAdd.setOnClickListener(new View.OnClickListener() {
+                    name.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             LoadCartDialogFragment dialog = new LoadCartDialogFragment();
@@ -225,6 +230,24 @@ public class NavigationDrawerFragment extends Fragment implements View.OnClickLi
                             dialog.setArguments(args);
                             FragmentTransaction ft = getFragmentManager().beginTransaction();
                             dialog.show(ft, "load_cart_dialog");
+                        }
+                    });
+
+                    ImageView delete = (ImageView) toAdd.findViewById(R.id.delete_cart);
+                    delete.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            BannerAPI.deleteNameCart(s, new Response.Listener() {
+                                @Override
+                                public void onResponse(Object response) {
+                                    Object x = response;
+                                }
+                            }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+
+                                }
+                            });
                         }
                     });
                 }

@@ -300,6 +300,21 @@ public class BannerAPI {
         }
     }
 
+    public static void deleteNameCart(String name, Response.Listener listener, Response.ErrorListener error) {
+        String semester = BannerApplication.getInstance().curSelectedSemester.getSemesterCode();
+        try {
+            name = URLEncoder.encode(name, "UTF-8");
+
+
+
+            String url = HOST + "/cartbyname?term=" + semester + "&in_id=" + BannerApplication.curCookie + "&cart_name=" + name + "&crn_list=1"  + "&in_type=D";
+
+            JsonObjectRequest request = new JsonObjectRequest(url, null, listener, error);
+            BannerApplication.getInstance().addToRequestQueue(request);
+        } catch (Exception e) {
+
+        }
+    }
 
 
 }
