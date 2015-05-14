@@ -12,6 +12,7 @@ import android.view.ContextThemeWrapper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.alamkanak.weekview.WeekView;
@@ -27,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import banner.brown.BannerApplication;
+import banner.brown.adapters.ConflictListAdapter;
 import banner.brown.api.BannerAPI;
 import banner.brown.models.Cart;
 import banner.brown.models.Course;
@@ -233,22 +235,29 @@ public class MainActivity extends BannerBaseLogoutTimerActivity
 
         final CharSequence[] classes = new CharSequence[events.size()-1];
         final String[] crns = new String[events.size()-1];
+        final ArrayList<Course> courses = new ArrayList<Course>();
 
+        for (int i = 0; i < events.size()-1; i++) {
+            crns[i] = events.get(i).getId();
+            Course course = BannerApplication.mCurrentCart.getCourse(crns[i]);
+            if (course != null)
+                courses.add( course);
 
-        for (int i = 0; i < events.size()-1; i++) classes[i] = events.get(i).getName();
-        for (int i = 0; i < events.size()-1; i++) crns[i] = events.get(i).getId();
+        }
 
-        alertDialogBuilder.setItems(classes,new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog,int id) {
-                Intent i = new Intent(MainActivity.this, CourseDetail.class);
-                String CRN = crns[id];
-                String name = classes[id].toString();
-                i.putExtra(CourseDetail.CRN_EXTRA, CRN);
-                i.putExtra(CourseDetail.COURSE_NAME_EXTRA, name );
-                startActivity(i);
-            }
+        ConflictListAdapter adapter = new ConflictListAdapter(this, R.layout.conflict_list_row, courses);
 
-        });
+        alertDialogBuilder
+                .setAdapter(adapter, new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent i = new Intent(MainActivity.this, CourseDetail.class);
+                        Course course = courses.get(which);
+
+                        i.putExtra(CourseDetail.CRN_EXTRA, course.getCRN());
+                        i.putExtra(CourseDetail.COURSE_NAME_EXTRA, course.getTitle() );
+                        startActivity(i);                    }
+                });
 
 
 

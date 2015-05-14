@@ -3,6 +3,7 @@ package banner.brown.ui;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,7 +23,7 @@ import banner.brown.BannerApplication;
 import banner.brown.api.BannerAPI;
 import banner.brown.models.Course;
 
-public class CourseDetail extends BannerBaseLogoutTimerActivity {
+public class CourseDetail extends BannerBaseLogoutTimerActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     public static String CRN_EXTRA = "crn_extra";
     public static String COURSE_NAME_EXTRA = "course_name_extra";
@@ -52,7 +53,7 @@ public class CourseDetail extends BannerBaseLogoutTimerActivity {
     private String mCriticalReview;
     private String mCoursePreview;
 
-
+    private SwipeRefreshLayout mSwipeLayout;
 
 
 
@@ -133,6 +134,9 @@ public class CourseDetail extends BannerBaseLogoutTimerActivity {
 
         updateCourse();
 
+        mSwipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+        mSwipeLayout.setOnRefreshListener(this);
+
 
     }
 
@@ -162,6 +166,7 @@ public class CourseDetail extends BannerBaseLogoutTimerActivity {
         BannerAPI.getCourseByCRN(mCrn, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+                mSwipeLayout.setRefreshing(false);
                 try {
 
                     JSONArray courseList = response.getJSONArray("items");
@@ -188,7 +193,7 @@ public class CourseDetail extends BannerBaseLogoutTimerActivity {
         mCRNText.setText( mCourse.getCRN());
         mTitleText.setText(mCourse.getTitle());
         mInstructorText.setText(mCourse.getInstructor());
-        mScheduleText.setText(mCourse.getMeetingTime());
+        mScheduleText.setText(mCourse.getFormattedTime());
         mAvailableSeatsText.setText(""+mCourse.getSeatsAvailable());
         mTotalSeatsText.setText(" / "+mCourse.getSeatsTotal());
         mLocationText.setText(mCourse.getMeetingLocation());
@@ -265,11 +270,26 @@ public class CourseDetail extends BannerBaseLogoutTimerActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem item = menu.findItem(R.id.registered_check);
+        if (item != null) {
+            item.setEnabled(false);
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
             Course cartCourse = BannerApplication.mCurrentCart.getCourse(mCrn);
             if (cartCourse != null) {
-                getMenuInflater().inflate(R.menu.menu_course_detail_remove, menu);
+                if (cartCourse.getRegistered()) {
+                    getMenuInflater().inflate(R.menu.menu_course_detail_registered, menu);
+
+                } else {
+                    getMenuInflater().inflate(R.menu.menu_course_detail_remove, menu);
+                }
 
 
             } else {
@@ -280,4 +300,9 @@ public class CourseDetail extends BannerBaseLogoutTimerActivity {
     }
 
 
+    @Override
+    public void onRefresh() {
+        mSwipeLayout.setRefreshing(true);
+        updateCourse();
+    }
 }

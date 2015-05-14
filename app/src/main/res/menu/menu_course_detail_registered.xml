@@ -1,0 +1,6 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" tools:context="banner.brown.ui.CourseDetail">
+    <item android:id="@+id/registered_check" android:title="Registered" android:icon="@drawable/ic_check_white_48dp"  app:showAsAction="always" />
+
+</menu>

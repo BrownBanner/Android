@@ -1,6 +1,7 @@
 package banner.brown.ui;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.http.SslError;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -50,6 +51,7 @@ public class LoginActivity extends ActionBarActivity {
             @Override
             public void onPageFinished(WebView webview, String url) {
                 super.onPageFinished(webview, url);
+                BannerApplication.hideLoadingIcon();
                 if (url.equals(curLoginMain)) {
                     String cookie = getIDMSESSID();
                     BannerApplication.updateUserCookie(cookie);
@@ -59,6 +61,12 @@ public class LoginActivity extends ActionBarActivity {
 
                 }
 
+            }
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon)
+            {
+                super.onPageStarted(view, url, favicon);
+                BannerApplication.showLoadingIcon(LoginActivity.this);
             }
 
 
